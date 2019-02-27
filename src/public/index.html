@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>layout 后台大布局 - Layui</title>
+    <title>后台管理系统</title>
     <link rel="stylesheet" href="./lib/layui-v2.4.5/layui/css/layui.css">
     <style>
         .mianbao {
@@ -12,6 +12,7 @@
             line-height: 60px;
         }
     </style>
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <body class="layui-layout-body">
@@ -41,8 +42,7 @@
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                        贤心
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
                     </a>
                     <!-- <dl class="layui-nav-child">
           <dd><a href="">基本资料</a></dd>
@@ -90,7 +90,132 @@
 
         <div class="layui-body">
             <!-- 内容主体区域 -->
-            <div style="padding: 15px;">内容主体区域</div>
+            <div class="top">
+                <button class="layui-btn">添加</button>
+                <button class="layui-btn layui-btn-primary">删除</button>
+                <input type="text" name="title" required="" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" style="width:200px;display: inline-block;margin-left:300px;">
+                <select name="" id="fenlei">
+                    <option value="分类">分类</option>
+                    <option value="20">20页/条</option>
+                    <option value="30">30页/条</option>
+                    <option value="40">40页/条</option>
+                    <option value="50">50页/条</option>
+                </select>
+                <button class="layui-btn search">搜索</button>
+            </div>
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="50">
+                    <col width="200">
+                    <col width="90">
+                    <col width="90">
+                    <col width="90">
+                    <col width="90">
+                    <col width="90">
+                    <col width="120">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr data-id="">
+                        <th class="layui-input-block">
+                            <!-- 单选框，点击的时候div加减类名 layui-form-checked-->
+                            <div class="layui-unselect layui-form-checkbox all" lay-skin="primary">
+                                <i class="layui-icon layui-icon-ok"></i>
+                            </div>
+                        </th>
+                        <th>#</th>
+                        <th data-type="">
+                            商品名称
+                            <!-- 点击的时候更换src -->
+                            <img class="sheng _r" src="./img/jiantou.png" alt="升序">
+                            <img class="jiang _r" src="./img/jiantou.png" alt="降序">
+                        </th>
+                        <th data-type="">
+                            分类
+                            <img class="sheng" src="./img/jiantou.png" alt="升序">
+                            <img class="jiang" src="./img/jiantou.png" alt="降序">
+                        </th>
+                        <th data-type="">
+                            原价
+                            <img class="sheng" src="./img/jiantou.png" alt="升序">
+                            <img class="jiang" src="./img/jiantou.png" alt="降序">
+                        </th>
+                        <th data-type="">
+                            现价
+                            <img class="sheng" src="./img/jiantou.png" alt="升序">
+                            <img class="jiang" src="./img/jiantou.png" alt="降序">
+                        </th>
+                        <th data-type="">
+                            库存
+                            <img class="sheng" src="./img/jiantou.png" alt="升序">
+                            <img class="jiang" src="./img/jiantou.png" alt="降序">
+                        </th>
+                        <th data-type="">
+                            状态
+                            <img class="sheng" src="./img/jiantou.png" alt="升序">
+                            <img class="jiang" src="./img/jiantou.png" alt="降序">
+                        </th>
+                        <th data-type="">
+                            添加时间
+                            <img class="sheng _r" src="./img/jiantou.png" alt="升序">
+                            <img class="jiang _r" src="./img/jiantou.png" alt="降序">
+                        </th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="layui-unselect layui-form-checkbox layui-form-checked one" lay-skin="primary">
+                                <i class="layui-icon layui-icon-ok"></i>
+                            </div>
+                        </td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>
+                            <button class="layui-btn layui-btn-sm">
+                                <i class="layui-icon"></i>
+                            </button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm">
+                                    <i class="layui-icon"></i>
+                            </button>
+                            <button class="layui-btn layui-btn-sm">下架</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 页码 -->
+            <div class="bottom">
+                <div class="layui-btn-group">
+                    <!-- 高亮：删除类名layui-btn-primary -->
+                    <button class="layui-btn layui-btn-sm layui-btn-primary">上一页</button>
+                    <button class="layui-btn layui-btn-sm ">1</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary">2</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary">3</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary">4</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary">5</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary">下一页</button>
+                </div>
+                <select name="" id="bit">
+                    <option value="10">10页/条</option>
+                    <option value="20">20页/条</option>
+                    <option value="30">30页/条</option>
+                    <option value="40">40页/条</option>
+                    <option value="50">50页/条</option>
+                </select>
+                <span class="toPage">
+                    到第<input type="text" value="1">页
+                </span>
+                <button class="layui-btn layui-btn-primary">确定</button>
+            </div>
         </div>
 
         <!-- <div class="layui-footer">
@@ -101,7 +226,7 @@
     <script src="./lib/layui-v2.4.5/layui/layui.js"></script>
     <script>
         //JavaScript代码区域
-        layui.use('element', function () {
+        layui.use('element', function() {
             var element = layui.element;
 
         });

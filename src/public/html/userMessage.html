@@ -115,8 +115,16 @@
                         class="layui-input tel fl">
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label fl">性别</label>
-
+                    <div class="layui-form">
+                            <label class="layui-form-label">下拉选择框</label>
+                            <div class="layui-input-block">
+                                <select name="interest" lay-filter="aihao">
+                                    <option value="0">请选择</option>
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </div>
+                        </div>
 
                 </div>
             </div>
@@ -129,16 +137,7 @@
                     <input type="text" class="layui-input shengri fl" id="test1">
                 </div>
             </div>
-            <script>
-                layui.use('laydate', function () {
-                    var laydate = layui.laydate;
 
-                    //执行一个laydate实例
-                    laydate.render({
-                        elem: '#test1' //指定元素
-                    });
-                });
-            </script>
             <!-- 生日结束 -->
             <!-- 邮箱地址开始 -->
             <div class="layui-form-item">
@@ -155,7 +154,7 @@
                 </div>
             </div>
             <!-- 备注结束 -->
-            <!-- 提交按钮 -->
+            <!-- 提交按钮开始 -->
             <div class="layui-form-item">
                 <label class="layui-form-label fl"></label>
                 <div class="layui-inline">
@@ -163,20 +162,35 @@
 
                 </div>
             </div>
-        </div>
+            <!-- 提交按钮结束 -->
 
-        <!-- <div class="layui-footer">
+
+
+            <!-- <div class="layui-footer">
     底部固定区域
     © layui.com - 底部固定区域
   </div> -->
-    </div>
-    <script>
-        //JavaScript代码区域
-        layui.use('element', function () {
-            var element = layui.element;
+        </div>
+        <script>
+            //JavaScript代码区域
+            layui.use('element', function () {
+                var element = layui.element;
 
-        });
-    </script>
+            });
+            layui.use('laydate', function () {
+                var laydate = layui.laydate;
+
+                //执行一个laydate实例
+                laydate.render({
+                    elem: '#test1' //指定元素
+                });
+            });
+            layui.use('form', function () {
+                var form = layui.form;
+
+                //各种基于事件的操作，下面会有进一步介绍
+            });
+        </script>
 </body>
 
 </html>

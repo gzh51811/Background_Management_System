@@ -11,7 +11,7 @@ const mongodb = require('mongodb');
 // 创建mongo客户端
 const MongoClient = mongodb.MongoClient;
 const database_url = 'mongodb://localhost:27017';
-const database_name = 'houtai';
+const database_name = 'BMS';
 
 //如果不写function则MongoClient返回一个promise
 async function connect(){
@@ -71,7 +71,7 @@ exports.find = async (colName,query)=>{
     let collection = db.collection(colName);
     let res = await collection.find(query).toArray();
     client.close();
-    console.log(res)
+    // console.log(res)
     // 返回查询结果
     return res;
 }

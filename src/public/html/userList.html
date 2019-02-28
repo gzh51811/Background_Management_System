@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../lib/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="../css/userList.css">
     <script src="../lib/layui-v2.4.5/layui/layui.js"></script>
+    <script src="../lib/jquery-3.2.1.js"></script>
+    <script src="../js/userList.js"></script>
 </head>
 
 <body class="layui-layout-body">
@@ -29,10 +31,6 @@
                         <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
                         贤心
                     </a>
-                    <!-- <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
-        </dl> -->
                 </li>
                 <li class="layui-nav-item"><a href="">退了</a></li>
             </ul>
@@ -48,27 +46,21 @@
                             <dd><a href="javascript:;">商品列表</a></dd>
                             <dd><a href="javascript:;">商品分类</a></dd>
                             <dd><a href="javascript:;">添加商品</a></dd>
-                            <!-- <dd><a href="">超链接</a></dd> -->
                         </dl>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;">用户管理</a>
                         <dl class="layui-nav-child">
-                            <dd class="layui-this"><a href="javascript:;">用户列表</a></dd>
-                            <dd><a href="javascript:;">添加用户</a></dd>
-                            <!-- <dd><a href="">超链接</a></dd> -->
+                            <dd class="layui-this"><a href="userList.html">用户列表</a></dd>
+                            <dd><a href="addUser.html">添加用户</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;">订单管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="javascript:;">订单列表</a></dd>
-                            <!-- <dd><a href="javascript:;">添加用户</a></dd> -->
-                            <!-- <dd><a href="">超链接</a></dd> -->
                         </dl>
                     </li>
-                    <!-- <li class="layui-nav-item"><a href="">云市场</a></li>
-        <li class="layui-nav-item"><a href="">发布商品</a></li> -->
                 </ul>
             </div>
         </div>
@@ -77,10 +69,10 @@
             <!-- 内容主体区域 -->
             <!-- 添加删除按钮 -->
             <div class="btn">
-                <button class="layui-btn">
+                <button class="layui-btn addUserBtn">
                     <i class="layui-icon">&#xe608;</i> 添加
                 </button>
-                <button class="layui-btn layui-btn-primary">
+                <button class="layui-btn layui-btn-primary allDelBtn">
                     <i class="layui-icon"></i> 删除
                 </button>
             </div>
@@ -127,21 +119,10 @@
                     </tr>
                 </tbody>
             </table>
-
-
         </div>
-
-        <!-- <div class="layui-footer">
-    底部固定区域
-    © layui.com - 底部固定区域
-  </div> -->
     </div>
     <script>
-        //JavaScript代码区域
-        layui.use('element', function () {
-            var element = layui.element;
-
-        });
+    
     </script>
 </body>
 

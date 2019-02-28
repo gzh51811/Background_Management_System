@@ -1,3 +1,30 @@
+//事件封装  传毫秒数就返回 设置的时间，不传 则返回现在的时间
+function time(time) {
+    function buling(num) {
+        if (num < 10) {
+            return "0" + num;
+        }
+        return num;
+    }
+    let d
+    if (time) {
+        d = new Date(time);
+    } else {
+        d = new Date();
+    }
+    let c = {
+        year: d.getFullYear(),
+        month: buling(d.getMonth() + 1),
+        date: d.getDate(),
+        day: buling(d.getDay()),
+        hours: buling(d.getHours()), //8
+        minutes: buling(d.getMinutes()),
+        seconds: buling(d.getSeconds())
+    }
+    return c;
+}
+
+
 // 封装a-b的随机整数
 function getRandomNum(a,b){
     var res = parseInt(Math.random()*(b-a+1)+ a);

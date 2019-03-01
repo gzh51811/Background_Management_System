@@ -33,6 +33,18 @@ jQuery(function ($) {
                     $tipsGander.html('请选择性别').css('color', 'red')
                     return false
                 }
+                var username = $username.val();
+                var dataName = $username.attr('data-name');
+                console.log(username,dataName,dataName==username)
+                //判断用户名是否有改变
+                if (username == dataName) {
+                    $tips1.html('')
+                } else {
+                    insert({
+                        username
+                    });
+                    return false
+                }
                 submitMsg('update')
             })
         })()
@@ -71,7 +83,7 @@ jQuery(function ($) {
     }
     //修改用户信息时渲染
     function msgShow(res) {
-        $username.val(res.username).attr('data-name',`${res.username}`);
+        $username.val(res.username).attr('data-name', `${res.username}`);
         $nickname.val(res.nickname);
         $userpw.val(res.upw);
         $shengri.val(res.birthday);
@@ -127,7 +139,10 @@ jQuery(function ($) {
     $username.change(function () {
         var username = $username.val();
         var dataName = $username.attr('data-name');
-        username==dataName?$tips1.html(''):  insert({username});
+        //判断用户名是否有改变
+        username == dataName ? $tips1.html('') : insert({
+            username
+        });
     })
     //insert请求
     function insert(defaults) {
@@ -142,8 +157,6 @@ jQuery(function ($) {
                 $tips1.html(res.msg).css('color', 'red')
             } else if (res.code == 1) {
                 location.href = 'userList.html';
-            } else if (res.code == 2) {
-                $tips1.html(res.msg).css('color', 'green')
             }
         }, 'json')
     }

@@ -7,8 +7,8 @@ const db = require("../db");
 Router.get("/", async function(request, response) {
     // find("goods", {})
     let { page, qty, sort, desc } = request.query;
-    console.log("sort", sort)
-        // console.log(page, qty)
+    // console.log(page, qty, sort, desc)
+    // console.log(page, qty)
     let data = await db.find('goods', {})
     let data1 = data.slice((page - 1) * qty, qty * page);
     if (data && sort) {
@@ -21,6 +21,7 @@ Router.get("/", async function(request, response) {
 
         })
     }
+    // console.log(data)
     if (data) {
         response.send({
             code: 1,

@@ -72,18 +72,27 @@ jQuery(function ($) {
         // userShow(res.data)
     })()
 
-    //check按钮
+    //选择按钮
     function ckeckBtn(){
-        var $allBtn = $('.allBtn');
+        var $allBtn = $('.allBtn ');
         var $check = $('tbody .td1 i');
+        var $addUserBtn = $('.addUserBtn');
+
+        //单选按钮
         $check.click(function(){
             $(this).toggleClass('layui-icon-ok check');
             var checkLen = $check.filter('.check').length;
            checkLen==$check.length?$allBtn.addClass('layui-icon-ok'):$allBtn.removeClass('layui-icon-ok');
             
         })
+        //全选按钮
         $allBtn.click(function(){
+            $(this).toggleClass('layui-icon-ok');
             $allBtn.hasClass('layui-icon-ok')?$check.addClass('layui-icon-ok check'):$check.removeClass('layui-icon-ok check');
+        })
+        //添加按钮
+        $addUserBtn.click(function(){
+            location.href = ''
         })
         
     }

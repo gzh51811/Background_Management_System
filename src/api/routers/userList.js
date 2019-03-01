@@ -68,13 +68,35 @@ Router.post('/add', jsonParser, urlencodedParser, async (req, res) => {
     }))
 })
 
-//删    传用户id，删除用户
+//单独删除    传用户名 ，删除用户
 Router.post('/del', jsonParser, urlencodedParser, async (req, res) => {
     let {
         username
     } = req.body;
     let data = await db.delete('userList', {
         username
+    })
+    if (!data.n) {
+        res.send(formatData({
+            code: 1,
+            data,
+            msg: '删除成功'
+        }))
+    } else {
+        res.send(formatData({
+            code: 0,
+            data,
+            msg: '删除失败'
+        }))
+    }
+})
+
+//多选删除    传用户username 用数组保存，删除用户
+Router.post('/delAll', jsonParser, urlencodedParser, async (req, res) => {
+    let usernames = req.body.usernames.split(',');
+    console.log(usernames)
+    let data = await db.delete('userList', {
+        username:{$in: usernames}
     })
     if (!data.n) {
         res.send(formatData({

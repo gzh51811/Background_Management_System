@@ -12,7 +12,17 @@ jQuery(function ($) {
     let $beizhu = $(".beizhu");
     let $btn = $(".btn");
     var $tips1 = $('.tips1');
-
+    //layui 代码
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test1' //指定元素
+        });
+    });
 
 
     //获取id,判断是否有id传入
@@ -51,18 +61,6 @@ jQuery(function ($) {
     } else {
         //JavaScript代码区域
 
-        layui.use('element', function () {
-            var element = layui.element;
-
-        });
-        layui.use('laydate', function () {
-            var laydate = layui.laydate;
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#test1' //指定元素
-            });
-        });
         layui.use('form', function () {
             var form = layui.form;
 
@@ -95,18 +93,7 @@ jQuery(function ($) {
         $gander.find(`select option:contains(${res.gander})`).prop('selected', 'selected')
         //JavaScript代码区域
 
-        layui.use('element', function () {
-            var element = layui.element;
-
-        });
-        layui.use('laydate', function () {
-            var laydate = layui.laydate;
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#test1' //指定元素
-            });
-        });
+  
         layui.use('form', function () {
             var form = layui.form;
 

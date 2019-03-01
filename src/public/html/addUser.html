@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../lib/layui-v2.4.5/layui/css/layui.css">
     <link rel="stylesheet" href="../css/addUser.css">
     <script src="../lib/layui-v2.4.5/layui/layui.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../lib/jquery-3.2.1.js"></script>
+    <script src="../js/addUser.js"></script>
 </head>
 
 <body class="layui-layout-body">
@@ -80,14 +83,14 @@
                 <label class="layui-form-label fl">用户名</label>
                 <input type="text" name="title" required lay-verify="required" placeholder="请输用户名" autocomplete="off"
                     class="layui-input username fl">
-                <div class=" fl tips">辅助文字</div>
+                <div class=" fl tips tips1"></div>
             </div>
             <!-- 用户名结束 -->
             <!-- 昵称开始 -->
             <div class="layui-form-item">
                 <label class="layui-form-label fl">昵称</label>
                 <input type="text" name="title" required lay-verify="required" placeholder="请输昵称" autocomplete="off"
-                    class="layui-input name fl" value="_user">
+                    class="layui-input nickname fl" value="_user">
                 <div class=" fl tips">默认昵称为:user</div>
             </div>
             <!-- 昵称结束 -->
@@ -112,16 +115,17 @@
             <!-- 手机号码 -->
             <!-- 性别开始 -->
             <div class="layui-form-item">
-                <div class="layui-form">
+                <div class="layui-form fl ">
                     <label class="layui-form-label">性别</label>
                     <div class="layui-input-block gander">
                         <select name="interest"  lay-filter="aihao">
                             <option value="0">请选择</option>
-                            <option value="男">男</option>
+                            <option value="男" >男</option>
                             <option value="女">女</option>
                         </select>
                     </div>
                 </div>
+                <div class=" fl tips tipsGander"></div>
             </div>
             <!-- 性别结束 -->
             <!-- 生日开始 -->
@@ -170,7 +174,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label fl"></label>
                 <div class="layui-inline">
-                    <button class="layui-btn layui-btn-lg">确认</button>
+                    <button class="layui-btn layui-btn-lg btn">确认</button>
 
                 </div>
             </div>
@@ -183,26 +187,7 @@
     © layui.com - 底部固定区域
   </div> -->
         </div>
-        <script>
-            //JavaScript代码区域
-            layui.use('element', function () {
-                var element = layui.element;
 
-            });
-            layui.use('laydate', function () {
-                var laydate = layui.laydate;
-
-                //执行一个laydate实例
-                laydate.render({
-                    elem: '#test1' //指定元素
-                });
-            });
-            layui.use('form', function () {
-                var form = layui.form;
-
-                //各种基于事件的操作，下面会有进一步介绍
-            });
-        </script>
 </body>
 
 </html>

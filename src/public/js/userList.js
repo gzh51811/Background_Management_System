@@ -42,18 +42,7 @@ jQuery(function ($) {
             $tbody.append(html)
         })
     }
-    //账户信息请求
-    function userAjax(data) {
-        return new Promise((resolve, reject) => {
-            $.get('../api/userList/find', data, function (res) {
-                console.log(res)
-                if (res.code) {
-                    resolve(res)
-                    userShow(res.data);
-                }
-            }, 'json')
-        })
-    }
+
     //删除账号请求
     function delUser($checked) {
         /**
@@ -91,9 +80,10 @@ jQuery(function ($) {
     // })
     //渲染完成后执行
     (async () => {
-        await userAjax({
+        let res = await userAjax({
             "jurisdiction": 'common'
         })
+        userShow(res.data);
         ckeckBtn()
         // userShow(res.data)
     })()

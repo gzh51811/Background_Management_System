@@ -11,7 +11,7 @@ const mongodb = require('mongodb');
 // 创建mongo客户端
 const MongoClient = mongodb.MongoClient;
 const database_url = 'mongodb://localhost:27017';
-const database_name = 'houtai';
+const database_name = 'phone';
 
 //如果不写function则MongoClient返回一个promise
 async function connect(){

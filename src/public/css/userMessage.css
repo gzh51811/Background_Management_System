@@ -1,0 +1,50 @@
+.layui-body {
+    padding-top: 40px;
+}
+
+.mianbao {
+    line-height: 60px;
+}
+
+.username,
+.name,
+.userpw,
+.confirmPw,.youxiang {
+    width: 518px;
+    margin-right: 20px;
+
+}
+
+.tel,
+.shengri,
+.zhiye,
+.city,
+.youxiang,
+.gander {
+    width: 200px;
+}
+
+.tips {
+    padding-top: 9px;
+}
+
+.fl {
+    float: left;
+}
+
+.beizhu {
+    width: 518px;
+    height: 170px;
+}
+
+#goods {
+    position: absolute;
+    opacity: 0;
+}
+
+#img {
+    /* position: absolute; */
+    border: 1px solid #000;
+    width: 100px;
+    height: 100px;
+}

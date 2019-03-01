@@ -1,0 +1,63 @@
+.layui-body{
+    padding:20px;
+}
+.btn{
+    margin-bottom:25px;
+}
+.mianbao {
+    line-height: 60px;
+}
+thead{
+    background: #ccc;
+}
+.td1 i{
+    width: 17px;
+    height: 17px;
+    display: block;
+    border: 1px solid #000;
+    background: #fff;
+    margin: auto;
+}
+
+td{
+    height: 41px;
+    text-align: center;
+    border: 1px solid #000;
+}
+.td1{
+    width: 52px;
+    
+}
+.td2{
+    width: 40px;
+}
+.td3{
+    width: 103px;
+}
+.td4{
+    width: 108px;
+}
+.td5{
+    width: 105px;
+}
+.td6{
+    width: 105px;
+}
+.td7{
+    width: 105px;
+}
+.td8{
+    width: 120px;
+}
+.td9{
+    width: 150px;
+}
+.td10{
+    width: 111px;
+}
+.td11{
+    width: 111px;
+}
+.changeMsg{
+    margin-right: 5px;
+}

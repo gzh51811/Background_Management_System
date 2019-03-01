@@ -11,6 +11,7 @@ jQuery(function ($) {
     let $youxiang = $(".youxiang");
     let $beizhu = $(".beizhu");
     let $btn = $(".btn");
+    var $tips1 = $('.tips1');
 
 
 
@@ -70,7 +71,7 @@ jQuery(function ($) {
     }
     //修改用户信息时渲染
     function msgShow(res) {
-        $username.val(res.username);
+        $username.val(res.username).attr('data-name',`${res.username}`);
         $nickname.val(res.nickname);
         $userpw.val(res.upw);
         $shengri.val(res.birthday);
@@ -125,13 +126,11 @@ jQuery(function ($) {
     // 失去焦点判断用户名是否注册
     $username.change(function () {
         var username = $username.val();
-        insert({
-            username
-        });
+        var dataName = $username.attr('data-name');
+        username==dataName?$tips1.html(''):  insert({username});
     })
     //insert请求
     function insert(defaults) {
-        var $tips1 = $('.tips1');
         var obj = {
             jurisdiction: 'common',
             photoUrl: '../images/touxiang.jpg',
@@ -155,8 +154,12 @@ jQuery(function ($) {
         };
         var data = Object.assign({}, defaults, obj);
         $.post('../api/userList/update', data, function (res) {
-            if (res.code) {
+            if (!res.code) {
+                $tips1.html(res.msg).css('color', 'red')
+            } else if (res.code == 1) {
                 location.href = 'userList.html';
+            } else if (res.code == 2) {
+                $tips1.html(res.msg).css('color', 'green')
             }
         }, 'json')
     }

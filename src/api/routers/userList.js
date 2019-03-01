@@ -47,27 +47,55 @@ Router.get('/find', async (req, res) => {
 //改 传id、更改的信息，根据id，修改用户信息
 Router.post('/update', jsonParser, urlencodedParser, async (req, res) => {
     var {
-        _id
+        _id,
+        username,
+        gander
     } = req.body;
+    console.log(req.body)
     delete req.body._id;
-    let data = await db.update('userList', {
-        _id: new ObjectID(_id)
-    }, {
-        $set: req.body
-    })
-    if (!data.n) {
-        res.send(formatData({
-            code: 1,
-            data,
-            msg: '更新成功'
-        }))
-    } else {
+    //查询用户是否存在
+    let findUser = await db.find('userList', {
+        username
+    });
+    //判断是否存在
+    if (findUser.length > 0) {
         res.send(formatData({
             code: 0,
-            data,
-            msg: '更新失败'
+            findUser,
+            msg: '该用户已存在'
         }))
+    } else {
+        //判断是否只传用户名
+        if (gander) {
+            //有其他值则update
+            let data = await db.update('userList', {
+                _id: new ObjectID(_id)
+            }, {
+                $set: req.body
+            })
+            if (!data.n) {
+                res.send(formatData({
+                    code: 2,
+                    data,
+                    msg: '更新成功'
+                }))
+            } else {
+                res.send(formatData({
+                    code: 3,
+                    data,
+                    msg: '更新失败'
+                }))
+            }
+        } else {
+            //没有其他值就返回用户可以使用
+            res.send(formatData({
+                code: 1,
+                findUser,
+                msg: '该用户可注册'
+            }))
+        }
     }
+
 })
 
 //增  传用户信息，增加到数据库 
@@ -92,7 +120,7 @@ Router.post('/add', jsonParser, urlencodedParser, async (req, res) => {
                 data,
                 msg: '用户新增成功'
             }))
-        }else{
+        } else {
             res.send(formatData({
                 code: 2,
                 findUser,

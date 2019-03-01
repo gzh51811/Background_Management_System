@@ -7,6 +7,9 @@ var urlencodedParser = bodyParser.urlencoded({
     extended: false
 });
 const jsonParser = bodyParser.json();
+
+const ObjectID = require('mongodb').ObjectID;
+
 // /mongodb
 //查 传用户权限 查找普通用户
 Router.get('/find', async (req, res) => {
@@ -60,12 +63,28 @@ Router.post('/update', jsonParser, urlencodedParser, async (req, res) => {
 
 //增  传用户信息，增加到数据库 
 Router.post('/add', jsonParser, urlencodedParser, async (req, res) => {
-    let data = await db.insert('userList', req.body)
-    res.send(formatData({
-        code: 1,
-        data,
-        msg: '新增成功'
-    }))
+    let {
+        id
+    } = req.body
+    let findUser = await db.find('userList', {
+        _id: new ObjectID(id)
+    })
+    console.log(findUser)
+    if (findUser.length > 0) {
+        res.send(formatData({
+            code: 0,
+            findUser,
+            msg: '该用户已存在'
+        }))
+    } else {
+        let data = await db.insert('userList', req.body)
+        res.send(formatData({
+            code: 1,
+            data,
+            msg: '用户新增成功'
+        }))
+    }
+
 })
 
 //单独删除    传用户名 ，删除用户
@@ -96,7 +115,9 @@ Router.post('/delAll', jsonParser, urlencodedParser, async (req, res) => {
     let usernames = req.body.usernames.split(',');
     console.log(usernames)
     let data = await db.delete('userList', {
-        username:{$in: usernames}
+        username: {
+            $in: usernames
+        }
     })
     if (!data.n) {
         res.send(formatData({

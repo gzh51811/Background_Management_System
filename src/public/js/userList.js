@@ -16,7 +16,7 @@ jQuery(function ($) {
             let html = `
             <tr>
                 <td class="td1"><i class="layui-icon"></i></td>
-                <td class="td2">${idx+1}</td>
+                <td class="td2" data-id="${item._id}">${idx+1}</td>
                 <td class="td3">${item.username}</td>
                 <td class="td4">${item.nickname}</td>
                 <td class="td5">${item.gander}</td>
@@ -105,6 +105,7 @@ jQuery(function ($) {
         var $addUserBtn = $('.addUserBtn');
         var $allDelBtn = $('.allDelBtn');
         var $delUser = $('.delUser');
+        var $changeMsg = $(".changeMsg");
         //单选按钮
         $check.click(function () {
             $(this).toggleClass('layui-icon-ok check');
@@ -129,6 +130,11 @@ jQuery(function ($) {
         //单选删除按钮
         $delUser.click(function () {
             delUser($(this))
+        })
+        //修改用户信息按钮
+        $changeMsg.click(function () {
+            var id = $(this).closest('tr').find('.td2').attr("data-id");
+            location.href = `addUser.html?id=${id}`
         })
     }
 

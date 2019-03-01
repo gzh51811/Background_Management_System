@@ -15,7 +15,8 @@ const ObjectID = require('mongodb').ObjectID;
 Router.get('/find', async (req, res) => {
     let {
         jurisdiction,
-        _id
+        _id,
+        username
     } = req.query;
     //判断传入id还是jurisdiction，查找信息
     if (_id) {
@@ -25,6 +26,10 @@ Router.get('/find', async (req, res) => {
     } else if (jurisdiction) {
         data = await db.find('userList', {
             jurisdiction
+        })
+    }  else if(username){
+        data = await db.find('userList', {
+            username
         })
     }
 

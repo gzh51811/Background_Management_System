@@ -92,11 +92,8 @@ jQuery(function ($) {
         $tel.val(res.tel);
         $gander.find(`select option:contains(${res.gander})`).prop('selected', 'selected')
         //JavaScript代码区域
-
-  
         layui.use('form', function () {
             var form = layui.form;
-
             //各种基于事件的操作，下面会有进一步介绍
         });
 

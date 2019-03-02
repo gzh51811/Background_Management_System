@@ -27,7 +27,7 @@ Router.get('/find', async (req, res) => {
         data = await db.find('userList', {
             jurisdiction
         })
-    }  else if(username){
+    } else if (username) {
         data = await db.find('userList', {
             username
         })
@@ -97,7 +97,7 @@ Router.post('/add', jsonParser, urlencodedParser, async (req, res) => {
                 data,
                 msg: '用户新增成功'
             }))
-        }else{
+        } else {
             res.send(formatData({
                 code: 2,
                 findUser,
@@ -155,4 +155,40 @@ Router.post('/delAll', jsonParser, urlencodedParser, async (req, res) => {
         }))
     }
 })
+const path = require('path');
+const fs = require("fs");
+//头像上传
+var multer = require("multer");
+// 创建磁盘存储引擎（自定义存储方式）
+var storage = multer.diskStorage({
+    // 设置存储目录，// 如果目录不存在，则报错
+    destination: function (req, file, cb) {
+        try{
+            fs.accessSync('./uploads')
+        }catch(err){
+            fs.mkdirSync('./uploads')
+
+        }
+        cb(null, './uploads')
+    },
+
+    // 自定义文件名
+    filename: function (req, file, cb) {
+        console.log('file',file);
+        let ext = path.extname(file.originalname)
+        cb(null, file.fieldname + '-' + Date.now() + ext)
+    }
+})
+var upload = multer({
+    storage: storage
+});
+
+Router.post('/upload', upload.single('user'), function (req, res, next) {
+    console.log(req.file)
+    res.json({
+        status: "success",
+        file: req.file
+    });
+});
+
 module.exports = Router;

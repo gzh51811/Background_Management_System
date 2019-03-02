@@ -280,13 +280,10 @@ function linearAnimate(speed, ele, attr, target, time) {
     }, time)
 }
 
-
-
 //账户信息请求
 function userAjax(data) {
     return new Promise((resolve, reject) => {
         $.get('../api/userList/find', data, function (res) {
-            console.log(res)
             if (res.code) {
                 resolve(res)
             }

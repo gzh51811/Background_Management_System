@@ -17,12 +17,13 @@ jQuery(function ($) {
 
     //     //各种基于事件的操作，下面会有进一步介绍
     // });
+    var $img = $('#img');
 
     let $goods = $('#goods');
     console.log($goods)
     //上传文件按钮使用onchagne事件
     $goods.on('change', function () {
-        console.log(this.files)
+        console.log(this.files, this.value)
         //获取文件信息
         var file = this.files[0];
         //判断是否读取了文件
@@ -30,7 +31,6 @@ jQuery(function ($) {
             var fr = new FileReader();
             console.log(fr);
             //获取预览图片元素
-            var $img = $('#img');
             //文件加载完成后显示预览图片
             fr.onloadend = function (e) {
 
@@ -56,6 +56,8 @@ jQuery(function ($) {
     let $youxiang = $(".youxiang");
     let $beizhu = $(".beizhu");
     let $btn = $(".btn");
+    let $userHead = $(".userHead");
+
     // var $tips1 = $('.tips1');
     (async () => {
         var res = await userAjax({
@@ -66,15 +68,37 @@ jQuery(function ($) {
         UserShow(res.data[0]);
         //确认按钮
         $btn.click(function () {
-            // updateMsg() 
-            uploadUser()
+            let _goods = $goods[0].value
+            if (_goods) {
+                (async () => {
+                    let res = await uploadUser();
+                    await updateMsg({
+                        photoUrl: `http://localhost:1811/${res.file.filename}`
+                    })
+                    let aaa = await userAjax({
+                        username
+                    })
+                    UserShow(aaa.data[0]);
+                })()
+
+            } else {
+                (async () => {
+                    await updateMsg()
+                    let aaa = await userAjax({
+                        username
+                    })
+                    UserShow(aaa.data[0]);
+                })()
+            }
+
         })
     })()
 
     //渲染数据、
     function UserShow(res) {
-        $goods.attr('src', `${res.photoUrl}`)
-        $uname.html(res.nickname)
+        $userHead.attr('src', `${res.photoUrl}`);
+        $img.attr('src', `${res.photoUrl}`);
+        $uname.html(res.nickname);
         $nickname.val(res.nickname);
         $userpw.val(res.upw);
         $confirmPw.val(res.upw);
@@ -92,45 +116,55 @@ jQuery(function ($) {
         });
     }
     //update请求
-    function updateMsg() {
-        var data = {
-            _id,
-            nickname: $nickname.val(),
-            upw: $userpw.val(),
-            birthday: $shengri.val(),
-            job: $zhiye.val(),
-            city: $city.val(),
-            email: $youxiang.val(),
-            markdown: $beizhu.val(),
-            tel: $tel.val(),
-            gander: $gander.find(`.layui-anim dd`).filter('.layui-this').html(),
-            photoUrl: $goods.attr('src')
-        }
-        //update请求
-        $.post('../api/userList/update', data, function (res) {
-            console.log(res)
+    function updateMsg(obj) {
+        return new Promise((resolve, reject) => {
+            var defaults = {
+                _id,
+                nickname: $nickname.val(),
+                upw: $userpw.val(),
+                birthday: $shengri.val(),
+                job: $zhiye.val(),
+                city: $city.val(),
+                email: $youxiang.val(),
+                markdown: $beizhu.val(),
+                tel: $tel.val(),
+                gander: $gander.find(`.layui-anim dd`).filter('.layui-this').html()
 
-        }, 'json')
+            }
+            console.log(defaults)
+            var data = Object.assign({}, defaults, obj);
+            //update请求
+            $.post('../api/userList/update', data, function (res) {
+
+                resolve(res)
+
+
+            }, 'json')
+        })
     }
     //upload事件
     function uploadUser() {
-        var data = new FormData();
-        data.set('user', $goods[0].files[0])
-        console.log(data.get('user'))
-        $.ajax({
-            url: "../api/userList/upload",
-            type: "post",
-            data,
-            contentType: false,//使用multer配合ajax时无需配置multipart/form-data，multer将自动配置，手动配置将报错，boundary not found
-            processData: false,
-            success: function(res){
-                 console.log(res);
-            },
-            error:function(err){
-                 console.log(err);
-            }
-     });
-        $goods.val = null;
+        return new Promise((resolve, reject) => {
+            var data = new FormData();
+            data.set('user', $goods[0].files[0])
+            console.log(data.get('user'))
+            $.ajax({
+                url: "../api/userList/upload",
+                type: "post",
+                data,
+                contentType: false, //使用multer配合ajax时无需配置multipart/form-data，multer将自动配置，手动配置将报错，boundary not found
+                processData: false,
+                success: function (res) {
+                    resolve(res)
+
+
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+            $goods.val = null;
+        })
     }
 
 })

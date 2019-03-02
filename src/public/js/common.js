@@ -283,11 +283,20 @@ function linearAnimate(speed, ele, attr, target, time) {
 //账户信息请求
 function userAjax(data) {
     return new Promise((resolve, reject) => {
-        $.get('../api/userList/find', data, function (res) {
+        $.get('/api/userList/find', data, function (res) {
             if (res.code) {
                 resolve(res)
             }
         }, 'json')
+    })
+}
+
+//退出按钮按功能封装
+function quit(){
+    let $quit = $(".quit");
+    $quit.click(function(){
+        Cookie.delCookie('username','/');
+        location.href = `../login.html`
     })
 }
 

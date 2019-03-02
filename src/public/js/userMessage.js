@@ -2,7 +2,6 @@ jQuery(function ($) {
     //layui   JavaScript代码区域
     layui.use('element', function () {
         var element = layui.element;
-
     });
     layui.use('laydate', function () {
         var laydate = layui.laydate;
@@ -38,7 +37,7 @@ jQuery(function ($) {
     })
 
     //获取用户名
-    var username = 'ann';
+    var username = Cookie.getCookie('username');
     let $nickname = $(".nickname");
     let $uname = $(".uname");
     let $confirmPw = $(".confirmPw");
@@ -146,7 +145,7 @@ jQuery(function ($) {
             console.log(defaults)
             var data = Object.assign({}, defaults, obj);
             //update请求
-            $.post('../api/userList/update', data, function (res) {
+            $.post('/api/userList/update', data, function (res) {
 
                 resolve(res)
 
@@ -168,7 +167,7 @@ jQuery(function ($) {
             data.set('user', $goods[0].files[0])
             console.log(data.get('user'))
             $.ajax({
-                url: "../api/userList/upload",
+                url: "/api/userList/upload",
                 type: "post",
                 data,
                 contentType: false, //使用multer配合ajax时无需配置multipart/form-data，multer将自动配置，手动配置将报错，boundary not found

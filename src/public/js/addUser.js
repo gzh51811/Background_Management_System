@@ -27,7 +27,7 @@ jQuery(function ($) {
     /*************进入页面渲染用户信息***************/
     (async () => {
         //------------------获取当前用户信息，渲染头像即名字------------------
-        let username = 'admin';
+        let username = Cookie.getCookie('username');
         let $userHead = $(".userHead");
         let $uname = $(".uname");
         let adminMsg = await userAjax({
@@ -157,11 +157,11 @@ jQuery(function ($) {
     function insert(defaults) {
         var obj = {
             jurisdiction: 'common',
-            photoUrl: '../images/touxiang.jpg',
+            photoUrl: '/images/touxiang.jpg',
             reqTime: Date.now()
         }
         var data = Object.assign({}, defaults, obj);
-        $.post('../api/userList/add', data, function (res) {
+        $.post('/api/userList/add', data, function (res) {
             if (!res.code) {
                 $tips1.html(res.msg).css('color', 'red')
             } else if (res.code == 1) {
@@ -175,7 +175,7 @@ jQuery(function ($) {
             _id
         };
         var data = Object.assign({}, defaults, obj);
-        $.post('../api/userList/update', data, function (res) {
+        $.post('/api/userList/update', data, function (res) {
             if (!res.code) {
                 $tips1.html(res.msg).css('color', 'red')
             } else if (res.code == 1) {

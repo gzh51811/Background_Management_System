@@ -8,7 +8,7 @@ jQuery(function ($) {
     //--------------进入页面渲染-----------------
     (async () => {
         //获取账户信息渲染头像+用户名
-        let username = 'admin';
+        let username = Cookie.getCookie('username');
         let $userHead = $(".userHead");
         let $uname = $(".uname");
         let adminMsg = await userAjax({
@@ -83,7 +83,7 @@ jQuery(function ($) {
         var data = {
             "usernames": nameArr.join()
         }
-        $.post('../api/userList/delAll', data, function (res) {
+        $.post('/api/userList/delAll', data, function (res) {
             if (res.code) {
                 $checked.closest('tr').remove();
                 let $td2 = $("tbody tr .td2");
@@ -115,7 +115,7 @@ jQuery(function ($) {
         })
         //添加按钮
         $addUserBtn.click(function () {
-            location.href = '../html/addUser.html'
+            location.href = '/html/addUser.html'
         })
         //多选删除按钮
         $allDelBtn.click(function () {

@@ -75,9 +75,7 @@ jQuery(function ($) {
             }
         }, 'json')
     }
-    // userAjax({
-    //     "jurisdiction": 'common'
-    // })
+
     //渲染完成后执行
     (async () => {
         let res = await userAjax({

@@ -33,7 +33,6 @@ jQuery(function ($) {
             //获取预览图片元素
             //文件加载完成后显示预览图片
             fr.onloadend = function (e) {
-
                 $img.attr('src', e.target.result);
             };
             if (file) {
@@ -57,8 +56,7 @@ jQuery(function ($) {
     let $beizhu = $(".beizhu");
     let $btn = $(".btn");
     let $userHead = $(".userHead");
-
-    // var $tips1 = $('.tips1');
+    /** -----------------------------首次进入页面渲染信息-------------------------*/
     (async () => {
         var res = await userAjax({
             username
@@ -66,7 +64,17 @@ jQuery(function ($) {
         _id = res.data[0]._id;
         console.log(res.data[0])
         UserShow(res.data[0]);
-        //确认按钮
+        /**
+         * @确认按钮事件
+         * 1.根据file有无值，判断是否有修改头像
+         * 2.有修改头像，
+         *   2.1上传图片、
+         *   2.2更新用户信息
+         *   2.3重新渲染信息
+         * 3.没有修改头像
+         *   3.1更新用户信息
+         *   3.2重新渲染
+         */
         $btn.click(function () {
             let _goods = $goods[0].value
             if (_goods) {
@@ -80,7 +88,6 @@ jQuery(function ($) {
                     })
                     UserShow(aaa.data[0]);
                 })()
-
             } else {
                 (async () => {
                     await updateMsg()
@@ -90,11 +97,15 @@ jQuery(function ($) {
                     UserShow(aaa.data[0]);
                 })()
             }
-
         })
     })()
-
-    //渲染数据、
+    /**-----------------------方法封装---------------------------------- */
+    
+    /**
+     * @渲染数据
+     * 1.获取用户信息
+     * 2.根据信息渲染
+     */
     function UserShow(res) {
         $userHead.attr('src', `${res.photoUrl}`);
         $img.attr('src', `${res.photoUrl}`);
@@ -115,7 +126,13 @@ jQuery(function ($) {
             //各种基于事件的操作，下面会有进一步介绍
         });
     }
-    //update请求
+    /**
+     * @update请求
+     * 1.防止回调地狱用promise
+     * 2.获取对应信息的值
+     * 3.因为不一定修改头像，头像的url作为参数，用object.assign合并对象
+     * 4.把合并后的值作为参数请求update
+     */
     function updateMsg(obj) {
         return new Promise((resolve, reject) => {
             var defaults = {
@@ -129,7 +146,6 @@ jQuery(function ($) {
                 markdown: $beizhu.val(),
                 tel: $tel.val(),
                 gander: $gander.find(`.layui-anim dd`).filter('.layui-this').html()
-
             }
             console.log(defaults)
             var data = Object.assign({}, defaults, obj);
@@ -142,7 +158,14 @@ jQuery(function ($) {
             }, 'json')
         })
     }
-    //upload事件
+
+    /**
+     * @upload事件
+     * 1.防止回调地狱用promise
+     * 2.用FormData方法，传输文件流 
+     * 3.单文件上传用set()方法
+     * 4.把data值作为参数请求upload
+     */
     function uploadUser() {
         return new Promise((resolve, reject) => {
             var data = new FormData();
@@ -156,8 +179,6 @@ jQuery(function ($) {
                 processData: false,
                 success: function (res) {
                     resolve(res)
-
-
                 },
                 error: function (err) {
                     console.log(err);
@@ -166,5 +187,4 @@ jQuery(function ($) {
             $goods.val = null;
         })
     }
-
 })

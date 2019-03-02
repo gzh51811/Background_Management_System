@@ -12,11 +12,7 @@ jQuery(function ($) {
             elem: '#test1' //指定元素
         });
     });
-    // layui.use('form', function () {
-    //     var form = layui.form;
 
-    //     //各种基于事件的操作，下面会有进一步介绍
-    // });
     var $img = $('#img');
 
     let $goods = $('#goods');

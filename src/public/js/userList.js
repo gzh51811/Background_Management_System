@@ -7,7 +7,6 @@ jQuery(function ($) {
     let $tbody = $("tbody");
 
     //渲染用户列表
-
     function userShow(res) {
         $.each(res, function (idx, item) {
             let date = time(item.reqTime * 1)
@@ -78,10 +77,21 @@ jQuery(function ($) {
 
     //渲染完成后执行
     (async () => {
-        let res = await userAjax({
+        let username = 'admin';
+        let $userHead = $(".userHead");
+        let $uname = $(".uname");
+        let adminMsg = await userAjax({
+            username
+        })
+        $userHead.attr('src', adminMsg.data[0].photoUrl);
+        $uname.html(adminMsg.data[0].nickname)
+        let userMsg = await userAjax({
             "jurisdiction": 'common'
         })
-        userShow(res.data);
+
+        console.log(adminMsg.data[0])
+        // $userHead.userMsg.data
+        userShow(userMsg.data);
         ckeckBtn()
         // userShow(res.data)
     })()

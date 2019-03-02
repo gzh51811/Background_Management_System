@@ -5,7 +5,26 @@ jQuery(function ($) {
     });
 
     let $tbody = $("tbody");
-
+    //--------------进入页面渲染-----------------
+    (async () => {
+        //获取账户信息渲染头像+用户名
+        let username = 'admin';
+        let $userHead = $(".userHead");
+        let $uname = $(".uname");
+        let adminMsg = await userAjax({
+            username
+        })
+        $userHead.attr('src', adminMsg.data[0].photoUrl);
+        $uname.html(adminMsg.data[0].nickname)
+        //获取普通用户信息+渲染
+        let userMsg = await userAjax({
+            "jurisdiction": 'common'
+        })
+        userShow(userMsg.data);
+        //渲染完成后，给按钮绑定事件
+        ckeckBtn()
+    })()
+    //----------------------------------方法封装------------------------------------
     //渲染用户列表
     function userShow(res) {
         $.each(res, function (idx, item) {
@@ -75,28 +94,7 @@ jQuery(function ($) {
         }, 'json')
     }
 
-    //渲染完成后执行
-    (async () => {
-        let username = 'admin';
-        let $userHead = $(".userHead");
-        let $uname = $(".uname");
-        let adminMsg = await userAjax({
-            username
-        })
-        $userHead.attr('src', adminMsg.data[0].photoUrl);
-        $uname.html(adminMsg.data[0].nickname)
-        let userMsg = await userAjax({
-            "jurisdiction": 'common'
-        })
-
-        console.log(adminMsg.data[0])
-        // $userHead.userMsg.data
-        userShow(userMsg.data);
-        ckeckBtn()
-        // userShow(res.data)
-    })()
-
-    //选择按钮
+    //封装选择按钮
     function ckeckBtn() {
         var $allBtn = $('.allBtn ');
         var $check = $('tbody .td1 i');
@@ -109,7 +107,6 @@ jQuery(function ($) {
             $(this).toggleClass('layui-icon-ok check');
             var checkLen = $check.filter('.check').length;
             checkLen == $check.length ? $allBtn.addClass('layui-icon-ok') : $allBtn.removeClass('layui-icon-ok');
-
         })
         //全选按钮
         $allBtn.click(function () {
@@ -135,6 +132,4 @@ jQuery(function ($) {
             location.href = `addUser.html?id=${id}`
         })
     }
-
-
 })

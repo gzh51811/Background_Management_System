@@ -24,8 +24,9 @@ jQuery(function ($) {
             elem: '#test1' //指定元素
         });
     });
-    //进入页面渲染用户信息
+    /*************进入页面渲染用户信息***************/
     (async () => {
+        //------------------获取当前用户信息，渲染头像即名字------------------
         let username = 'admin';
         let $userHead = $(".userHead");
         let $uname = $(".uname");
@@ -34,8 +35,19 @@ jQuery(function ($) {
         })
         $userHead.attr('src', adminMsg.data[0].photoUrl);
         $uname.html(adminMsg.data[0].nickname)
-        //获取id,判断是否有id传入
+        //------------------获取id,判断是否有id传入---------------
+
         if (_id) {
+            /**
+             * @有id传入
+             * 1.根据id渲染信息
+             * 2.提交按钮事件
+             *  2.1获取性别，判断性别是否有选中
+             *  2.2判断是否有更改用户名
+             *      2.2.1有改则查找改用户名是否存在，存在则提示
+             *      2.2.2没有更改，则提示清空
+             * 3.获取数据更新数据库信息
+             */
             let res = await userAjax({
                 _id
             })
@@ -65,6 +77,13 @@ jQuery(function ($) {
                 submitMsg('update')
             })
         } else {
+            /**
+             * @没有id传入
+             * 1.给提交按钮绑定事件
+             * 2.提交时，判断有无选中性别
+             * 3.获取数据，执行insert方法，
+             *  3.1根据返回值，作出判断
+             */
             //JavaScript代码区域
             layui.use('form', function () {
                 var form = layui.form;
@@ -84,7 +103,7 @@ jQuery(function ($) {
             })
         }
     })()
-
+    //-------------------------添加事件--------------------------
     // 失去焦点判断用户名是否注册
     $username.change(function () {
         var username = $username.val();
@@ -94,6 +113,7 @@ jQuery(function ($) {
             username
         });
     })
+    //--------------------------------封装方法------------------------------
     //修改用户信息时渲染
     function msgShow(res) {
         $username.val(res.username).attr('data-name', `${res.username}`);
@@ -111,7 +131,6 @@ jQuery(function ($) {
             var form = layui.form;
             //各种基于事件的操作，下面会有进一步介绍
         });
-
     }
     //提交用户信息请求
     function submitMsg(req) {
@@ -132,7 +151,6 @@ jQuery(function ($) {
         } else if (req === "update") {
             update(data)
         }
-
     }
 
     //insert请求

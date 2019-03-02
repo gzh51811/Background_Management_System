@@ -65,7 +65,7 @@ jQuery(function ($) {
         console.log(res.data[0])
         UserShow(res.data[0]);
         //确认按钮
-        $btn.click(function(){
+        $btn.click(function () {
             // updateMsg() 
             uploadUser()
         })
@@ -110,42 +110,27 @@ jQuery(function ($) {
         $.post('../api/userList/update', data, function (res) {
             console.log(res)
 
-        },'json')
+        }, 'json')
     }
     //upload事件
-    function uploadUser(){
+    function uploadUser() {
         var data = new FormData();
-        data.set('user',$goods[0].files[0])
+        data.set('user', $goods[0].files[0])
         console.log(data.get('user'))
-        // return new Promise(function(resolve, reject) {
-        //     $.post('../api/userList/upload',data,function(res){
-        // console.log(res)
-                
-        //     },'json')
-        // })
-
-
-        var xmlhttp = new XMLHttpRequest();
-        //设置回调，当请求的状态发生变化时，就会被调用  
-        xmlhttp.onreadystatechange = function () {
-            //上传成功，返回的文件名，设置到父节点的背景中  
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                let data = xmlhttp.responseText;
-                console.log(data)
-                // resolve(data)
+        $.ajax({
+            url: "../api/userList/upload",
+            type: "post",
+            data,
+            contentType: false,//使用multer配合ajax时无需配置multipart/form-data，multer将自动配置，手动配置将报错，boundary not found
+            processData: false,
+            success: function(res){
+                 console.log(res);
+            },
+            error:function(err){
+                 console.log(err);
             }
-        }
-        //构造form数据 你可以用它传输文件流 它是基于form-data的传输方案
-        // var data = new FormData();
-        // 单图上传，默认选第一张，如果是多图的话，就要for循环遍历fileNode.files数组，并全部append到data里面传输
-        // data.append("abc", fileNode.files[0])
-        xmlhttp.open("post", "../api/userList/upload", true);
-        //不要缓存  
-        //xmlhttp.setRequestHeader("If-Modified-Since", "0");  
-        //提交请求  
-        xmlhttp.send(data);
-        //清除掉，否则下一次选择同样的文件就进入不到onchange函数中了  
-        $goods[0].value = null;
+     });
+        $goods.val = null;
     }
 
 })

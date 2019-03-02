@@ -18,17 +18,25 @@
             font-size: 16px;
             text-align: center;
             line-height: 40px;
-        }/*标题的样式*/
+        }
+
+        /*标题的样式*/
 
         .contain-index {
             text-align: center;
-}/*选项卡内容ul的样式*/
+        }
+
+        /*选项卡内容ul的样式*/
 
         .num-index {
             color: orangered;
             font-size: 30px;
 
-}/*选项卡内容里面li的样式*/
+        }
+
+
+
+        /*选项卡内容里面li的样式*/
     </style>
 </head>
 
@@ -57,17 +65,17 @@
                 </span>
             </ul>
             <ul class="layui-nav layui-layout-right">
-              tml  <li class="layui-nav-item">
+                tml <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img" />
-                        贤心
+                        <img src="" class="layui-nav-img  _imge" />
+                        <span class="_username"></span>
                     </a>
                     <!-- <dl class="layui-nav-child">
           <dd><a href="">基本资料</a></dd>
           <dd><a href="">安全设置</a></dd>
         </dl> -->
                 </li>
-                <li class="layui-nav-item"><a href="">退了</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" class="quit">退了</a></li>
             </ul>
         </div>
 
@@ -87,15 +95,15 @@
                     <li class="layui-nav-item">
                         <a href="javascript:;">用户管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">用户列表</a></dd>
-                            <dd><a href="javascript:;">添加用户</a></dd>
-                            <!-- <dd><a href="">超链接</a></dd> -->
+                            <dd><a href="javascript:;" class="user-1" style="display: none">用户列表</a></dd>
+                            <dd><a href="javascript:;" class="user-1" style="display: none">添加用户</a></dd>
+                            <dd><a href="javascript:;" class="user-2" style="display: none">修改用户信息</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;">订单管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">订单列表</a></dd>
+                            <dd><a href="list.html">订单列表</a></dd>
                             <!-- <dd><a href="javascript:;">添加用户</a></dd> -->
                             <!-- <dd><a href="">超链接</a></dd> -->
                         </dl>
@@ -109,15 +117,19 @@
         <div class="layui-body">
             <!-- 内容主体区域 -->
             <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-                <h2 class='title-index'> <b>订单系统</b> </h2> <!--标题：订单系统-->
-                <ul class="layui-tab-title"> <!--选项卡 选项 -->
-                    <li class="layui-this">今日</li> <!--默认选中-->
+                <h2 class='title-index'> <b>订单系统</b> </h2>
+                <!--标题：订单系统-->
+                <ul class="layui-tab-title">
+                    <!--选项卡 选项 -->
+                    <li class="layui-this">今日</li>
+                    <!--默认选中-->
                     <li>昨日</li>
                     <li>近七天</li>
                     <li>本月</li>
                 </ul>
-                <div class="layui-tab-content"> <!--选项卡内容区域-->
-                 <!--今日的内容-->
+                <div class="layui-tab-content">
+                    <!--选项卡内容区域-->
+                    <!--今日的内容-->
                     <div class="layui-tab-item layui-show">
                         <div class="layui-row layui-col-space10">
                             <div class="layui-col-md4">
@@ -141,7 +153,7 @@
                         </div>
                     </div>
 
-<!--昨日的内容-->
+                    <!--昨日的内容-->
                     <div class="layui-tab-item">
                         <div class="layui-row layui-col-space10">
                             <div class="layui-col-md4">
@@ -165,7 +177,7 @@
                         </div>
                     </div>
 
-<!--近七天的内容-->
+                    <!--近七天的内容-->
                     <div class="layui-tab-item">
                         <div class="layui-row layui-col-space10">
                             <div class="layui-col-md4">
@@ -188,7 +200,7 @@
                             </div>
                         </div>
                     </div>
-<!--本月的内容-->
+                    <!--本月的内容-->
                     <div class="layui-tab-item">
                         <div class="layui-row layui-col-space10">
                             <div class="layui-col-md4">
@@ -220,11 +232,50 @@
   </div> -->
         </div>
         <script src="../lib/layui-v2.4.5/layui/layui.js"></script>
+        <script src="../js/common.js"></script>
+        <script src="../js/jquery-1.10.1.min.js"></script>
         <script>
             //JavaScript代码区域
             layui.use('element', function () {
                 var element = layui.element;
             });
+            let name = document.cookie.split('=')[1] //截取cookie里面的用户名
+            console.log(name)
+            $.ajax({
+                type: 'get',
+                url: '../api/login',
+                data: {
+                    username: name
+                },
+                async: true,
+                success: function (data) {
+                    let root = data.data[0].jurisdiction;
+                    let imge = data.data[0].photoUrl;
+                    let nickname = data.data[0].nickname
+                    console.log(imge);
+                    let user1 = $(".user-1")
+                    let user2 = $(".user-2")
+                    $('._username').text(nickname);
+                    $('._imge').attr("src", imge);
+
+                    if (root == 'admin') {
+                        user1.show()
+                        // console.log(111)
+                    } else {
+                        user2.show()
+                        // console.log(222)
+                    }
+                    quit()
+                }
+            })
+
+            function quit() {
+                let $quit = $(".quit");
+                $quit.click(function () {
+                    Cookie.delCookie('username', '/');
+                    location.href = `./login.html`
+                })
+            }
         </script>
 </body>
 

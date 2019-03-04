@@ -4,7 +4,7 @@
 
 ._r { left: 80px; }
 
-.bottom { position: absolute; bottom: 0; left: 50%; transform: translate(-50%, 0); }
+.bottom { transform: translate(250px, 0); }
 
 #bit { height: 30px; margin-left: 8px; }
 
@@ -18,5 +18,7 @@
 #fenlei { margin-left: 20px; height: 38px; width: 100px; }
 
 .search { margin-left: 20px; }
+
+tbody { margin-bottom: 100px; }
 
 /*# sourceMappingURL=index.css.map */

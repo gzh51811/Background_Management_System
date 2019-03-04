@@ -97,9 +97,9 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
 
-    //封装数据渲染,传入数组
+    //封装内容数据渲染,传入数组
     function render(arr) {
-        arr.map((item, index) => {
+        return arr.map((item, index) => {
             return (
                 `<tr>
                     <td>
@@ -129,13 +129,26 @@ document.addEventListener("DOMContentLoaded", function() {
         }).join(",")
     }
 
+
+    //封装页码数据渲染，传入num
+    function creatPage() {
+        var str = `<button class="layui-btn layui-btn-sm layui-btn-primary">上一页</button>`,
+            for (var a = 0; a < num; a++) {
+                str += `< button class = "layui-btn layui-btn-sm " > a + 1 < /button>`
+            }
+        str += `<button class="layui-btn layui-btn-sm layui-btn-primary">上一页</button>`,
+            return str;
+    }
+
     // //页面初始化
     function init() {
         $.ajax({
             type: "get",
             //url: `/api/list/page=${page}&qty=${qty}&sort=${sort}&desc=${desc}`,
             url: `/api/list?page=1&qty=10&sort=_id&desc=1`,
-            function(data) {
+            success: function(data) {
+
+                $("tbody").html(render(data.data))
                 console.log(data)
             }
         });

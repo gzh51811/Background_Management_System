@@ -16,10 +16,7 @@
 }
 
 .bottom {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0)
+    transform: translate(250px, 0)
 }
 
 #bit {
@@ -54,4 +51,8 @@
 
 .search {
     margin-left: 20px;
+}
+
+tbody {
+    margin-bottom: 100px;
 }

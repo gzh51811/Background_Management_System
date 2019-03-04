@@ -10,7 +10,7 @@ jQuery(function ($) {
         laydate.render({
             elem: '#test1' //指定元素
         });
-    });
+    }); 
 
     var $img = $('#img');
 
@@ -37,7 +37,8 @@ jQuery(function ($) {
     })
 
     //获取用户名
-    var username = Cookie.getCookie('username');
+    // var username = Cookie.getCookie('username');
+    var username = 'ann';
     let $nickname = $(".nickname");
     let $uname = $(".uname");
     let $confirmPw = $(".confirmPw");
@@ -173,6 +174,7 @@ jQuery(function ($) {
                 contentType: false, //使用multer配合ajax时无需配置multipart/form-data，multer将自动配置，手动配置将报错，boundary not found
                 processData: false,
                 success: function (res) {
+                    console.log(res)
                     resolve(res)
                 },
                 error: function (err) {

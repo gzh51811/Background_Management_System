@@ -1,24 +1,63 @@
-.sheng { position: absolute; top: 25%; left: 50px; }
+.sheng {
+    position: absolute;
+    top: 25%;
+    left: 50px;
+}
 
-.jiang { position: absolute; bottom: 25%; left: 50px; transform: rotate(180deg); }
+.jiang {
+    position: absolute;
+    bottom: 25%;
+    left: 50px;
+    transform: rotate(180deg);
+}
 
-._r { left: 80px; }
+._r {
+    left: 80px;
+}
 
-.bottom { transform: translate(250px, 0); }
+.bottom {
+    margin-left: 250px;
+}
 
-#bit { height: 30px; margin-left: 8px; }
+#bit {
+    height: 30px;
+    margin-left: 8px;
+}
 
-.toPage { display: inline-block; width: 100px; }
-.toPage input { width: 30px; height: 28px; text-align: center; }
+.toPage {
+    display: inline-block;
+    width: 100px;
+}
 
-.top { padding: 10px 10px 0 10px; }
+.toPage input {
+    width: 30px;
+    height: 28px;
+    text-align: center;
+}
 
-.layui-table { margin: 10px; width: 98%; }
+.top {
+    padding: 10px 10px 0 10px;
+}
 
-#fenlei { margin-left: 20px; height: 38px; width: 100px; }
+.layui-table {
+    margin: 10px;
+    width: 98%;
+}
 
-.search { margin-left: 20px; }
+#fenlei {
+    margin-left: 20px;
+    height: 38px;
+    width: 100px;
+}
 
-tbody { margin-bottom: 100px; }
+.page>p {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+    transform: translate(-10px, 5px);
+}
+
 
 /*# sourceMappingURL=index.css.map */

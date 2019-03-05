@@ -1,16 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     //page=1&qty=10&sort=_id&desc=1
 
-    if (Cookie.getCookie("page")) {
 
-    } else {
-        Cookie.setCookie("page", 1)
-        Cookie.setCookie("qty", 10)
-        Cookie.setCookie("sort", "time")
-        Cookie.setCookie("desc", 1)
-        Cookie.setCookie("mohu", "")
-    }
-    ifValue();
     //点击排序
     $("thead").on("click", "img", e => {
         var e = event || window.event;
@@ -141,12 +132,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // 点击添加
         if ($(e.target).hasClass("addAll")) {
-            location.href = `../html/addgoods.html`
+            location.href = `../html/addclassify.html`
         }
 
         //点击删除所有
         if ($(e.target).hasClass("deteleAll")) {
-            ifValue()
+
             let arr = getDeleteArr();
             let _id = JSON.stringify(arr)
             console.log(_id)
@@ -154,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (confirm("是否删除所选商品信息")) {
                     $.ajax({
                         type: "get",
-                        url: `api/list/cancelMany`,
+                        url: `/api/classifyList/cancelMany`,
                         data: `_id=${_id}`,
                         success: (data) => {
                             if (data.code == 1) {
@@ -172,29 +163,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        //点击搜索
-        if ($(e.target).hasClass("search")) {
-            if ($(".shopName").val().trim()) {
-                Cookie.setCookie("mohu", "mohu")
-                init()
-                console.log(111)
-            } else {
-                alert("请输入商品名称");
-            }
-        }
-
     })
-
-    //封装函数，判断搜索框是否有值
-    function ifValue() {
-        if ($(".shopName").val().trim()) {
-            Cookie.setCookie("mohu", "mohu")
-        } else {
-            Cookie.setCookie("mohu", "")
-        }
-
-    }
-
 
     // 封装获取所有被勾选的行
     function getDeleteArr() {
@@ -215,17 +184,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // 点击编辑
         if ($(e.target).hasClass("compile")) {
-            location.href = `../html/addgoods.html?_id=${$(e.target).parent().parent().attr("data-id")}`
+            location.href = `../html/addclassify.html?_id=${$(e.target).parent().parent().attr("data-id")}`
         }
 
-        //点击删除
+        //点击单个删除
         if ($(e.target).hasClass("cancel")) {
             let _id = $(e.target).parent().parent().attr("data-id");
             if (confirm("是否删除该条商品信息")) {
-                ifValue()
+                // ifValue()
                 $.ajax({
                     type: "get",
-                    url: `api/list/cancel`,
+                    url: `/api/classifyList/cancel`,
                     data: `_id=${_id}`,
                     success: (data) => {
                         if (data.code == 1) {
@@ -239,23 +208,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
         }
-
-        //点击上下架
-        if ($(e.target).hasClass("state")) {
-            // console.log($(e.target).parent().parent().children().eq(7).html())
-            $.ajax({
-                type: "get",
-                url: `api/list/update`,
-                data: `_id=${$(e.target).attr("data-id")}&state=${$(e.target).html()}`,
-                success: (data) => {
-                    if (data.code == 1) {
-                        init();
-                    } else {
-                        alert("修改失败")
-                    }
-                }
-            })
-        }
     })
 
     //封装内容数据渲染,传入数组
@@ -263,159 +215,49 @@ document.addEventListener("DOMContentLoaded", function() {
         return arr.map((item, index) => {
             return (
                 `<tr data-id="${item._id}">
-                    <td>
+                    <td style="text-align:center">
                         <div class="layui-unselect layui-form-checkbox " lay-skin="primary" data-id="${item._id}">
                             <i class="layui-icon layui-icon-ok one"></i>
                         </div>
                     </td>
-                    <td>${index+1}</td>
-                    <td>${item.name}</td>
-                    <td>${item.classify}</td>
-                    <td>${item.price}</td>
-                    <td>${item.sale}</td>
-                    <td>${item.inventory}</td>
-                    <td class="realState">${item.state}</td>
-                    <td>${item.time}</td>
-                    <td data-id="${item._id}">
+                    <td style="text-align:center">${index+1}</td>
+                    <td style="text-align:center">${item.classify}</td>
+                    <td style="text-align:center">${item.time}</td>
+                    <td data-id="${item._id}" style="text-align:center">
                         <button class="layui-btn layui-btn-sm">
                             <i class="layui-icon compile"></i>
                         </button>
                         <button class="layui-btn layui-btn-primary layui-btn-sm ">
                                 <i class="layui-icon cancel"></i>
                         </button>
-                        <button class="layui-btn layui-btn-sm state" data-id="${item._id}">${item.state=="上架"?"下架":"上架"}</button>
+                        
                     </td>
                 </tr>`
             )
         }).join(",")
     }
 
-
-    //封装页码数据渲染，传入num
-    function creatPage(num) {
-        var str = `<p>共${Cookie.getCookie("allLength")}条</p>
-                    <button class="layui-btn layui-btn-sm layui-btn-primary pagePrve" style="border-left: 1px solid #ccc;">上一页</button>`;
-        for (var a = 0; a < num; a++) {
-            str += `<button class = "layui-btn layui-btn-sm layui-btn-primary pageNum"> ${a + 1}</button>`
-        }
-        str += `<button class="layui-btn layui-btn-sm layui-btn-primary pageNext">下一页</button>`;
-        return str;
-    }
-    //封装页码高亮
-    function activePage(num) {
-        $(".page button").eq(num).removeClass("layui-btn-primary")
-    }
-    //
-    // 封装清除页码高亮
-    function removeactivePage() {
-        for (var a = 1; a < $(".page button").length - 1; a++) {
-            $(".page button").eq(a).addClass("layui-btn-primary")
-                // console.log($(".page button").eq(a))
-        }
-
-    }
     // //页面初始化
     function init() {
-        ifValue()
-        var str = Cookie.getCookie("mohu") ? `page=${Cookie.getCookie("page")}&qty=${Cookie.getCookie("qty")}&sort=${Cookie.getCookie("sort")}&desc=${Cookie.getCookie("desc")}&mohu=${Cookie.getCookie("mohu")}&shopName=${$(".shopName").val()}&classify=${$("#fenlei").val()}` : `page=${Cookie.getCookie("page")}&qty=${Cookie.getCookie("qty")}&sort=${Cookie.getCookie("sort")}&desc=${Cookie.getCookie("desc")}&mohu=${Cookie.getCookie("mohu")}`
+        var str = `sort=${Cookie.getCookie("sort")}&desc=${Cookie.getCookie("desc")}`
             // console.log(str)
         $.ajax({
             type: "get",
             //url: `/api/list/page=${page}&qty=${qty}&sort=${sort}&desc=${desc}`,
-            url: `/api/list`,
+            url: `/api/classifyList`,
             data: str,
             success: function(data) {
                 // console.log(Math.ceil(data.allLength / data.currLength))
                 // console.log($(".page"))
                 $("#bit").val(Cookie.getCookie("qty"))
                 $("tbody").html(render(data.data))
-                Cookie.setCookie("allLength", data.allLength)
-                $(".page").html(creatPage(Math.ceil(data.allLength / data.qty)))
-
-                console.log("getcookie", Cookie.getCookie("allLength"))
-                if (Math.ceil(data.allLength / data.qty) < Cookie.getCookie("page") && (data.allLength / data.qty) != 0) {
-                    Cookie.setCookie("page", Math.ceil(data.allLength / data.qty))
-                    if (Math.ceil(data.allLength / data.qty) <= 0) {
-                        Cookie.setCookie("page", 1)
-                    }
-                    init()
-                }
-
-                activePage(Cookie.getCookie("page"))
-
-                //设置输入页码框的最大值
-                $(".toPage input").prop("max", Math.ceil(data.allLength / data.qty))
-                    //console.log(Math.ceil(data.allLength / data.qty))
-                getDeleteArr()
             }
         });
     }
     init()
 
 
-    //点击页码
-    $(".page").on("click", "button", e => {
-        //点击页码
-        if ($(e.target).hasClass("pageNum")) {
 
-            ifValue()
-            removeactivePage()
-                //console.log($(e.target).html())
-            Cookie.setCookie("page", $(e.target).html())
-            init()
-
-        }
-        //点击上一页
-        if ($(e.target).hasClass("pagePrve")) {
-            // console.log(222)
-            ifValue()
-            if (Cookie.getCookie("page") > 1) {
-
-                Cookie.setCookie("page", Cookie.getCookie("page") - 1)
-                init()
-            }
-        }
-        //点击下一页
-        if ($(e.target).hasClass("pageNext")) {
-            ifValue()
-            if (Cookie.getCookie("page") < $(".page").children().length - 2) {
-                // console.log(Cookie.getCookie("page"))
-                Cookie.setCookie("page", Cookie.getCookie("page") * 1 + 1)
-                init()
-            }
-        }
-    })
-
-    //选择条数
-
-    $("#bit").on("input", function() {
-        Cookie.setCookie("qty", $(this).val())
-        if (Math.ceil(Cookie.getCookie("allLength") / $(this).val()) < Cookie.getCookie("Page")) {
-            Cookie.setCookie("page", Math.ceil(Cookie.getCookie("allLength") / $(this).val()))
-        }
-        init()
-    })
-
-    // 输入页数
-    $(".toPage input").on("input", function() {
-
-        if ($(this).val() * 1 > $(this).prop("max") * 1) {
-
-            $(this).val($(this).prop("max"))
-
-        } else if ($(this).val() < 1) {
-            $(this).val(1)
-
-        }
-
-    })
-
-
-    //点击确定
-    $(".toPageBtn").on("click", () => {
-        Cookie.setCookie("page", $(".toPage input").val())
-        init()
-    })
 
 
 })

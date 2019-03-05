@@ -218,7 +218,7 @@
             if (data.code == 200) {
                 $freeLogin.prop('checked') ? localStorage['token'] = data.token :
                     sessionStorage['token'] = data.token;
-                location.href = `index1.html`
+                location.href = `../index.html`
             } else {
                 alert('密码或用户名错误，请重新输入')
             }

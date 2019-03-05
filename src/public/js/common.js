@@ -312,6 +312,6 @@ function quit() {
         //判断localstroage是否存在token,存在就删除local，不存在就删除session
         localStorage['token'] ? localStorage.removeItem('token') : sessionStorage.removeItem(
             'token');
-        location.href = `./login.html`;
+        location.href = `../login.html`;
     })
 }

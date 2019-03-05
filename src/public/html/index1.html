@@ -258,50 +258,36 @@
             //解密成功或失败
             function verifyUser(res) {
                 if (res.status == 200) {
-                    res.ress[0].jurisdiction == 'admin' ? user1.show() : user2.show();
+                    //判断用户权限,显示相应的选项及路径
+                    if (res.ress[0].jurisdiction == 'admin') {
+                        user1.show()
+                        user1.eq(0).attr('href', 'userList.hptml').next().attr('href', 'addUser.hptml')
+                    } else {
+                        user2.show()
+                        user2.attr('href', 'userMessage.html')
+                    }
+                    //渲染用户信息
                     let imge = res.ress[0].photoUrl;
                     let nickname = res.ress[0].nickname;
-                    console.log(imge,nickname)
+                    console.log(imge, nickname)
                     $('._username').text(nickname);
                     $('._imge').attr("src", imge);
+
+                    quit();
+
                 } else if (res.status == 100) {
                     location.href = 'login.html'
                 }
             }
-
-
-            // $.ajax({
-            //     type: 'get',
-            //     url: '../api/login',
-            //     data: {
-            //         username: name
-            //     },
-            //     async: true,
-            //     success: function (data) {
-            //         let root = data.data[0].jurisdiction;
-
-            //         console.log(imge);
-
-
-            //         if (root == 'admin') {
-            //             user1.show()
-            //             // console.log(111)
-            //         } else {
-            //             user2.show()
-            //             // console.log(222)
-            //         }
-            //         quit()
-            //     }
-            // })
-
+            //退出按钮
             function quit() {
                 let $quit = $(".quit");
                 $quit.click(function () {
-                    Cookie.delCookie('username', '/');
-                    location.href = `./login.html`
+                    //判断localstroage是否存在token,存在就删除local，不存在就删除session
+                    localStorage['token']?localStorage.removeItem('token'):sessionStorage.removeItem('token');
+                    location.href = `./login.html`;
                 })
             }
         </script>
 </body>
-
 </html>

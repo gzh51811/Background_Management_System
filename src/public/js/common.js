@@ -26,44 +26,44 @@ function time(time) {
 
 
 // 封装a-b的随机整数
-function getRandomNum(a,b){
-    var res = parseInt(Math.random()*(b-a+1)+ a);
+function getRandomNum(a, b) {
+    var res = parseInt(Math.random() * (b - a + 1) + a);
     return res;
     // parseInt([0,1)*71+30)======>parseInt([0,71)+30)======>parseInt[30,101) =>30,100
     // 100-30+1
 }
 // 获取随机色
-function getRandomColor(){
-    return 'rgb('+getRandomNum(0,255)+','+getRandomNum(0,255)+','+getRandomNum(0,255)+')';
+function getRandomColor() {
+    return 'rgb(' + getRandomNum(0, 255) + ',' + getRandomNum(0, 255) + ',' + getRandomNum(0, 255) + ')';
 }
 
 // 获取元素节点
 var Element = {
     /*
-    ** 功能： 过滤数组，只拿到包含元素节点的数组
-    ** 形参nodes ：包含文本、元素节点的一个数组
-    */
-    getElementNodes : function(nodes){
+     ** 功能： 过滤数组，只拿到包含元素节点的数组
+     ** 形参nodes ：包含文本、元素节点的一个数组
+     */
+    getElementNodes: function (nodes) {
         var elementsNode = [];
         // 过滤只得到元素节点
-        for(var i=0;i<nodes.length;i++){
-            if(nodes[i].nodeType == 1){
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].nodeType == 1) {
                 elementsNode.push(nodes[i]);
             }
         }
         return elementsNode;
-    }, 
-    /*
-    ** 功能： 传入父元素节点，获取到父元素的所有元素子节点
-    ** 形参parent ：父元素节点
-    */
-    getElementsChild: function(parent){
-        var erzis = parent.childNodes; //获取到所有的节点
-        return Element.getElementNodes(erzis);//直接调用
     },
-    getNextElement : function(ele){
+    /*
+     ** 功能： 传入父元素节点，获取到父元素的所有元素子节点
+     ** 形参parent ：父元素节点
+     */
+    getElementsChild: function (parent) {
+        var erzis = parent.childNodes; //获取到所有的节点
+        return Element.getElementNodes(erzis); //直接调用
+    },
+    getNextElement: function (ele) {
         var next = ele.nextSibling;
-        if(next.nodeType != 1){
+        if (next.nodeType != 1) {
             next = next.nextSibling;
         }
         return next;
@@ -72,25 +72,25 @@ var Element = {
 }
 
 //  获取元素样式
-function getStyle(ele,key){
-    if(window.getComputedStyle){
+function getStyle(ele, key) {
+    if (window.getComputedStyle) {
         return window.getComputedStyle(ele)[key];
-    }else if(ele.currentStyle){
+    } else if (ele.currentStyle) {
         return ele.currentStyle[key];
-    }else{
+    } else {
         return ele.style[key];
     }
 }
 
 
 // 绑定事件的兼容写法：
-function bind(ele,type,fn,isCapture){
-    if(ele.addEventListener){
-        ele.addEventListener(type,fn,isCapture);
-    }else if(ele.attachEvent){
-        ele.attachEvent("on"+type,fn);
-    }else{
-        ele["on"+type] = fn;
+function bind(ele, type, fn, isCapture) {
+    if (ele.addEventListener) {
+        ele.addEventListener(type, fn, isCapture);
+    } else if (ele.attachEvent) {
+        ele.attachEvent("on" + type, fn);
+    } else {
+        ele["on" + type] = fn;
     }
 }
 
@@ -102,22 +102,22 @@ var Cookie = {
     //  * val cookie值
     //  * date 时间对象
     //  * path 路径
-    setCookie : function(name,val,date,path){
-        var str = name+"="+val;
-        if(date){
-            str += "; expires="+date.toUTCString();
+    setCookie: function (name, val, date, path) {
+        var str = name + "=" + val;
+        if (date) {
+            str += "; expires=" + date.toUTCString();
         }
-        if(path){
-            str += "; path="+path;
+        if (path) {
+            str += "; path=" + path;
         }
         document.cookie = str;
     },
     // 获取cookie
-    getCookie : function(name){
-        var cookie = document.cookie;//"left=300; age=17"   
-        if(cookie == ""){
+    getCookie: function (name) {
+        var cookie = document.cookie; //"left=300; age=17"   
+        if (cookie == "") {
             return "";
-        }else{
+        } else {
             var cookieArr = cookie.split("; ");
             // var res = "";
             // cookieArr.forEach(function(item){
@@ -127,9 +127,9 @@ var Cookie = {
             //     }
             // })
             // return res;
-            for(var i=0;i<cookieArr.length;i++){
+            for (var i = 0; i < cookieArr.length; i++) {
                 var arr = cookieArr[i].split("=");
-                if(arr[0] == name){
+                if (arr[0] == name) {
                     return arr[1];
                 }
             }
@@ -137,10 +137,10 @@ var Cookie = {
         }
     },
     // 删除某条cookie
-    delCookie : function(name,path){
+    delCookie: function (name, path) {
         var d = new Date();
-        d.setDate(d.getDate()-1);
-        Cookie.setCookie(name,"",d,path);
+        d.setDate(d.getDate() - 1);
+        Cookie.setCookie(name, "", d, path);
     }
 }
 
@@ -191,35 +191,36 @@ var Cookie = {
 // (2) 封装动画函数结束后，别人要做什么，我不知道。所以只能帮你执行。你需要把你要做的东西封装成函数，传参给我
 //      * 别人不一定会传递回调函数，要判断。     
 
-function animation(ele,obj,time,fn){
+function animation(ele, obj, time, fn) {
     var count = 0;
-    for(var key in obj){
+    for (var key in obj) {
         count++;
         var attr = key;
         var target = obj[key];
-        show(attr,target);
+        show(attr, target);
     }
-    function show(attr,target){
-        target = attr == "opacity"? target*100:target;
-        clearInterval(ele[attr+"Timer"]);
-        ele[attr+"Timer"] = setInterval(function(){
-            var current = window.getComputedStyle(ele)[attr];//200px   /[a-z]+/
-            var unit = current.match(/[a-z]+$/);//提取单位
-            unit = unit? unit[0] : "";
-            current = parseFloat(current);//只获取数值
-            current = attr == "opacity"? current*100 : parseInt(current);
-            var speed = (target-current)/10;
-            if(speed > 0){
+
+    function show(attr, target) {
+        target = attr == "opacity" ? target * 100 : target;
+        clearInterval(ele[attr + "Timer"]);
+        ele[attr + "Timer"] = setInterval(function () {
+            var current = window.getComputedStyle(ele)[attr]; //200px   /[a-z]+/
+            var unit = current.match(/[a-z]+$/); //提取单位
+            unit = unit ? unit[0] : "";
+            current = parseFloat(current); //只获取数值
+            current = attr == "opacity" ? current * 100 : parseInt(current);
+            var speed = (target - current) / 10;
+            if (speed > 0) {
                 speed = Math.ceil(speed);
-            }else if(speed < 0){
+            } else if (speed < 0) {
                 speed = Math.floor(speed);
             }
             current += speed;
-            ele.style[attr] = attr == "opacity"? current/100 :current + unit;
-            if(current == target){
-                clearInterval(ele[attr+"Timer"]);
+            ele.style[attr] = attr == "opacity" ? current / 100 : current + unit;
+            if (current == target) {
+                clearInterval(ele[attr + "Timer"]);
                 count--;
-                if(count == 0 && fn && typeof(fn) == "function"){
+                if (count == 0 && fn && typeof (fn) == "function") {
                     fn();
                 }
             }
@@ -254,20 +255,20 @@ function animation(ele,obj,time,fn){
 // }
 
 //备注: 事件开启定时器之前，一定要记得先清除已存在的定时器。
-function linearAnimate(speed,ele,attr,target,time){
+function linearAnimate(speed, ele, attr, target, time) {
     clearInterval(ele.timer);
     var speed = speed;
-    ele.timer = setInterval(function(){
+    ele.timer = setInterval(function () {
         var current = window.getComputedStyle(ele)[attr];
         console.log(current);
-        var unit = current.match(/[a-z]+$/);//提取单位
-        unit = unit? unit[0] : "";
-        current = parseFloat(current);//只获取数值
+        var unit = current.match(/[a-z]+$/); //提取单位
+        unit = unit ? unit[0] : "";
+        current = parseFloat(current); //只获取数值
         current += speed;
         console.log(current);
 
         ele.style[attr] = current + unit;
-        if(current >= target){
+        if (current >= target) {
             current = target;
             clearInterval(ele.timer);
         }
@@ -278,4 +279,25 @@ function linearAnimate(speed,ele,attr,target,time){
         // -3  current100 target 10
     }, time)
 }
+
+//账户信息请求
+function userAjax(data) {
+    return new Promise((resolve, reject) => {
+        $.get('/api/userList/find', data, function (res) {
+            if (res.code) {
+                resolve(res)
+            }
+        }, 'json')
+    })
+}
+
+//退出按钮按功能封装
+function quit(){
+    let $quit = $(".quit");
+    $quit.click(function(){
+        Cookie.delCookie('username','/');
+        location.href = `../login.html`
+    })
+}
+
 

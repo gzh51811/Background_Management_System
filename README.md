@@ -48,8 +48,10 @@
 > HTML+CSS+jQuery+layui+node.js+mongodb
 
 ### 查看演示
-
-
+#### 临时账号
+管理员账号:admin   密码：123456
+普通用户账号:aaa   密码：123123
+#### 演示地址
 
 ### 目录
 

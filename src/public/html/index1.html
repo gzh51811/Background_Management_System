@@ -38,6 +38,7 @@
 
         /*选项卡内容里面li的样式*/
     </style>
+    <script src=""></script>
 </head>
 
 <body class="layui-layout-body">
@@ -243,25 +244,25 @@
             });
             //进入页面获取token值
             var token = localStorage['token'] || sessionStorage['token'] || '';
-            console.log(token)
-            //解密token值并返回信息
-            verifyToken(token);
-
-            function verifyToken(token) {
-                $.get('/api/tokenverify', {
-                    token
-                }, function (res) {
-                    console.log(res)
+            if (token) {
+                (async () => {
+                    let res = await verifyToken(token);
                     verifyUser(res)
-                }, 'json')
+
+                })()
+                console.log(token)
+            } else {
+                location.href = `login.html`
             }
+
+
             //解密成功或失败
             function verifyUser(res) {
                 if (res.status == 200) {
                     //判断用户权限,显示相应的选项及路径
                     if (res.ress[0].jurisdiction == 'admin') {
                         user1.show()
-                        user1.eq(0).attr('href', 'userList.hptml').next().attr('href', 'addUser.hptml')
+                        user1.eq(0).attr('href', 'userList.html').next().attr('href', 'addUser.hptml')
                     } else {
                         user2.show()
                         user2.attr('href', 'userMessage.html')
@@ -279,15 +280,7 @@
                     location.href = 'login.html'
                 }
             }
-            //退出按钮
-            function quit() {
-                let $quit = $(".quit");
-                $quit.click(function () {
-                    //判断localstroage是否存在token,存在就删除local，不存在就删除session
-                    localStorage['token']?localStorage.removeItem('token'):sessionStorage.removeItem('token');
-                    location.href = `./login.html`;
-                })
-            }
         </script>
 </body>
+
 </html>

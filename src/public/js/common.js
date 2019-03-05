@@ -281,23 +281,38 @@ function linearAnimate(speed, ele, attr, target, time) {
 }
 
 //账户信息请求
-function userAjax(data) {
+// function userAjax(data) {
+//     return new Promise((resolve, reject) => {
+//         $.get('/api/userList/find', data, function (res) {
+//             if (res.code) {
+//                 resolve(res)
+//             }
+//         }, 'json')
+//     })
+// }
+
+//解密token值并返回信息
+
+function verifyToken(token) {
     return new Promise((resolve, reject) => {
-        $.get('/api/userList/find', data, function (res) {
-            if (res.code) {
-                resolve(res)
-            }
+        $.get('/api/tokenverify', {
+            token
+        }, function (res) {
+            console.log(res)
+            resolve(res)
         }, 'json')
     })
 }
 
-//退出按钮按功能封装
-function quit(){
+
+
+//退出按钮
+function quit() {
     let $quit = $(".quit");
-    $quit.click(function(){
-        Cookie.delCookie('username','/');
-        location.href = `../login.html`
+    $quit.click(function () {
+        //判断localstroage是否存在token,存在就删除local，不存在就删除session
+        localStorage['token'] ? localStorage.removeItem('token') : sessionStorage.removeItem(
+            'token');
+        location.href = `./login.html`;
     })
 }
-
-

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="../lib/layui-v2.4.5/layui/css/layui.css" />
+    <style>
+        .mianbao {
+            /* padding-top: 20px; */
+            line-height: 60px; 
+        }
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">商家后台管理系统</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left mianbao">
+                <!-- <li class="layui-nav-item"><a href="">控制台</a></li>
+      <li class="layui-nav-item"><a href="">商品管理</a></li>
+      <li class="layui-nav-item"><a href="">用户</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">其它系统</a>
+        <dl class="layui-nav-child">
+          <dd><a href="">邮件管理</a></dd>
+          <dd><a href="">消息管理</a></dd>
+          <dd><a href="">授权管理</a></dd>
+        </dl>
+      </li> -->
+                <span class="layui-breadcrumb ">
+                    <!-- <a href="">首页</a> -->
+                    <!-- <a href="">国际新闻</a>
+        <a href="">亚太地区</a> -->
+                    <a href="html/index1.html"><cite>首页</cite></a>
+                </span>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img" />
+                        贤心
+                    </a>
+                    <!-- <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl> -->
+                </li>
+                <li class="layui-nav-item"><a href="">退了</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） layui-nav-itemed类名设置默认打开列表-->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">商品管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">商品列表</a></dd>
+                            <dd><a href="javascript:;">商品分类</a></dd>
+                            <dd><a href="javascript:;">添加商品</a></dd>
+                            <!-- <dd><a href="">超链接</a></dd> -->
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">用户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">用户列表</a></dd>
+                            <dd><a href="javascript:;">添加用户</a></dd>
+                            <!-- <dd><a href="">超链接</a></dd> -->
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">订单管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">订单列表</a></dd>
+                            <!-- <dd><a href="javascript:;">添加用户</a></dd> -->
+                            <!-- <dd><a href="">超链接</a></dd> -->
+                        </dl>
+                    </li>
+                    <!-- <li class="layui-nav-item"><a href="">云市场</a></li>
+        <li class="layui-nav-item"><a href="">发布商品</a></li> -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <table class="layui-hide" id="test" lay-filter="test"></table>
+
+
+            <!-- <div class="layui-footer">
+    底部固定区域
+    © layui.com - 底部固定区域
+  </div> -->
+        </div>
+        <script src="../lib/layui-v2.4.5/layui/layui.js"></script>
+        <script src="../js/jquery-1.10.1.min.js"></script>
+        <script>
+            //JavaScript代码区域
+            layui.use('element', function () {
+                var element = layui.element;
+            });
+        </script>
+        <script>
+            layui.use(['jquery', 'layer'], function(){
+var $ = layui.$ //重点处
+,layer = layui.layer;
+});
+   </script>
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+  </div>
+</script>
+
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+        <script>
+            layui.use('table', function () {
+                var table = layui.table;
+
+                table.render({
+                    elem: '#test',
+                    url: '/api/order-list/',
+                    toolbar: '#toolbarDemo',
+                    title: '用户数据表',
+                    cols: [
+                        [{
+                            type: 'checkbox',
+                            fixed: 'left'
+                        }, {
+                            field: '_id',
+                            title: 'ID',
+                            width: 80,
+                            fixed: 'left',
+                            unresize: true,
+                            sort: true
+                        }, {
+                            field: '商品名称',
+                            title: '商品名称',
+                            width: 120,
+                            edit: 'text'
+                        }, {
+                            field: '价格',
+                            title: '价格',
+                            width: 150,
+                            edit: 'text',
+                            sort: true
+
+                        }, {
+                            field: '数量',
+                            title: '数量',
+                            width: 80,
+                            edit: 'text',
+                            sort: true
+                        }, {
+                            field: '运费',
+                            title: '运费',
+                            width: 100,
+                            sort: true
+                        }, {
+                            field: '商品总额',
+                            title: '商品总额',
+                            width: 100,
+                            sort: true
+                        }, {
+                            field: '订单总额',
+                            title: '订单总额',
+                            width: 100,
+                            sort: true
+                        }, {
+                            field: '下单时间',
+                            title: '下单时间',
+                            width: 120,
+                            sort: true
+
+                        }, {
+                            fixed: 'right',
+                            title: '操作',
+                            toolbar: '#barDemo',
+                            width: 150
+                        }]
+                    ],
+                    page: true,
+                });
+
+                //头工具栏事件
+                table.on('toolbar(test)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'getCheckData':
+                            var data = checkStatus.data;
+                            layer.alert(JSON.stringify(data));
+                            break;
+                        case 'getCheckLength':
+                            var data = checkStatus.data;
+                            layer.msg('选中了：' + data.length + ' 个');
+                            break;
+                        case 'isAll':
+                            layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                            break;
+                    };
+                });
+
+                //监听行工具事件
+                table.on('tool(test)', function (obj) {
+                    var data = obj.data;
+                    // console.log(obj,data._id)
+                    var data2 = data._id
+                    if (obj.event === 'del') {
+                        layer.confirm('真的删除行么', function (index) {
+                            obj.del();
+                            layer.close(index);
+                            layui.use(['jquery', 'layer'], function () {
+                                var $ = layui.$; //重点处
+                                layer = layui.layer;
+                                //点击确认删除的时候，发送ajax请求，然后将表格里面的数据删除
+                                $.ajax({
+                                    type: 'get',
+                                    url: '../api/del-list',
+                                    async: true,
+                                    data: data,
+                                    success: function (str) {}
+                                })
+                            })
+
+                        });
+                    } else if (obj.event === 'edit') {
+                        layer.prompt({
+                            formType: 2,
+                            value: data.email
+                        }, function (value, index) {
+                            obj.update({
+                                email: value
+                            });
+                            layer.close(index);
+                        });
+                    }
+                });
+            });
+        </script>
+
+</body>
+
+</html>

@@ -281,15 +281,15 @@ function linearAnimate(speed, ele, attr, target, time) {
 }
 
 //账户信息请求
-// function userAjax(data) {
-//     return new Promise((resolve, reject) => {
-//         $.get('/api/userList/find', data, function (res) {
-//             if (res.code) {
-//                 resolve(res)
-//             }
-//         }, 'json')
-//     })
-// }
+function userAjax(data) {
+    return new Promise((resolve, reject) => {
+        $.get('/api/userList/find', data, function (res) {
+            if (res.code) {
+                resolve(res)
+            }
+        }, 'json')
+    })
+}
 
 //解密token值并返回信息
 
@@ -298,7 +298,6 @@ function verifyToken(token) {
         $.get('/api/tokenverify', {
             token
         }, function (res) {
-            console.log(res)
             resolve(res)
         }, 'json')
     })

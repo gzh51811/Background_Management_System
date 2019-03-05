@@ -10,7 +10,7 @@ jQuery(function ($) {
         laydate.render({
             elem: '#test1' //指定元素
         });
-    }); 
+    });
 
     var $img = $('#img');
 
@@ -38,7 +38,7 @@ jQuery(function ($) {
 
     //获取用户名
     // var username = Cookie.getCookie('username');
-    var username = 'ann';
+    // var username = 'ann';
     let $nickname = $(".nickname");
     let $uname = $(".uname");
     let $confirmPw = $(".confirmPw");
@@ -53,50 +53,51 @@ jQuery(function ($) {
     let $btn = $(".btn");
     let $userHead = $(".userHead");
     /** -----------------------------首次进入页面渲染信息-------------------------*/
-    (async () => {
-        var res = await userAjax({
-            username
-        });
-        _id = res.data[0]._id;
-        console.log(res.data[0])
-        UserShow(res.data[0]);
-        /**
-         * @确认按钮事件
-         * 1.根据file有无值，判断是否有修改头像
-         * 2.有修改头像，
-         *   2.1上传图片、
-         *   2.2更新用户信息
-         *   2.3重新渲染信息
-         * 3.没有修改头像
-         *   3.1更新用户信息
-         *   3.2重新渲染
-         */
-        $btn.click(function () {
-            let _goods = $goods[0].value
-            if (_goods) {
-                (async () => {
+
+    //进入页面获取token值
+    var token = localStorage['token'] || sessionStorage['token'] || '';
+    //判断有无token值
+    if (token) {
+        (async () => {
+            var res = await verifyToken(token);
+            _id = res.ress[0]._id;
+            console.log(res.ress[0])
+            UserShow(res.ress[0]);
+            quit()
+            /**
+             * @确认按钮事件
+             * 1.根据file有无值，判断是否有修改头像
+             * 2.有修改头像，
+             *   2.1上传图片、
+             *   2.2更新用户信息
+             *   2.3重新渲染信息
+             * 3.没有修改头像
+             *   3.1更新用户信息
+             *   3.2重新渲染
+             */
+            $btn.click(async function () {
+                let _goods = $goods[0].value
+                if (_goods) {
                     let res = await uploadUser();
                     await updateMsg({
                         photoUrl: `http://localhost:1811/${res.file.filename}`
                     })
-                    let aaa = await userAjax({
-                        username
-                    })
-                    UserShow(aaa.data[0]);
-                })()
-            } else {
-                (async () => {
+                    let aaa = await verifyToken(token);
+                    UserShow(aaa.ress[0]);
+                } else {
                     await updateMsg()
-                    let aaa = await userAjax({
-                        username
-                    })
-                    UserShow(aaa.data[0]);
-                })()
-            }
-        })
-    })()
+                    let aaa = await  verifyToken(token);
+                    UserShow(aaa.ress[0]);
+                }
+            })
+        })()
+    } else {
+        location.href = `login.html`
+    }
+
+
     /**-----------------------方法封装---------------------------------- */
-    
+
     /**
      * @渲染数据
      * 1.获取用户信息

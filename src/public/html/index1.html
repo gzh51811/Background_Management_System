@@ -244,6 +244,7 @@
             });
             //进入页面获取token值
             var token = localStorage['token'] || sessionStorage['token'] || '';
+            //判断有无token值
             if (token) {
                 (async () => {
                     let res = await verifyToken(token);

@@ -252,7 +252,8 @@
                     //判断用户权限,显示相应的选项及路径
                     if (res.ress[0].jurisdiction == 'admin') {
                         user1.show()
-                        user1.eq(0).attr('href', './html/userList.html').next().attr('href', './html/addUser.hptml')
+                        user1.eq(0).attr('href', './html/userList.html')
+                        user1.eq(1).attr('href', './html/addUser.html')
                     } else {
                         user2.show()
                         user2.attr('href', './html/userMessage.html')

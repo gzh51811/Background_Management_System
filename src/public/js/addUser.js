@@ -25,86 +25,92 @@ jQuery(function ($) {
         });
     });
     /*************进入页面渲染用户信息***************/
-     //进入页面获取token值
-     var token = localStorage['token'] || sessionStorage['token'] || '';
+    //进入页面获取token值
+    var token = localStorage['token'] || sessionStorage['token'] || '';
     (async () => {
         //------------------获取当前用户信息，渲染头像即名字------------------
         // let username = Cookie.getCookie('username');
         let $userHead = $(".userHead");
         let $uname = $(".uname");
-        let adminMsg = await userAjax({
-            username
-        })
-        $userHead.attr('src', adminMsg.data[0].photoUrl);
-        $uname.html(adminMsg.data[0].nickname)
-        //------------------获取id,判断是否有id传入---------------
-
-        if (_id) {
-            /**
-             * @有id传入
-             * 1.根据id渲染信息
-             * 2.提交按钮事件
-             *  2.1获取性别，判断性别是否有选中
-             *  2.2判断是否有更改用户名
-             *      2.2.1有改则查找改用户名是否存在，存在则提示
-             *      2.2.2没有更改，则提示清空
-             * 3.获取数据更新数据库信息
-             */
-            let res = await userAjax({
-                _id
-            })
-            msgShow(res.data[0])
-            //提交按钮
-            $btn.click(function () {
-                let $tipsGander = $(".tipsGander");
-                var _gander = $gander.find(`.layui-anim dd`).filter('.layui-this').html();
-                if (_gander == '男' || _gander == '女') {
-                    $tipsGander.html('')
-                } else {
-                    $tipsGander.html('请选择性别').css('color', 'red')
-                    return false
-                }
-                var username = $username.val();
-                var dataName = $username.attr('data-name');
-                console.log(username, dataName, dataName == username)
-                //判断用户名是否有改变
-                if (username == dataName) {
-                    $tips1.html('')
-                } else {
-                    insert({
-                        username
-                    });
-                    return false
-                }
-                submitMsg('update')
-            })
+        let adminMsg = await verifyToken(token)
+        $userHead.attr('src', adminMsg.ress[0].photoUrl);
+        $uname.html(adminMsg.ress[0].nickname)
+        //判断权限是否为admin
+        if (adminMsg.ress[0].jurisdiction == 'admin') {
+            //------------------获取id,判断是否有id传入---------------
+            if (_id) {
+                /**
+                 * @有id传入
+                 * 1.根据id渲染信息
+                 * 2.提交按钮事件
+                 *  2.1获取性别，判断性别是否有选中
+                 *  2.2判断是否有更改用户名
+                 *      2.2.1有改则查找改用户名是否存在，存在则提示
+                 *      2.2.2没有更改，则提示清空
+                 * 3.获取数据更新数据库信息
+                 */
+                let res = await userAjax({
+                    _id
+                })
+                msgShow(res.data[0])
+                //提交按钮
+                $btn.click(function () {
+                    let $tipsGander = $(".tipsGander");
+                    var _gander = $gander.find(`.layui-anim dd`).filter('.layui-this').html();
+                    if (_gander == '男' || _gander == '女') {
+                        $tipsGander.html('')
+                    } else {
+                        $tipsGander.html('请选择性别').css('color', 'red')
+                        return false
+                    }
+                    var username = $username.val();
+                    var dataName = $username.attr('data-name');
+                    console.log(username, dataName, dataName == username)
+                    //判断用户名是否有改变
+                    if (username == dataName) {
+                        $tips1.html('')
+                    } else {
+                        insert({
+                            username
+                        });
+                        return false
+                    }
+                    submitMsg('update')
+                })
+            } else {
+                /**
+                 * @没有id传入
+                 * 1.给提交按钮绑定事件
+                 * 2.提交时，判断有无选中性别
+                 * 3.获取数据，执行insert方法，
+                 *  3.1根据返回值，作出判断
+                 */
+                //JavaScript代码区域
+                layui.use('form', function () {
+                    var form = layui.form;
+                    //各种基于事件的操作，下面会有进一步介绍
+                });
+                //提交按钮
+                $btn.click(function () {
+                    let $tipsGander = $(".tipsGander");
+                    var _gander = $gander.find(`.layui-anim dd`).filter('.layui-this').html();
+                    if (_gander == '男' || _gander == '女') {
+                        $tipsGander.html('')
+                    } else {
+                        $tipsGander.html('请选择性别').css('color', 'red')
+                        return false
+                    }
+                    submitMsg('insert')
+                })
+            }
+            quit()
         } else {
-            /**
-             * @没有id传入
-             * 1.给提交按钮绑定事件
-             * 2.提交时，判断有无选中性别
-             * 3.获取数据，执行insert方法，
-             *  3.1根据返回值，作出判断
-             */
-            //JavaScript代码区域
-            layui.use('form', function () {
-                var form = layui.form;
-                //各种基于事件的操作，下面会有进一步介绍
-            });
-            //提交按钮
-            $btn.click(function () {
-                let $tipsGander = $(".tipsGander");
-                var _gander = $gander.find(`.layui-anim dd`).filter('.layui-this').html();
-                if (_gander == '男' || _gander == '女') {
-                    $tipsGander.html('')
-                } else {
-                    $tipsGander.html('请选择性别').css('color', 'red')
-                    return false
-                }
-                submitMsg('insert')
-            })
+            alert('您的用户权限不足');
+            location.href = '../login.html';
         }
+
     })()
+
     //-------------------------添加事件--------------------------
     // 失去焦点判断用户名是否注册
     $username.change(function () {

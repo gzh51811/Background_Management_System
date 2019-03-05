@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>后台管理系统</title>
-    <link rel="stylesheet" href="./lib/layui-v2.4.5/layui/css/layui.css">
-    <link rel="stylesheet" href="./css/index.css">
-    <script src="./js/common.js"></script>
-    <script src="./lib/jquery-3.2.1.js"></script>
+    <link rel="stylesheet" href="../lib/layui-v2.4.5/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/goodlist.css">
+    <script src="../js/common.js"></script>
+    <script src="../lib/jquery-3.2.1.js"></script>
     <style>
         .mianbao {
             /* padding-top: 20px; */
@@ -39,8 +39,8 @@
                     <!-- <a href="">首页</a> -->
                     <!-- <a href="">国际新闻</a>
         <a href="">亚太地区</a> -->
-                    <a href="./index.html"><cite>首页</cite></a>
-                    <a href="./index.html"><cite>商品管理</cite></a>
+                    <a href=""><cite>首页</cite></a>
+                    <a href="./goodlist.html"><cite>商品管理</cite></a>
                     <a><cite>商品列表</cite></a>
                 </span>
             </ul>
@@ -65,9 +65,9 @@
                     <li class="layui-nav-item">
                         <a class="" href="javascript:;">商品管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="./index.html">商品列表</a></dd>
-                            <dd><a href="./html/classify.html">商品分类</a></dd>
-                            <dd><a href="./html/addgoods.html">添加商品</a></dd>
+                            <dd><a href="./goodlist.html">商品列表</a></dd>
+                            <dd><a href="./classify.html">商品分类</a></dd>
+                            <dd><a href="./addgoods.html">添加商品</a></dd>
                             <!-- <dd><a href="">超链接</a></dd> -->
                         </dl>
                     </li>
@@ -103,6 +103,7 @@
                     <option value="miui">miui</option>
                     <option value="honor">honor</option>
                     <option value="iphone">iphone</option>
+                    <option value="nokia">nokia</option>
                 </select>
                 <button class="layui-btn search">搜索</button>
             </div>
@@ -132,38 +133,38 @@
                         <th data-type="name">
                             商品名称
                             <!-- 点击的时候更换src -->
-                            <img class="sheng _r img_sort" src="./img/jiantou.png" alt="升序">
-                            <img class="jiang _r img_sort" src="./img/jiantou.png" alt="降序">
+                            <img class="sheng _r img_sort" src="../img/jiantou.png" alt="升序">
+                            <img class="jiang _r img_sort" src="../img/jiantou.png" alt="降序">
                         </th>
                         <th data-type="classify">
                             分类
-                            <img class="sheng img_sort" src="./img/jiantou.png" alt="升序">
-                            <img class="jiang img_sort" src="./img/jiantou.png" alt="降序">
+                            <img class="sheng img_sort" src="../img/jiantou.png" alt="升序">
+                            <img class="jiang img_sort" src="../img/jiantou.png" alt="降序">
                         </th>
                         <th data-type="price">
                             原价
-                            <img class="sheng img_sort" src="./img/jiantou.png" alt="升序">
-                            <img class="jiang img_sort" src="./img/jiantou.png" alt="降序">
+                            <img class="sheng img_sort" src="../img/jiantou.png" alt="升序">
+                            <img class="jiang img_sort" src="../img/jiantou.png" alt="降序">
                         </th>
                         <th data-type="sale">
                             现价
-                            <img class="sheng img_sort" src="./img/jiantou.png" alt="升序">
-                            <img class="jiang img_sort" src="./img/jiantou.png" alt="降序">
+                            <img class="sheng img_sort" src="../img/jiantou.png" alt="升序">
+                            <img class="jiang img_sort" src="../img/jiantou.png" alt="降序">
                         </th>
                         <th data-type="inventory">
                             库存
-                            <img class="sheng img_sort" src="./img/jiantou.png" alt="升序">
-                            <img class="jiang img_sort" src="./img/jiantou.png" alt="降序">
+                            <img class="sheng img_sort" src="../img/jiantou.png" alt="升序">
+                            <img class="jiang img_sort" src="../img/jiantou.png" alt="降序">
                         </th>
                         <th data-type="state">
                             状态
-                            <img class="sheng img_sort" src="./img/jiantou.png" alt="升序">
-                            <img class="jiang img_sort" src="./img/jiantou.png" alt="降序">
+                            <img class="sheng img_sort" src="../img/jiantou.png" alt="升序">
+                            <img class="jiang img_sort" src="../img/jiantou.png" alt="降序">
                         </th>
                         <th data-type="time">
                             添加时间
-                            <img class="sheng _r img_sort" src="./img/jiantou.png" alt="升序">
-                            <img class="jiang _r img_sort" src="./img/jiantou.png" alt="降序">
+                            <img class="sheng _r img_sort" src="../img/jiantou.png" alt="升序">
+                            <img class="jiang _r img_sort" src="../img/jiantou.png" alt="降序">
                         </th>
                         <th>操作</th>
                     </tr>
@@ -226,13 +227,15 @@
     © layui.com - 底部固定区域
   </div> -->
     </div>
-    <script src="./lib/layui-v2.4.5/layui/layui.js"></script>
+    <script src="../lib/layui-v2.4.5/layui/layui.js"></script>
+
     <script>
         //JavaScript代码区域
         layui.use('element', function() {
             var element = layui.element;
         });
     </script>
+    <script src="../js/goodlist.js"></script>
 </body>
 
 </html>

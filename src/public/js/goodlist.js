@@ -149,12 +149,12 @@ document.addEventListener("DOMContentLoaded", function() {
             ifValue()
             let arr = getDeleteArr();
             let _id = JSON.stringify(arr)
-            console.log(_id)
+                // console.log(_id)
             if (arr.length > 0) {
                 if (confirm("是否删除所选商品信息")) {
                     $.ajax({
                         type: "get",
-                        url: `api/list/cancelMany`,
+                        url: `/api/list/cancelMany`,
                         data: `_id=${_id}`,
                         success: (data) => {
                             if (data.code == 1) {
@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if ($(".shopName").val().trim()) {
                 Cookie.setCookie("mohu", "mohu")
                 init()
-                console.log(111)
+                    // console.log(111)
             } else {
                 alert("请输入商品名称");
             }
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 ifValue()
                 $.ajax({
                     type: "get",
-                    url: `api/list/cancel`,
+                    url: `/api/list/cancel`,
                     data: `_id=${_id}`,
                     success: (data) => {
                         if (data.code == 1) {
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // console.log($(e.target).parent().parent().children().eq(7).html())
             $.ajax({
                 type: "get",
-                url: `api/list/update`,
+                url: `/api/list/update`,
                 data: `_id=${$(e.target).attr("data-id")}&state=${$(e.target).html()}`,
                 success: (data) => {
                     if (data.code == 1) {
@@ -332,7 +332,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 Cookie.setCookie("allLength", data.allLength)
                 $(".page").html(creatPage(Math.ceil(data.allLength / data.qty)))
 
-                console.log("getcookie", Cookie.getCookie("allLength"))
+                // console.log("getcookie", Cookie.getCookie("allLength"))
                 if (Math.ceil(data.allLength / data.qty) < Cookie.getCookie("page") && (data.allLength / data.qty) != 0) {
                     Cookie.setCookie("page", Math.ceil(data.allLength / data.qty))
                     if (Math.ceil(data.allLength / data.qty) <= 0) {

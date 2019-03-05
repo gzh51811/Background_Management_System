@@ -174,7 +174,7 @@ Router.get("/cancel", async function(request, response) {
     // console.log("判断", _id === "5c788ba49965e0979bb771da")
     let data = await db.delete('goods', { _id: new ObjectID(_id) })
         // console.log("id", _id)
-    console.log(data.result)
+        // console.log(data.result)
     if (data.result.n == 1 && data.result.ok == 1) {
         response.send({
             msg: "删除成功",
@@ -229,12 +229,12 @@ Router.get("/update", async function(request, response) {
     // if (name) {
     //     console.log(111)
     // }
-    console.log(_id, state, name, title, price, sale, inventory, classify)
+    // console.log(_id, state, name, title, price, sale, inventory, classify)
     let obj = name === undefined ? { $set: { state } } : { $set: { state, name, title, price, sale, inventory, classify } };
     // console.log(obj)
 
     let data = await db.update('goods', { _id: new ObjectID(_id) }, obj)
-    console.log(data.result)
+        // console.log(data.result)
 
     if (data.result.n == 1 && data.result.ok == 1) {
         response.send({
@@ -262,12 +262,12 @@ Router.get("/insert", async function(request, response) {
     // if (name) {
     //     console.log(111)
     // }
-    console.log(state, name, title, price, sale, inventory, classify)
+    // console.log(state, name, title, price, sale, inventory, classify)
 
     // console.log(obj)
 
     let data = await db.insert('goods', { state, name, title, price, sale, inventory, classify, time: (new Date()).toLocaleDateString(), })
-    console.log((new Date()).toUTCString())
+        // console.log((new Date()).toUTCString())
 
     if (data.result.n == 1 && data.result.ok == 1) {
         response.send({

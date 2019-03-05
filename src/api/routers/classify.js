@@ -73,8 +73,8 @@ Router.get('/', urlencoded, (req, res) => {
 
         // console.log(222)
         user.find().sort(obj).toArray((err, result) => {
-            console.log(result)
-            console.log(err)
+            // console.log(result)
+            // console.log(err)
             if (result) {
                 res.send({
                     code: 1,
@@ -107,11 +107,11 @@ Router.get("/one", async function(request, response) {
     let { _id } = request.query;
     // console.log(shopName, classify)
 
-    console.log(_id)
-        //{"name": {$regex: 'mi', $options:'i'},'classify':"iphone"}
+    // console.log(_id)
+    //{"name": {$regex: 'mi', $options:'i'},'classify':"iphone"}
     let data = await db.find('classify', { _id: new ObjectID(_id) })
         // console.log("data", data)
-    console.log("data", data)
+        // console.log("data", data)
     if (data) {
         response.send({
             code: 1,

@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         success: function(data) {
                             if (data.code == 1) {
                                 alert("更新成功")
-                                location.href = `../index.html`
+                                location.href = `./goodlist.html`
                             } else {
                                 alert("更新失败")
                             }
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // console.log(data)
                     if (data.code == 1) {
                         alert("添加成功")
-                        location.href = `../index.html`
+                        location.href = `./goodlist.html`
                     } else {
                         alert("添加失败")
                     }

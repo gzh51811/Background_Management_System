@@ -1,0 +1,4 @@
+{"_id":{"$oid":"5c7e3eae8aa3e199bca363fa"},"classify":"miui","time":"2009/1/1"}
+{"_id":{"$oid":"5c7e3eae8aa3e199bca363fb"},"classify":"iphone","time":"2010/1/2"}
+{"_id":{"$oid":"5c7e3eae8aa3e199bca363fc"},"classify":"honor","time":"2011/1/1"}
+{"_id":{"$oid":"5c7e3eae8aa3e199bca363fd"},"classify":"nokio","time":null}

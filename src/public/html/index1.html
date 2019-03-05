@@ -235,12 +235,41 @@
         <script src="../js/common.js"></script>
         <script src="../js/jquery-1.10.1.min.js"></script>
         <script>
+            let user1 = $(".user-1")
+            let user2 = $(".user-2")
             //JavaScript代码区域
             layui.use('element', function () {
                 var element = layui.element;
             });
-            let name = document.cookie.split('=')[1] //截取cookie里面的用户名
-            console.log(name)
+            //进入页面获取token值
+            var token = localStorage['token'] || sessionStorage['token'] || '';
+            console.log(token)
+            //解密token值并返回信息
+            verifyToken(token);
+
+            function verifyToken(token) {
+                $.get('/api/tokenverify', {
+                    token
+                }, function (res) {
+                    console.log(res)
+                    verifyUser(res)
+                }, 'json')
+            }
+            //解密成功或失败
+            function verifyUser(res) {
+                if (res.status == 200) {
+                    res.ress[0].jurisdiction == 'admin' ? user1.show() : user2.show();
+                    let imge = res.ress[0].photoUrl;
+                    let nickname = res.ress[0].nickname;
+                    console.log(imge,nickname)
+                    $('._username').text(nickname);
+                    $('._imge').attr("src", imge);
+                } else if (res.status == 100) {
+                    location.href = 'login.html'
+                }
+            }
+
+
             // $.ajax({
             //     type: 'get',
             //     url: '../api/login',
@@ -250,13 +279,9 @@
             //     async: true,
             //     success: function (data) {
             //         let root = data.data[0].jurisdiction;
-            //         let imge = data.data[0].photoUrl;
-            //         let nickname = data.data[0].nickname
+
             //         console.log(imge);
-            //         let user1 = $(".user-1")
-            //         let user2 = $(".user-2")
-            //         $('._username').text(nickname);
-            //         $('._imge').attr("src", imge);
+
 
             //         if (root == 'admin') {
             //             user1.show()

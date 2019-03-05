@@ -15,16 +15,13 @@ jQuery(function ($) {
     var $img = $('#img');
 
     let $goods = $('#goods');
-    console.log($goods)
     //上传文件按钮使用onchagne事件
     $goods.on('change', function () {
-        console.log(this.files, this.value)
         //获取文件信息
         var file = this.files[0];
         //判断是否读取了文件
         if (window.FileReader) {
             var fr = new FileReader();
-            console.log(fr);
             //获取预览图片元素
             //文件加载完成后显示预览图片
             fr.onloadend = function (e) {
@@ -59,7 +56,6 @@ jQuery(function ($) {
         (async () => {
             var res = await verifyToken(token);
             _id = res.ress[0]._id;
-            console.log(res.ress[0])
             UserShow(res.ress[0]);
             quit()
             /**
@@ -142,7 +138,6 @@ jQuery(function ($) {
                 tel: $tel.val(),
                 gander: $gander.find(`.layui-anim dd`).filter('.layui-this').html()
             }
-            console.log(defaults)
             var data = Object.assign({}, defaults, obj);
             //update请求
             $.post('/api/userList/update', data, function (res) {
@@ -165,7 +160,6 @@ jQuery(function ($) {
         return new Promise((resolve, reject) => {
             var data = new FormData();
             data.set('user', $goods[0].files[0])
-            console.log(data.get('user'))
             $.ajax({
                 url: "/api/userList/upload",
                 type: "post",
@@ -173,11 +167,9 @@ jQuery(function ($) {
                 contentType: false, //使用multer配合ajax时无需配置multipart/form-data，multer将自动配置，手动配置将报错，boundary not found
                 processData: false,
                 success: function (res) {
-                    console.log(res)
                     resolve(res)
                 },
                 error: function (err) {
-                    console.log(err);
                 }
             });
             $goods.val = null;

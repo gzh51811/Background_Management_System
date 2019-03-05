@@ -6,10 +6,8 @@ const {
 } = require('../utils/token');
 
 Router.get('/', async (req, res) => {
-    // console.log(123,req.query);
     let {username}=req.query;
     let data = await db.find('userList', req.query);
-    // console.log(456,data);
     if (data.length > 0) {
         let token = create({
             username
@@ -27,6 +25,5 @@ Router.get('/', async (req, res) => {
         })
     }
 
-    // console.log(res1);
 })
 module.exports = Router;

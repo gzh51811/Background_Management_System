@@ -4,7 +4,6 @@ let privateKey = 'zhangzhian';
 //封装函数，设置加密信息，用对象保存，expiresIn为加密
 // 生成token
 exports.create = (obj, expiresIn = '7 days') => {
-    console.log('1234',{expiresIn})
     // obj: 用于加密的信息
     // expiresIn: token有效期(单位: s)，默认2小时
     // privateKey：用于加密的私钥

@@ -52,19 +52,15 @@
                     <!-- <a href="">首页</a> -->
                     <!-- <a href="">国际新闻</a>
         <a href="">亚太地区</a> -->
-                    <a ><cite>首页</cite></a>
+                    <a><cite>首页</cite></a>
                 </span>
             </ul>
             <ul class="layui-nav layui-layout-right">
                 tml <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="" class="layui-nav-img  _imge" />
+                        <img src="./img/touxiang.jpg" class="layui-nav-img  _imge" />
                         <span class="_username"></span>
                     </a>
-                    <!-- <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
-        </dl> -->
                 </li>
                 <li class="layui-nav-item"><a href="javascript:;" class="quit">退了</a></li>
             </ul>
@@ -80,7 +76,6 @@
                             <dd><a href="javascript:;">商品列表</a></dd>
                             <dd><a href="javascript:;">商品分类</a></dd>
                             <dd><a href="javascript:;">添加商品</a></dd>
-                            <!-- <dd><a href="">超链接</a></dd> -->
                         </dl>
                     </li>
                     <li class="layui-nav-item">
@@ -94,13 +89,9 @@
                     <li class="layui-nav-item">
                         <a href="javascript:;">订单管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="list.html">订单列表</a></dd>
-                            <!-- <dd><a href="javascript:;">添加用户</a></dd> -->
-                            <!-- <dd><a href="">超链接</a></dd> -->
+                            <dd><a href="./html/list.html">订单列表</a></dd>
                         </dl>
                     </li>
-                    <!-- <li class="layui-nav-item"><a href="">云市场</a></li>
-        <li class="layui-nav-item"><a href="">发布商品</a></li> -->
                 </ul>
             </div>
         </div>
@@ -226,49 +217,12 @@
         <script src="./js/common.js"></script>
         <script src="./js/jquery-1.10.1.min.js"></script>
         <script>
-            let user1 = $(".user-1")
-            let user2 = $(".user-2")
             //JavaScript代码区域
             layui.use('element', function () {
                 var element = layui.element;
             });
-            //进入页面获取token值
-            var token = localStorage['token'] || sessionStorage['token'] || '';
-            //判断有无token值
-            if (token) {
-                (async () => {
-                    let res = await verifyToken(token);
-                    verifyUser(res)
-
-                })()
-            } else {
-                location.href = `login.html`
-            }
-
-
-            //解密成功或失败
-            function verifyUser(res) {
-                if (res.status == 200) {
-                    //判断用户权限,显示相应的选项及路径
-                    if (res.ress[0].jurisdiction == 'admin') {
-                        user1.show()
-                        user1.eq(0).attr('href', './html/userList.html')
-                        user1.eq(1).attr('href', './html/addUser.html')
-                    } else {
-                        user2.show()
-                        user2.attr('href', './html/userMessage.html')
-                    }
-                    //渲染用户信息
-                    let imge = res.ress[0].photoUrl;
-                    let nickname = res.ress[0].nickname;
-                    console.log(imge, nickname)
-                    $('._username').text(nickname);
-                    $('._imge').attr("src", imge);
-                    quit();
-                } else if (res.status == 100) {
-                    location.href = 'login.html'
-                }
-            }
+            userShow()
+           
         </script>
 </body>
 

@@ -26,18 +26,10 @@ data.map(((item, index) => {
             订单总额: (item.价格 * item.数量 ) + (item.运费)*1
         }))
     }))
-  
-
-
-// console.log();
-
-
-
         var res1 = {
             code: 0,
             data: arry
         }
-        console.log(res1);
         res.send(res1);
 });
 module.exports = Router;

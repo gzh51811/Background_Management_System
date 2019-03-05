@@ -37,8 +37,6 @@ jQuery(function ($) {
     })
 
     //获取用户名
-    // var username = Cookie.getCookie('username');
-    // var username = 'ann';
     let $nickname = $(".nickname");
     let $uname = $(".uname");
     let $confirmPw = $(".confirmPw");

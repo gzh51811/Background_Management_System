@@ -6,23 +6,28 @@ jQuery(function ($) {
 
     let $tbody = $("tbody");
     //--------------进入页面渲染-----------------
+    //进入页面获取token值
+    var token = localStorage['token'] || sessionStorage['token'] || '';
     (async () => {
         //获取账户信息渲染头像+用户名
-        let username = Cookie.getCookie('username');
+        // let username = Cookie.getCookie('username');
         let $userHead = $(".userHead");
         let $uname = $(".uname");
-        let adminMsg = await userAjax({
-            username
-        })
-        $userHead.attr('src', adminMsg.data[0].photoUrl);
-        $uname.html(adminMsg.data[0].nickname)
-        //获取普通用户信息+渲染
-        let userMsg = await userAjax({
-            "jurisdiction": 'common'
-        })
-        userShow(userMsg.data);
-        //渲染完成后，给按钮绑定事件
-        ckeckBtn()
+        let adminMsg = await verifyToken(token)
+        $userHead.attr('src', adminMsg.ress[0].photoUrl);
+        $uname.html(adminMsg.ress[0].nickname)
+        if (adminMsg.ress[0].jurisdiction=='admin') {
+            //获取普通用户信息+渲染
+            let userMsg = await userAjax({
+                "jurisdiction": 'common'
+            })
+            userShow(userMsg.data);
+            //渲染完成后，给按钮绑定事件
+            ckeckBtn()
+        }else{
+            alert('您的用户权限不足');
+            location.href = '../login.html';
+        }
     })()
     //----------------------------------方法封装------------------------------------
     //渲染用户列表

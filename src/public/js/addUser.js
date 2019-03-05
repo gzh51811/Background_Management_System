@@ -25,9 +25,11 @@ jQuery(function ($) {
         });
     });
     /*************进入页面渲染用户信息***************/
+     //进入页面获取token值
+     var token = localStorage['token'] || sessionStorage['token'] || '';
     (async () => {
         //------------------获取当前用户信息，渲染头像即名字------------------
-        let username = Cookie.getCookie('username');
+        // let username = Cookie.getCookie('username');
         let $userHead = $(".userHead");
         let $uname = $(".uname");
         let adminMsg = await userAjax({

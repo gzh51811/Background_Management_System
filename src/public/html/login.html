@@ -229,11 +229,15 @@
                             let name = data.data[0].username;
                             let pas = data.data[0].upw;
                             // console.log(data)
+
+                            //创建cookie
                             var now = new Date(); //日 now.getDate()
                             now.setDate(now.getDate() + 7) //7天失效
-
                             document.cookie = "username=" + name + ';expires=' + now.toUTCString() +';path='+'/';
                             // document.cookie = 'password=' + pas + ';expires=' + now.toUTCString()
+
+
+
                             location.href = `index1.html`
                         } else {
                             alert('密码或用户名错误，请重新输入')
@@ -266,7 +270,7 @@
 
 
 
-    </script>
+    <!-- </script> -->
 </body>
 
 </html>

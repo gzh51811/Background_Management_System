@@ -53,7 +53,7 @@ let urlencoded = bodyParser.urlencoded({ extended: false });
 
 Router.get('/', urlencoded, (req, res) => {
     // console.log("req.body",req.body);
-    let { page, qty, sort, desc, mohu, shopName, classify } = req.query;
+    let { sort, desc, } = req.query;
     // console.log(shopName)
     var obj = {}
     obj[sort] = desc * 1; //键名代表排序方式,键值代表升序(1)或是降序(-1);
@@ -66,72 +66,32 @@ Router.get('/', urlencoded, (req, res) => {
         let shujuku = database.db('BMS');
 
         // 使用集合
-        let user = shujuku.collection('goods');
+        let user = shujuku.collection('classify');
         // console.log({ classify, "name": { $regex: shopName, $options: 'i' } })
         // 模糊查询商品
         // console.log(desc, typeof(desc * 1))
-        if (mohu == "mohu") {
-            // console.log(1111)
-            user.find().skip((page - 1) * qty).limit(qty * 1).sort(obj).toArray(async(err, result) => {
-                let arr = await db.find('goods', { name: { $regex: shopName, $options: 'i' }, classify, });
-                var data1 = arr.sort((a, b) => {
 
-                        if (desc * 1 === 1) {
-                            // console.log("1sort")
-                            return a[sort] - b[sort]
-                        } else if (desc * 1 === -1) {
-                            // console.log("-1sort")
-                            return b[sort] - a[sort]
-                        }
-                    })
-                    // console.log("data1", data1)
-                data1 = data1.slice((page - 1) * qty, qty * page);
+        // console.log(222)
+        user.find().sort(obj).toArray((err, result) => {
+            console.log(result)
+            console.log(err)
+            if (result) {
+                res.send({
+                    code: 1,
+                    Length: result.length,
+                    msg: "页商品分类的数据",
+                    data: result,
+                })
+            } else {
+                res.send({
+                    code: 1,
+                    data: result,
+                    msg: `查询错误，商品列表数据出错`
+                })
+            }
+            // console.log(result, result.length, )
+        });
 
-                if (result) {
-                    res.send({
-                        code: 1,
-                        allLength: arr.length,
-                        page,
-                        qty,
-                        currLength: result.length,
-                        msg: "第" + page + "页商品列表的数据",
-                        data: data1,
-                    })
-                } else {
-                    res.send({
-                        code: 1,
-                        data: result,
-                        msg: `查询错误第${page}页商品列表数据出错`
-                    })
-                }
-                // console.log(result, result.length, )
-            });
-        } else {
-            // console.log(222)
-            user.find().skip((page - 1) * qty).limit(qty * 1).sort(obj).toArray(async(err, result) => {
-                let arr = await db.find('goods', {});
-
-                if (result) {
-                    res.send({
-                        code: 1,
-                        allLength: arr.length,
-                        page,
-                        qty,
-                        currLength: result.length,
-                        msg: "第" + page + "页商品列表的数据",
-                        data: result,
-                    })
-                } else {
-                    res.send({
-                        code: 1,
-                        data: result,
-                        msg: `查询错误第${page}页商品列表数据出错`
-                    })
-                }
-                // console.log(result, result.length, )
-            });
-
-        }
 
         // 关闭数据库，避免资源浪费
         database.close();
@@ -147,11 +107,11 @@ Router.get("/one", async function(request, response) {
     let { _id } = request.query;
     // console.log(shopName, classify)
 
-    // console.log(page, qty)
-    //{"name": {$regex: 'mi', $options:'i'},'classify':"iphone"}
-    let data = await db.find('goods', { _id: new ObjectID(_id) })
+    console.log(_id)
+        //{"name": {$regex: 'mi', $options:'i'},'classify':"iphone"}
+    let data = await db.find('classify', { _id: new ObjectID(_id) })
         // console.log("data", data)
-
+    console.log("data", data)
     if (data) {
         response.send({
             code: 1,
@@ -172,8 +132,8 @@ Router.get("/cancel", async function(request, response) {
     let { _id } = request.query;
     // console.log("_id", _id)
     // console.log("判断", _id === "5c788ba49965e0979bb771da")
-    let data = await db.delete('goods', { _id: new ObjectID(_id) })
-        // console.log("id", _id)
+    let data = await db.delete('classify', { _id: new ObjectID(_id) })
+    console.log("id", _id)
     console.log(data.result)
     if (data.result.n == 1 && data.result.ok == 1) {
         response.send({
@@ -197,7 +157,7 @@ Router.get("/cancelMany", async function(request, response) {
         let arr2 = [];
         for (var a = 0; a < arr.length; a++) {
             var id = arr[a]
-            let data = await db.delete('goods', { _id: new ObjectID(id) })
+            let data = await db.delete('classify', { _id: new ObjectID(id) })
                 // console.log(data.result.n, data.result.ok)
             if (data.result.n == 1 && data.result.ok == 1) {
                 arr2.push(true)
@@ -223,18 +183,18 @@ Router.get("/cancelMany", async function(request, response) {
     })
     //更新
 Router.get("/update", async function(request, response) {
-    let { _id, state, name, title, price, sale, inventory, classify } = request.query;
+    let { _id, classify, time } = request.query;
     //console.log(typeof name)
     // console.log(_id)
     // if (name) {
     //     console.log(111)
     // }
-    console.log(_id, state, name, title, price, sale, inventory, classify)
-    let obj = name === undefined ? { $set: { state } } : { $set: { state, name, title, price, sale, inventory, classify } };
+    // console.log(_id, state, name, title, price, sale, inventory, classify)
+    let obj = { $set: { classify, time } };
     // console.log(obj)
 
-    let data = await db.update('goods', { _id: new ObjectID(_id) }, obj)
-    console.log(data.result)
+    let data = await db.update('classify', { _id: new ObjectID(_id) }, obj)
+        // console.log(data.result)
 
     if (data.result.n == 1 && data.result.ok == 1) {
         response.send({
@@ -256,18 +216,18 @@ Router.get("/update", async function(request, response) {
 // 增
 Router.get("/insert", async function(request, response) {
 
-    let { state, name, title, price, sale, inventory, classify } = request.query;
+    let { classify } = request.query;
     //console.log(typeof name)
     // console.log(_id)
     // if (name) {
     //     console.log(111)
     // }
-    console.log(state, name, title, price, sale, inventory, classify)
+    //console.log(state, name, title, price, sale, inventory, classify)
 
     // console.log(obj)
 
-    let data = await db.insert('goods', { state, name, title, price, sale, inventory, classify, time: (new Date()).toLocaleDateString(), })
-    console.log((new Date()).toUTCString())
+    let data = await db.insert('classify', { classify, time: (new Date()).toLocaleDateString(), })
+        //console.log((new Date()).toUTCString())
 
     if (data.result.n == 1 && data.result.ok == 1) {
         response.send({

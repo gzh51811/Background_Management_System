@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" href="../lib/layui-v2.4.5/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/common.js"></script>
+    <script src="../lib/jquery-3.2.1.js"></script>
+    <style>
+        .mianbao {
+            /* padding-top: 20px; */
+            line-height: 60px;
+        }
+    </style>
+
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">商家后台管理系统</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left mianbao">
+                <!-- <li class="layui-nav-item"><a href="">控制台</a></li>
+      <li class="layui-nav-item"><a href="">商品管理</a></li>
+      <li class="layui-nav-item"><a href="">用户</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">其它系统</a>
+        <dl class="layui-nav-child">
+          <dd><a href="">邮件管理</a></dd>
+          <dd><a href="">消息管理</a></dd>
+          <dd><a href="">授权管理</a></dd>
+        </dl>
+      </li> -->
+                <span class="layui-breadcrumb ">
+                    <!-- <a href="">首页</a> -->
+                    <!-- <a href="">国际新闻</a>
+        <a href="">亚太地区</a> -->
+                    <a href="../index.html"><cite>首页</cite></a>
+                    <a href="../index.html"><cite>商品管理</cite></a>
+                    <a href="./addgoods.html"><cite>添加商品</cite></a>
+                </span>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+                    </a>
+                    <!-- <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl> -->
+                </li>
+                <li class="layui-nav-item"><a href="">退了</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） layui-nav-itemed类名设置默认打开列表-->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item">
+                        <a class="" href="javascript:;">商品管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="../index.html">商品列表</a></dd>
+                            <dd><a href="./classify.html">商品分类</a></dd>
+                            <dd><a href="./addgoods.html">添加商品</a></dd>
+                            <!-- <dd><a href="">超链接</a></dd> -->
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">用户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">用户列表</a></dd>
+                            <dd><a href="javascript:;">添加用户</a></dd>
+                            <!-- <dd><a href="">超链接</a></dd> -->
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">订单管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">订单列表</a></dd>
+                            <!-- <dd><a href="javascript:;">添加用户</a></dd> -->
+                            <!-- <dd><a href="">超链接</a></dd> -->
+                        </dl>
+                    </li>
+                    <!-- <li class="layui-nav-item"><a href="">云市场</a></li>
+        <li class="layui-nav-item"><a href="">发布商品</a></li> -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <!-- <div class="layui-form-item">
+                <label class="layui-form-label">商品名称</label>
+                <div class="layui-input-block" style="width: 300px">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入商品名称" autocomplete="off" class="layui-input">
+                </div>
+                <span class="layui-form-mid layui-word-aux inf">辅助文字</span>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                </div>
+                <span class="layui-form-mid layui-word-aux inf">辅助文字</span>
+            </div> -->
+            <div class="layui-form-item" style="margin-top: 50px;">
+                <label class="layui-form-label">商品名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" required lay-verify="required" placeholder="请输入商品名称" autocomplete="off" class="layui-input shopInput">
+                </div>
+                <div class="layui-form-mid layui-word-aux">50字以内</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品副标题</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" required lay-verify="required" placeholder="请输入商品副标题" autocomplete="off" class="layui-input titleInput">
+                </div>
+                <div class="layui-form-mid layui-word-aux">100字以内</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品价格</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" required lay-verify="required" placeholder="请输入商品价格" autocomplete="off" class="layui-input priceInput">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">销售价格</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" required lay-verify="required" placeholder="请输入销售价格" autocomplete="off" class="layui-input saleInput">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">库存</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" required lay-verify="required" placeholder="请输入库存" autocomplete="off" class="layui-input kucunInput">
+                </div>
+            </div>
+            <div class="">
+                <label class="layui-form-label">选择分类</label>
+                <select class="classifyInput" style="width:190px;height:38px;border:1px solid #e6e6e6">
+                    <option value="iphone">iphone</option>
+                    <option value="miui">miui</option>
+                    <option value="honor">honor</option>
+                    <option value="nokia">nokia</option>
+                </select>
+            </div>
+            <div style="margin-top:15px">
+                <label class="layui-form-label">上下架状态</label>
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-sm shangjia">上架</button>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text" style="width:600px">
+                <label class="layui-form-label">商品描述</label>
+                <div class="layui-input-block">
+                    <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn yes_btn " lay-submit lay-filter="formDemo ">确认</button>
+                </div>
+            </div>
+
+
+
+
+            <!-- <div class="layui-footer ">
+    底部固定区域
+    © layui.com - 底部固定区域
+  </div> -->
+        </div>
+        <script src="../lib/layui-v2.4.5/layui/layui.js "></script>
+        <script>
+            //JavaScript代码区域
+            layui.use('element', function() {
+                var element = layui.element;
+
+            });
+        </script>
+        <script>
+            //Demo
+            layui.use('form', function() {
+                var form = layui.form;
+
+                //监听提交
+                form.on('submit(formDemo)', function(data) {
+                    layer.msg(JSON.stringify(data.field));
+                    return false;
+                });
+            });
+        </script>
+        <script>
+            layui.use('form', function() {
+                var form = layui.form;
+                form.render();
+            })
+        </script>
+        <script src="../js/addgoods.js "></script>
+</body>
+
+</html>

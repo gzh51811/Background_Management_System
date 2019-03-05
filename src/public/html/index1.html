@@ -241,33 +241,33 @@
             });
             let name = document.cookie.split('=')[1] //截取cookie里面的用户名
             console.log(name)
-            $.ajax({
-                type: 'get',
-                url: '../api/login',
-                data: {
-                    username: name
-                },
-                async: true,
-                success: function (data) {
-                    let root = data.data[0].jurisdiction;
-                    let imge = data.data[0].photoUrl;
-                    let nickname = data.data[0].nickname
-                    console.log(imge);
-                    let user1 = $(".user-1")
-                    let user2 = $(".user-2")
-                    $('._username').text(nickname);
-                    $('._imge').attr("src", imge);
+            // $.ajax({
+            //     type: 'get',
+            //     url: '../api/login',
+            //     data: {
+            //         username: name
+            //     },
+            //     async: true,
+            //     success: function (data) {
+            //         let root = data.data[0].jurisdiction;
+            //         let imge = data.data[0].photoUrl;
+            //         let nickname = data.data[0].nickname
+            //         console.log(imge);
+            //         let user1 = $(".user-1")
+            //         let user2 = $(".user-2")
+            //         $('._username').text(nickname);
+            //         $('._imge').attr("src", imge);
 
-                    if (root == 'admin') {
-                        user1.show()
-                        // console.log(111)
-                    } else {
-                        user2.show()
-                        // console.log(222)
-                    }
-                    quit()
-                }
-            })
+            //         if (root == 'admin') {
+            //             user1.show()
+            //             // console.log(111)
+            //         } else {
+            //             user2.show()
+            //             // console.log(222)
+            //         }
+            //         quit()
+            //     }
+            // })
 
             function quit() {
                 let $quit = $(".quit");

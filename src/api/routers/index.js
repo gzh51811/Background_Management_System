@@ -5,17 +5,18 @@ const Router = express.Router();
 // const registerRouter = require('./register');
 const listRouter = require('./list');
 const userlistRouter = require('./userList');
-const listRouter = require('./order-list');
+const orderListRouter = require('./order-list');
 const delRouter = require('./del-list');
-const loginRouter = require('./login')
+const loginRouter = require('./login');
+const token = require('./token');
 //设置分支路由
 // Router.use('/login',loginRouter);
 // Router.use('/register',registerRouter);
 Router.use('/list', listRouter);
 Router.use('/userList', userlistRouter);
 //ssss
-Router.use('/order-list', listRouter); //查询接口
+Router.use('/order-list', orderListRouter); //查询接口
 Router.use('/del-list', delRouter); //删除接口
 Router.use('/login', loginRouter); //登录接口
-
+// Router.use('/token',token);
 module.exports = Router;

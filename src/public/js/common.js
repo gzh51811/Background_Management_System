@@ -338,12 +338,12 @@ function userShow() {
     }
 
 }
-
+// 47.107.113.128
 let {
     host,
     port
 } = {
-    host: "47.107.113.128",
+    host: "localhost",
     port: "1811"
 }
 //解密成功或失败

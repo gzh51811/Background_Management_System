@@ -1,1 +1,200 @@
-"use strict";function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(i,o){return function t(e,n){try{var a=s[e](n),r=a.value}catch(e){return void o(e)}if(!a.done)return Promise.resolve(r).then(function(e){t("next",e)},function(e){t("throw",e)});i(r)}("next")})}}jQuery(function(i){var r=this,o=i(".username"),s=i(".nickname"),l=i(".userpw"),u=i(".tel"),c=i(".gander"),m=i(".shengri"),d=i(".zhiye"),f=i(".city"),h=i(".youxiang"),v=i(".beizhu"),y=i(".btn"),p=i(".tips1"),g=location.search.slice(1).split("=")[1];layui.use("element",function(){layui.element}),layui.use("laydate",function(){layui.laydate.render({elem:"#test1"})});var k=localStorage.token||sessionStorage.token||"";function b(e){o.val(e.username).attr("data-name",""+e.username),s.val(e.nickname),l.val(e.upw),m.val(e.birthday),d.val(e.job),f.val(e.city),h.val(e.email),v.val(e.markdown),u.val(e.tel),c.find("select option:contains("+e.gander+")").prop("selected","selected"),layui.use("form",function(){layui.form})}function x(e){var t,n,a,r={username:o.val(),nickname:s.val(),upw:l.val(),birthday:m.val(),job:d.val(),city:f.val(),email:h.val(),markdown:v.val(),tel:u.val(),gander:c.find(".layui-anim dd").filter(".layui-this").html()};"insert"===e?j(r):"update"===e&&(t=r,n={_id:g},a=Object.assign({},t,n),i.post("/api/userList/update",a,function(e){e.code?1==e.code?location.href="userList.html":2==e.code&&p.html(e.msg).css("color","green"):p.html(e.msg).css("color","red")},"json"))}function j(e){var t={jurisdiction:"common",photoUrl:"/images/touxiang.jpg",reqTime:Date.now()},n=Object.assign({},e,t);i.post("/api/userList/add",n,function(e){e.code?1==e.code&&(location.href="userList.html"):p.html(e.msg).css("color","red")},"json")}k?_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n,a;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=i(".userHead"),n=i(".uname"),e.next=4,verifyToken(k);case 4:if(a=e.sent,t.attr("src",a.ress[0].photoUrl),n.html(a.ress[0].nickname),"admin"!=a.ress[0].jurisdiction){e.next=21;break}if(g)return e.next=11,userAjax({_id:g});e.next=16;break;case 11:b(e.sent.data[0]),y.click(function(){var e=i(".tipsGander"),t=c.find(".layui-anim dd").filter(".layui-this").html();if("男"!=t&&"女"!=t)return e.html("请选择性别").css("color","red"),!1;e.html("");var n=o.val();if(n!=o.attr("data-name"))return j({username:n}),!1;p.html(""),x("update")}),e.next=18;break;case 16:layui.use("form",function(){layui.form}),y.click(function(){var e=i(".tipsGander"),t=c.find(".layui-anim dd").filter(".layui-this").html();if("男"!=t&&"女"!=t)return e.html("请选择性别").css("color","red"),!1;e.html(""),x("insert")});case 18:quit(),e.next=23;break;case 21:alert("您的用户权限不足"),location.href="../login.html";case 23:case"end":return e.stop()}},e,r)}))():location.href="../login.html",o.change(function(){var e=o.val();e==o.attr("data-name")?p.html(""):j({username:e})})});
+jQuery(function ($) {
+    let $username = $(".username");
+    let $nickname = $(".nickname");
+    let $userpw = $(".userpw");
+    let $tel = $(".tel");
+    let $gander = $(".gander");
+    let $shengri = $(".shengri");
+    let $zhiye = $(".zhiye");
+    let $city = $(".city");
+    let $youxiang = $(".youxiang");
+    let $beizhu = $(".beizhu");
+    let $btn = $(".btn");
+    var $tips1 = $('.tips1');
+    var _id = location.search.slice(1).split('=')[1];
+
+    //layui 代码
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test1' //指定元素
+        });
+    });
+    /*************进入页面渲染用户信息***************/
+    //进入页面获取token值
+    var token = localStorage['token'] || sessionStorage['token'] || '';
+    if (token) {
+        (async () => {
+            //------------------获取当前用户信息，渲染头像即名字------------------
+            // let username = Cookie.getCookie('username');
+            let $userHead = $(".userHead");
+            let $uname = $(".uname");
+            let adminMsg = await verifyToken(token)
+            $userHead.attr('src', adminMsg.ress[0].photoUrl);
+            $uname.html(adminMsg.ress[0].nickname)
+            //判断权限是否为admin
+            if (adminMsg.ress[0].jurisdiction == 'admin') {
+                //------------------获取id,判断是否有id传入---------------
+                if (_id) {
+                    /**
+                     * @有id传入
+                     * 1.根据id渲染信息
+                     * 2.提交按钮事件
+                     *  2.1获取性别，判断性别是否有选中
+                     *  2.2判断是否有更改用户名
+                     *      2.2.1有改则查找改用户名是否存在，存在则提示
+                     *      2.2.2没有更改，则提示清空
+                     * 3.获取数据更新数据库信息
+                     */
+                    let res = await userAjax({
+                        _id
+                    })
+                    msgShow(res.data[0])
+                    //提交按钮
+                    $btn.click(function () {
+                        let $tipsGander = $(".tipsGander");
+                        var _gander = $gander.find(`.layui-anim dd`).filter('.layui-this').html();
+                        if (_gander == '男' || _gander == '女') {
+                            $tipsGander.html('')
+                        } else {
+                            $tipsGander.html('请选择性别').css('color', 'red')
+                            return false
+                        }
+                        var username = $username.val();
+                        var dataName = $username.attr('data-name');
+                        //判断用户名是否有改变
+                        if (username == dataName) {
+                            $tips1.html('')
+                        } else {
+                            insert({
+                                username
+                            });
+                            return false
+                        }
+                        submitMsg('update')
+                    })
+                } else {
+                    /**
+                     * @没有id传入
+                     * 1.给提交按钮绑定事件
+                     * 2.提交时，判断有无选中性别
+                     * 3.获取数据，执行insert方法，
+                     *  3.1根据返回值，作出判断
+                     */
+                    //JavaScript代码区域
+                    layui.use('form', function () {
+                        var form = layui.form;
+                        //各种基于事件的操作，下面会有进一步介绍
+                    });
+                    //提交按钮
+                    $btn.click(function () {
+                        let $tipsGander = $(".tipsGander");
+                        var _gander = $gander.find(`.layui-anim dd`).filter('.layui-this').html();
+                        if (_gander == '男' || _gander == '女') {
+                            $tipsGander.html('')
+                        } else {
+                            $tipsGander.html('请选择性别').css('color', 'red')
+                            return false
+                        }
+                        submitMsg('insert')
+                    })
+                }
+                quit()
+            } else {
+                alert('您的用户权限不足');
+                location.href = '../login.html';
+            }
+
+        })()
+
+    } else {
+        location.href = '../login.html';
+    }
+    //-------------------------添加事件--------------------------
+    // 失去焦点判断用户名是否注册
+    $username.change(function () {
+        var username = $username.val();
+        var dataName = $username.attr('data-name');
+        //判断用户名是否有改变
+        username == dataName ? $tips1.html('') : insert({
+            username
+        });
+    })
+    //--------------------------------封装方法------------------------------
+    //修改用户信息时渲染
+    function msgShow(res) {
+        $username.val(res.username).attr('data-name', `${res.username}`);
+        $nickname.val(res.nickname);
+        $userpw.val(res.upw);
+        $shengri.val(res.birthday);
+        $zhiye.val(res.job);
+        $city.val(res.city);
+        $youxiang.val(res.email);
+        $beizhu.val(res.markdown);
+        $tel.val(res.tel);
+        $gander.find(`select option:contains(${res.gander})`).prop('selected', 'selected')
+        //JavaScript代码区域
+        layui.use('form', function () {
+            var form = layui.form;
+            //各种基于事件的操作，下面会有进一步介绍
+        });
+    }
+    //提交用户信息请求
+    function submitMsg(req) {
+        var data = {
+            username: $username.val(),
+            nickname: $nickname.val(),
+            upw: $userpw.val(),
+            birthday: $shengri.val(),
+            job: $zhiye.val(),
+            city: $city.val(),
+            email: $youxiang.val(),
+            markdown: $beizhu.val(),
+            tel: $tel.val(),
+            gander: $gander.find(`.layui-anim dd`).filter('.layui-this').html()
+        }
+        if (req === "insert") {
+            insert(data);
+        } else if (req === "update") {
+            update(data)
+        }
+    }
+
+    //insert请求
+    function insert(defaults) {
+        var obj = {
+            jurisdiction: 'common',
+            photoUrl: '/images/touxiang.jpg',
+            reqTime: Date.now()
+        }
+        var data = Object.assign({}, defaults, obj);
+        $.post('/api/userList/add', data, function (res) {
+            if (!res.code) {
+                $tips1.html(res.msg).css('color', 'red')
+            } else if (res.code == 1) {
+                location.href = 'userList.html';
+            }
+        }, 'json')
+    }
+    //update请求
+    function update(defaults) {
+        var obj = {
+            _id
+        };
+        var data = Object.assign({}, defaults, obj);
+        $.post('/api/userList/update', data, function (res) {
+            if (!res.code) {
+                $tips1.html(res.msg).css('color', 'red')
+            } else if (res.code == 1) {
+                location.href = 'userList.html';
+            } else if (res.code == 2) {
+                $tips1.html(res.msg).css('color', 'green')
+            }
+        }, 'json')
+    }
+
+})

@@ -1,1 +1,421 @@
-"use strict";function _toConsumableArray(e){if(Array.isArray(e)){for(var t=0,o=Array(e.length);t<e.length;t++)o[t]=e[t];return o}return Array.from(e)}document.addEventListener("DOMContentLoaded",function(){function t(){for(var e=0;e<$(".img_sort").length;e++)$(".img_sort").eq(e).prop("src","../img/jiantou.png")}function o(e){for(var t=[].concat(_toConsumableArray(document.querySelectorAll(".one"))),o=0;o<t.length;o++)e?$(t[o].parentElement).addClass("layui-form-checked"):$(t[o].parentElement).removeClass("layui-form-checked")}function a(){$(".shopName").val().trim()?Cookie.setCookie("mohu","mohu"):Cookie.setCookie("mohu","")}function i(){for(var e=[],t=0;t<document.querySelectorAll("tbody>tr>td>div").length;t++)$(document.querySelectorAll("tbody>tr>td>div")[t]).hasClass("layui-form-checked")&&e.push($(document.querySelectorAll("tbody>tr>td>div")[t]).attr("data-id"));return e}function n(){a();var e=Cookie.getCookie("mohu")?"page="+Cookie.getCookie("page")+"&qty="+Cookie.getCookie("qty")+"&sort="+Cookie.getCookie("sort")+"&desc="+Cookie.getCookie("desc")+"&mohu="+Cookie.getCookie("mohu")+"&shopName="+$(".shopName").val()+"&classify="+$("#fenlei").val():"page="+Cookie.getCookie("page")+"&qty="+Cookie.getCookie("qty")+"&sort="+Cookie.getCookie("sort")+"&desc="+Cookie.getCookie("desc")+"&mohu="+Cookie.getCookie("mohu");$.ajax({type:"get",url:"/api/list",data:e,success:function(e){var t;$("#bit").val(Cookie.getCookie("qty")),$("tbody").html(e.data.map(function(e,t){return'<tr data-id="'+e._id+'">\n                    <td>\n                        <div class="layui-unselect layui-form-checkbox " lay-skin="primary" data-id="'+e._id+'">\n                            <i class="layui-icon layui-icon-ok one"></i>\n                        </div>\n                    </td>\n                    <td>'+(t+1)+"</td>\n                    <td>"+e.name+"</td>\n                    <td>"+e.classify+"</td>\n                    <td>"+e.price+"</td>\n                    <td>"+e.sale+"</td>\n                    <td>"+e.inventory+'</td>\n                    <td class="realState">'+e.state+"</td>\n                    <td>"+e.time+'</td>\n                    <td data-id="'+e._id+'">\n                        <button class="layui-btn layui-btn-sm">\n                            <i class="layui-icon compile"></i>\n                        </button>\n                        <button class="layui-btn layui-btn-primary layui-btn-sm ">\n                                <i class="layui-icon cancel"></i>\n                        </button>\n                        <button class="layui-btn layui-btn-sm state" data-id="'+e._id+'">'+("上架"==e.state?"下架":"上架")+"</button>\n                    </td>\n                </tr>"}).join(",")),Cookie.setCookie("allLength",e.allLength),$(".page").html(function(e){for(var t="<p>共"+Cookie.getCookie("allLength")+'条</p>\n                    <button class="layui-btn layui-btn-sm layui-btn-primary pagePrve" style="border-left: 1px solid #ccc;">上一页</button>',o=0;o<e;o++)t+='<button class = "layui-btn layui-btn-sm layui-btn-primary pageNum"> '+(o+1)+"</button>";return t+='<button class="layui-btn layui-btn-sm layui-btn-primary pageNext">下一页</button>'}(Math.ceil(e.allLength/e.qty))),Math.ceil(e.allLength/e.qty)<Cookie.getCookie("page")&&e.allLength/e.qty!=0&&(Cookie.setCookie("page",Math.ceil(e.allLength/e.qty)),Math.ceil(e.allLength/e.qty)<=0&&Cookie.setCookie("page",1),n()),t=Cookie.getCookie("page"),$(".page button").eq(t).removeClass("layui-btn-primary"),$(".toPage input").prop("max",Math.ceil(e.allLength/e.qty)),i()}})}userShow(),Cookie.getCookie("page")||(Cookie.setCookie("page",1),Cookie.setCookie("qty",10),Cookie.setCookie("sort","time"),Cookie.setCookie("desc",1),Cookie.setCookie("mohu","")),a(),$("thead").on("click","img",function(e){e=event||window.event;$(e.target).hasClass("sheng")&&(t(),$(e.target).prop("src","../img/jiantou1.png"),Cookie.setCookie("sort",$(e.target).parent().attr("data-type")),Cookie.setCookie("desc",1),n()),$(e.target).hasClass("jiang")&&(t(),$(e.target).prop("src","../img/jiantou1.png"),Cookie.setCookie("sort",$(e.target).parent().attr("data-type")),Cookie.setCookie("desc","-1"),n())}),function(){for(var e=0;e<$("thead>tr>th").length;e++)$("thead>tr>th").eq(e).attr("data-type")==Cookie.getCookie("sort")&&(1==Cookie.getCookie("desc")?$("thead>tr>th").eq(e).children().eq(0).prop("src","../img/jiantou1.png"):-1==Cookie.getCookie("desc")&&$("thead>tr>th").eq(e).children().eq(1).prop("src","../img/jiantou1.png"))}(),$(".layui-body").on("click",function(e){e=event||window.event;$(e.target).hasClass("one")&&($(e.target).parent().hasClass("layui-form-checked")?$(e.target).parent().removeClass("layui-form-checked"):$(e.target).parent().addClass("layui-form-checked"),!function(){for(var e=[].concat(_toConsumableArray(document.querySelectorAll(".one"))),t=0;t<e.length;t++)if(0==[].concat(_toConsumableArray(e[t].parentElement.classList)).includes("layui-form-checked"))return!1;return!0}()?$(".all").parent().removeClass("layui-form-checked"):$(".all").parent().addClass("layui-form-checked"))}),$(".layui-body").on("click",$(".all"),function(e){e=event||window.event;$(e.target).hasClass("all")&&($(e.target).parent().hasClass("layui-form-checked")?($(e.target).parent().removeClass("layui-form-checked"),o(!1)):($(e.target).parent().addClass("layui-form-checked"),o(!0)))}),$(".top").on("click",function(e){e=event||window.event;if($(e.target).hasClass("addAll")&&(location.href="../html/addgoods.html"),$(e.target).hasClass("deteleAll")){a();var t=i(),o=JSON.stringify(t);0<t.length?confirm("是否删除所选商品信息")&&$.ajax({type:"get",url:"/api/list/cancelMany",data:"_id="+o,success:function(e){1==e.code?(alert("删除成功"),$(".all").parent().removeClass("layui-form-checked"),n()):alert("删除失败")}}):alert("请选择需要删除的数据")}$(e.target).hasClass("search")&&($(".shopName").val().trim()?(Cookie.setCookie("mohu","mohu"),n()):alert("请输入商品名称"))}),$("tbody").on("click",function(e){e=event||window.event;if($(e.target).hasClass("compile")&&(location.href="../html/addgoods.html?_id="+$(e.target).parent().parent().attr("data-id")),$(e.target).hasClass("cancel")){var t=$(e.target).parent().parent().attr("data-id");confirm("是否删除该条商品信息")&&(a(),$.ajax({type:"get",url:"/api/list/cancel",data:"_id="+t,success:function(e){1==e.code?(alert("删除成功"),n()):alert("删除失败")}}))}$(e.target).hasClass("state")&&$.ajax({type:"get",url:"/api/list/update",data:"_id="+$(e.target).attr("data-id")+"&state="+$(e.target).html(),success:function(e){1==e.code?n():alert("修改失败")}})}),n(),$(".page").on("click","button",function(e){$(e.target).hasClass("pageNum")&&(a(),function(){for(var e=1;e<$(".page button").length-1;e++)$(".page button").eq(e).addClass("layui-btn-primary")}(),Cookie.setCookie("page",$(e.target).html()),n()),$(e.target).hasClass("pagePrve")&&(a(),1<Cookie.getCookie("page")&&(Cookie.setCookie("page",Cookie.getCookie("page")-1),n())),$(e.target).hasClass("pageNext")&&(a(),Cookie.getCookie("page")<$(".page").children().length-2&&(Cookie.setCookie("page",1*Cookie.getCookie("page")+1),n()))}),$("#bit").on("input",function(){Cookie.setCookie("qty",$(this).val()),Math.ceil(Cookie.getCookie("allLength")/$(this).val())<Cookie.getCookie("Page")&&Cookie.setCookie("page",Math.ceil(Cookie.getCookie("allLength")/$(this).val())),n()}),$(".toPage input").on("input",function(){1*$(this).val()>1*$(this).prop("max")?$(this).val($(this).prop("max")):$(this).val()<1&&$(this).val(1)}),$(".toPageBtn").on("click",function(){Cookie.setCookie("page",$(".toPage input").val()),n()})});
+document.addEventListener("DOMContentLoaded", function() { 
+    //page=1&qty=10&sort=_id&desc=1
+    userShow()
+    if (Cookie.getCookie("page")) {
+
+    } else {
+        Cookie.setCookie("page", 1)
+        Cookie.setCookie("qty", 10)
+        Cookie.setCookie("sort", "time")
+        Cookie.setCookie("desc", 1)
+        Cookie.setCookie("mohu", "")
+    }
+    ifValue();
+    //点击排序
+    $("thead").on("click", "img", e => {
+        var e = event || window.event;
+        if ($(e.target).hasClass("sheng")) {
+            removePriceActive()
+            $(e.target).prop("src", "../img/jiantou1.png")
+            Cookie.setCookie("sort", $(e.target).parent().attr("data-type"))
+            Cookie.setCookie("desc", 1)
+            init()
+                // console.log("已执行上")
+        }
+        if ($(e.target).hasClass("jiang")) {
+            removePriceActive()
+            $(e.target).prop("src", "../img/jiantou1.png")
+            Cookie.setCookie("sort", $(e.target).parent().attr("data-type"))
+            Cookie.setCookie("desc", "-1")
+            init()
+                // console.log("已执行下")
+        }
+    })
+
+    //封装清除排序选项高亮
+    function removePriceActive() {
+        // console.log(111)
+
+        for (var a = 0; a < $(".img_sort").length; a++) {
+            // console.log(a)
+            $(".img_sort").eq(a).prop("src", "../img/jiantou.png")
+                // console.log($(".img_sort").eq(a))
+        }
+        // console.log($(".img_sort").length)
+    }
+
+    //封装刷新时保持排序图标高亮
+    activeIcon()
+
+    function activeIcon() {
+        //Cookie.getCookie("sort")
+        //Cookie.getCookie("desc")
+        for (var a = 0; a < $("thead>tr>th").length; a++) {
+            if ($("thead>tr>th").eq(a).attr("data-type") == Cookie.getCookie("sort")) {
+                if (Cookie.getCookie("desc") == 1) {
+                    $("thead>tr>th").eq(a).children().eq(0).prop("src", "../img/jiantou1.png");
+                } else if (Cookie.getCookie("desc") == -1) {
+                    $("thead>tr>th").eq(a).children().eq(1).prop("src", "../img/jiantou1.png");
+                }
+            }
+
+
+        }
+    }
+
+    //点击单选
+    $(".layui-body").on("click", function(e) {
+        var e = event || window.event;
+        if ($(e.target).hasClass("one")) {
+
+            if ($(e.target).parent().hasClass("layui-form-checked")) {
+
+                $(e.target).parent().removeClass("layui-form-checked")
+            } else {
+
+                $(e.target).parent().addClass("layui-form-checked")
+            }
+
+            if (ifAllcheck()) {
+
+                $(".all").parent().addClass("layui-form-checked")
+            } else {
+                $(".all").parent().removeClass("layui-form-checked")
+
+            }
+
+        }
+    })
+
+    //点击全选
+    $(".layui-body").on("click", $(".all"), function(e) {
+        var e = event || window.event;
+        if ($(e.target).hasClass("all")) {
+
+            if ($(e.target).parent().hasClass("layui-form-checked")) {
+
+                $(e.target).parent().removeClass("layui-form-checked")
+                ifcheck(false)
+            } else {
+
+                $(e.target).parent().addClass("layui-form-checked")
+                ifcheck(true)
+
+            }
+        }
+    })
+
+
+    //封装判断是否所有单选都被勾上
+    function ifAllcheck() {
+        var oneArr = [...document.querySelectorAll(".one")];
+        for (var a = 0; a < oneArr.length; a++) {
+            // console.log([...oneArr[a].parentElement.classList].includes("layui-form-checked"))
+            if ([...oneArr[a].parentElement.classList].includes("layui-form-checked") == false) {
+                return false
+            }
+        }
+        return true
+    }
+
+    //封装点击全选时改变所有单选的状态
+    function ifcheck(boolean) {
+        var oneArr = [...document.querySelectorAll(".one")]
+            // console.log()
+        for (var a = 0; a < oneArr.length; a++) {
+            // $(oneArr[a].parentElement).addClass("layui-form-checked")
+            if (boolean) {
+                $(oneArr[a].parentElement).addClass("layui-form-checked")
+                    //console.log(oneArr[a].paremtElement) //.addClass("layui-form-checked")
+                    //console.log(111)
+            } else {
+                $(oneArr[a].parentElement).removeClass("layui-form-checked")
+            }
+        }
+
+    }
+
+    //头部提功能
+    $(".top").on("click", function(e) {
+        var e = event || window.event;
+
+        // 点击添加
+        if ($(e.target).hasClass("addAll")) {
+            location.href = `../html/addgoods.html`
+        }
+
+        //点击删除所有
+        if ($(e.target).hasClass("deteleAll")) {
+            ifValue()
+            let arr = getDeleteArr();
+            let _id = JSON.stringify(arr)
+                // console.log(_id)
+            if (arr.length > 0) {
+                if (confirm("是否删除所选商品信息")) {
+                    $.ajax({
+                        type: "get",
+                        url: `/api/list/cancelMany`,
+                        data: `_id=${_id}`,
+                        success: (data) => {
+                            if (data.code == 1) {
+                                alert("删除成功")
+                                $(".all").parent().removeClass("layui-form-checked");
+                                init();
+                            } else {
+                                alert("删除失败")
+                            }
+                        }
+                    })
+                }
+            } else {
+                alert("请选择需要删除的数据");
+            }
+        }
+
+        //点击搜索
+        if ($(e.target).hasClass("search")) {
+            if ($(".shopName").val().trim()) {
+                Cookie.setCookie("mohu", "mohu")
+                init()
+                    // console.log(111)
+            } else {
+                alert("请输入商品名称");
+            }
+        }
+
+    })
+
+    //封装函数，判断搜索框是否有值
+    function ifValue() {
+        if ($(".shopName").val().trim()) {
+            Cookie.setCookie("mohu", "mohu")
+        } else {
+            Cookie.setCookie("mohu", "")
+        }
+
+    }
+
+
+    // 封装获取所有被勾选的行
+    function getDeleteArr() {
+        var arr = [];
+        for (var a = 0; a < document.querySelectorAll("tbody>tr>td>div").length; a++) {
+
+            if ($(document.querySelectorAll("tbody>tr>td>div")[a]).hasClass("layui-form-checked")) {
+
+                arr.push($(document.querySelectorAll("tbody>tr>td>div")[a]).attr("data-id"))
+            }
+        }
+        return arr
+    }
+
+    //$(e.target).parent().parent().attr("data-id")
+    $("tbody").on("click", (e) => {
+        var e = event || window.event;
+
+        // 点击编辑
+        if ($(e.target).hasClass("compile")) {
+            location.href = `../html/addgoods.html?_id=${$(e.target).parent().parent().attr("data-id")}`
+        }
+
+        //点击删除
+        if ($(e.target).hasClass("cancel")) {
+            let _id = $(e.target).parent().parent().attr("data-id");
+            if (confirm("是否删除该条商品信息")) {
+                ifValue()
+                $.ajax({
+                    type: "get",
+                    url: `/api/list/cancel`,
+                    data: `_id=${_id}`,
+                    success: (data) => {
+                        if (data.code == 1) {
+                            alert("删除成功")
+                            init();
+                        } else {
+                            alert("删除失败")
+                        }
+                    }
+                })
+            }
+
+        }
+
+        //点击上下架
+        if ($(e.target).hasClass("state")) {
+            // console.log($(e.target).parent().parent().children().eq(7).html())
+            $.ajax({
+                type: "get",
+                url: `/api/list/update`,
+                data: `_id=${$(e.target).attr("data-id")}&state=${$(e.target).html()}`,
+                success: (data) => {
+                    if (data.code == 1) {
+                        init();
+                    } else {
+                        alert("修改失败")
+                    }
+                }
+            })
+        }
+    })
+
+    //封装内容数据渲染,传入数组
+    function render(arr) {
+        return arr.map((item, index) => {
+            return (
+                `<tr data-id="${item._id}">
+                    <td>
+                        <div class="layui-unselect layui-form-checkbox " lay-skin="primary" data-id="${item._id}">
+                            <i class="layui-icon layui-icon-ok one"></i>
+                        </div>
+                    </td>
+                    <td>${index+1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.classify}</td>
+                    <td>${item.price}</td>
+                    <td>${item.sale}</td>
+                    <td>${item.inventory}</td>
+                    <td class="realState">${item.state}</td>
+                    <td>${item.time}</td>
+                    <td data-id="${item._id}">
+                        <button class="layui-btn layui-btn-sm">
+                            <i class="layui-icon compile"></i>
+                        </button>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm ">
+                                <i class="layui-icon cancel"></i>
+                        </button>
+                        <button class="layui-btn layui-btn-sm state" data-id="${item._id}">${item.state=="上架"?"下架":"上架"}</button>
+                    </td>
+                </tr>`
+            )
+        }).join(",")
+    }
+
+
+    //封装页码数据渲染，传入num
+    function creatPage(num) {
+        var str = `<p>共${Cookie.getCookie("allLength")}条</p>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary pagePrve" style="border-left: 1px solid #ccc;">上一页</button>`;
+        for (var a = 0; a < num; a++) {
+            str += `<button class = "layui-btn layui-btn-sm layui-btn-primary pageNum"> ${a + 1}</button>`
+        }
+        str += `<button class="layui-btn layui-btn-sm layui-btn-primary pageNext">下一页</button>`;
+        return str;
+    }
+    //封装页码高亮
+    function activePage(num) {
+        $(".page button").eq(num).removeClass("layui-btn-primary")
+    }
+    //
+    // 封装清除页码高亮
+    function removeactivePage() {
+        for (var a = 1; a < $(".page button").length - 1; a++) {
+            $(".page button").eq(a).addClass("layui-btn-primary")
+                // console.log($(".page button").eq(a))
+        }
+
+    }
+    // //页面初始化
+    function init() {
+        ifValue()
+        var str = Cookie.getCookie("mohu") ? `page=${Cookie.getCookie("page")}&qty=${Cookie.getCookie("qty")}&sort=${Cookie.getCookie("sort")}&desc=${Cookie.getCookie("desc")}&mohu=${Cookie.getCookie("mohu")}&shopName=${$(".shopName").val()}&classify=${$("#fenlei").val()}` : `page=${Cookie.getCookie("page")}&qty=${Cookie.getCookie("qty")}&sort=${Cookie.getCookie("sort")}&desc=${Cookie.getCookie("desc")}&mohu=${Cookie.getCookie("mohu")}`
+            // console.log(str)
+        $.ajax({
+            type: "get",
+            //url: `/api/list/page=${page}&qty=${qty}&sort=${sort}&desc=${desc}`,
+            url: `/api/list`,
+            data: str,
+            success: function(data) {
+                // console.log(Math.ceil(data.allLength / data.currLength))
+                // console.log($(".page"))
+                $("#bit").val(Cookie.getCookie("qty"))
+                $("tbody").html(render(data.data))
+                Cookie.setCookie("allLength", data.allLength)
+                $(".page").html(creatPage(Math.ceil(data.allLength / data.qty)))
+
+                // console.log("getcookie", Cookie.getCookie("allLength"))
+                if (Math.ceil(data.allLength / data.qty) < Cookie.getCookie("page") && (data.allLength / data.qty) != 0) {
+                    Cookie.setCookie("page", Math.ceil(data.allLength / data.qty))
+                    if (Math.ceil(data.allLength / data.qty) <= 0) {
+                        Cookie.setCookie("page", 1)
+                    }
+                    init()
+                }
+
+                activePage(Cookie.getCookie("page"))
+
+                //设置输入页码框的最大值
+                $(".toPage input").prop("max", Math.ceil(data.allLength / data.qty))
+                    //console.log(Math.ceil(data.allLength / data.qty))
+                getDeleteArr()
+            }
+        });
+    }
+    init()
+
+
+    //点击页码
+    $(".page").on("click", "button", e => {
+        //点击页码
+        if ($(e.target).hasClass("pageNum")) {
+
+            ifValue()
+            removeactivePage()
+                //console.log($(e.target).html())
+            Cookie.setCookie("page", $(e.target).html())
+            init()
+
+        }
+        //点击上一页
+        if ($(e.target).hasClass("pagePrve")) {
+            // console.log(222)
+            ifValue()
+            if (Cookie.getCookie("page") > 1) {
+
+                Cookie.setCookie("page", Cookie.getCookie("page") - 1)
+                init()
+            }
+        }
+        //点击下一页
+        if ($(e.target).hasClass("pageNext")) {
+            ifValue()
+            if (Cookie.getCookie("page") < $(".page").children().length - 2) {
+                // console.log(Cookie.getCookie("page"))
+                Cookie.setCookie("page", Cookie.getCookie("page") * 1 + 1)
+                init()
+            }
+        }
+    })
+
+    //选择条数
+
+    $("#bit").on("input", function() {
+        Cookie.setCookie("qty", $(this).val())
+        if (Math.ceil(Cookie.getCookie("allLength") / $(this).val()) < Cookie.getCookie("Page")) {
+            Cookie.setCookie("page", Math.ceil(Cookie.getCookie("allLength") / $(this).val()))
+        }
+        init()
+    })
+
+    // 输入页数
+    $(".toPage input").on("input", function() {
+
+        if ($(this).val() * 1 > $(this).prop("max") * 1) {
+
+            $(this).val($(this).prop("max"))
+
+        } else if ($(this).val() < 1) {
+            $(this).val(1)
+
+        }
+
+    })
+
+
+    //点击确定
+    $(".toPageBtn").on("click", () => {
+        Cookie.setCookie("page", $(".toPage input").val())
+        init()
+    })
+
+
+})

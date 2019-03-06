@@ -1,1 +1,369 @@
-"use strict";function _asyncToGenerator(t){return function(){var s=t.apply(this,arguments);return new Promise(function(i,a){return function e(t,n){try{var r=s[t](n),o=r.value}catch(t){return void a(t)}if(!r.done)return Promise.resolve(o).then(function(t){e("next",t)},function(t){e("throw",t)});i(o)}("next")})}}function time(t){function e(t){return t<10?"0"+t:t}var n=void 0;return{year:(n=t?new Date(t):new Date).getFullYear(),month:e(n.getMonth()+1),date:n.getDate(),day:e(n.getDay()),hours:e(n.getHours()),minutes:e(n.getMinutes()),seconds:e(n.getSeconds())}}function getRandomNum(t,e){return parseInt(Math.random()*(e-t+1)+t)}function getRandomColor(){return"rgb("+getRandomNum(0,255)+","+getRandomNum(0,255)+","+getRandomNum(0,255)+")"}var Element={getElementNodes:function(t){for(var e=[],n=0;n<t.length;n++)1==t[n].nodeType&&e.push(t[n]);return e},getElementsChild:function(t){var e=t.childNodes;return Element.getElementNodes(e)},getNextElement:function(t){var e=t.nextSibling;return 1!=e.nodeType&&(e=e.nextSibling),e}};function getStyle(t,e){return window.getComputedStyle?window.getComputedStyle(t)[e]:t.currentStyle?t.currentStyle[e]:t.style[e]}function bind(t,e,n,r){t.addEventListener?t.addEventListener(e,n,r):t.attachEvent?t.attachEvent("on"+e,n):t["on"+e]=n}var Cookie={setCookie:function(t,e,n,r){var o=t+"="+e;n&&(o+="; expires="+n.toUTCString()),r&&(o+="; path="+r),document.cookie=o},getCookie:function(t){var e=document.cookie;if(""==e)return"";for(var n=e.split("; "),r=0;r<n.length;r++){var o=n[r].split("=");if(o[0]==t)return o[1]}return""},delCookie:function(t,e){var n=new Date;n.setDate(n.getDate()-1),Cookie.setCookie(t,"",n,e)}};function animation(i,t,e,a){var s=0;for(var n in t){s++,r(n,t[n])}function r(r,o){o="opacity"==r?100*o:o,clearInterval(i[r+"Timer"]),i[r+"Timer"]=setInterval(function(){var t=window.getComputedStyle(i)[r],e=t.match(/[a-z]+$/);e=e?e[0]:"",t=parseFloat(t),t="opacity"==r?100*t:parseInt(t);var n=(o-t)/10;0<n?n=Math.ceil(n):n<0&&(n=Math.floor(n)),t+=n,i.style[r]="opacity"==r?t/100:t+e,t==o&&(clearInterval(i[r+"Timer"]),0==--s&&a&&"function"==typeof a&&a())},e)}}function linearAnimate(n,r,o,i,t){clearInterval(r.timer);n=n;r.timer=setInterval(function(){var t=window.getComputedStyle(r)[o],e=t.match(/[a-z]+$/);e=e?e[0]:"",t=parseFloat(t),t+=n,r.style[o]=t+e,i<=t&&(t=i,clearInterval(r.timer))},t)}function userAjax(n){return new Promise(function(e,t){$.get("/api/userList/find",n,function(t){t.code&&e(t)},"json")})}function verifyToken(n){return new Promise(function(e,t){$.get("/api/tokenverify",{token:n},function(t){e(t)},"json")})}function quit(){$(".quit").click(function(){localStorage.token?localStorage.removeItem("token"):sessionStorage.removeItem("token"),location.href="../login.html"})}function userShow(){var e=this;console.log(host,port),user1=$(".user-1"),user2=$(".user-2");var n=localStorage.token||sessionStorage.token||"";n?_asyncToGenerator(regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,verifyToken(n);case 2:verifyUser(t.sent);case 4:case"end":return t.stop()}},t,e)}))():location.href="../login.html"}var _host$port={host:"47.107.113.128",port:"1811"},host=_host$port.host,port=_host$port.port;function verifyUser(t){if(200==t.status){"admin"==t.ress[0].jurisdiction?(user1.show(),user1.eq(0).attr("href","http://"+host+":"+port+"/html/userList.html"),user1.eq(1).attr("href","http://"+host+":"+port+"/html/addUser.html")):(user2.show(),user2.attr("href","http://"+host+":"+port+"/html/userMessage.html"));var e=t.ress[0].photoUrl,n=t.ress[0].nickname;$("._username").text(n),$("._imge").attr("src",e),quit()}else 100==t.status&&(location.href="http://"+host+":"+port+"/login.html")}
+// let {host,port} = require('../../api/db/config.json');
+
+
+//事件封装  传毫秒数就返回 设置的时间，不传 则返回现在的时间
+function time(time) {
+    function buling(num) {
+        if (num < 10) {
+            return "0" + num;
+        }
+        return num;
+    }
+    let d
+    if (time) {
+        d = new Date(time);
+    } else {
+        d = new Date();
+    }
+    let c = {
+        year: d.getFullYear(),
+        month: buling(d.getMonth() + 1),
+        date: d.getDate(),
+        day: buling(d.getDay()),
+        hours: buling(d.getHours()), //8
+        minutes: buling(d.getMinutes()),
+        seconds: buling(d.getSeconds())
+    }
+    return c;
+}
+
+
+// 封装a-b的随机整数
+function getRandomNum(a, b) {
+    var res = parseInt(Math.random() * (b - a + 1) + a);
+    return res;
+    // parseInt([0,1)*71+30)======>parseInt([0,71)+30)======>parseInt[30,101) =>30,100
+    // 100-30+1
+}
+// 获取随机色
+function getRandomColor() {
+    return 'rgb(' + getRandomNum(0, 255) + ',' + getRandomNum(0, 255) + ',' + getRandomNum(0, 255) + ')';
+}
+
+// 获取元素节点
+var Element = {
+    /*
+     ** 功能： 过滤数组，只拿到包含元素节点的数组
+     ** 形参nodes ：包含文本、元素节点的一个数组
+     */
+    getElementNodes: function (nodes) {
+        var elementsNode = [];
+        // 过滤只得到元素节点
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].nodeType == 1) {
+                elementsNode.push(nodes[i]);
+            }
+        }
+        return elementsNode;
+    },
+    /*
+     ** 功能： 传入父元素节点，获取到父元素的所有元素子节点
+     ** 形参parent ：父元素节点
+     */
+    getElementsChild: function (parent) {
+        var erzis = parent.childNodes; //获取到所有的节点
+        return Element.getElementNodes(erzis); //直接调用
+    },
+    getNextElement: function (ele) {
+        var next = ele.nextSibling;
+        if (next.nodeType != 1) {
+            next = next.nextSibling;
+        }
+        return next;
+    },
+    // ....
+}
+
+//  获取元素样式
+function getStyle(ele, key) {
+    if (window.getComputedStyle) {
+        return window.getComputedStyle(ele)[key];
+    } else if (ele.currentStyle) {
+        return ele.currentStyle[key];
+    } else {
+        return ele.style[key];
+    }
+}
+
+
+// 绑定事件的兼容写法：
+function bind(ele, type, fn, isCapture) {
+    if (ele.addEventListener) {
+        ele.addEventListener(type, fn, isCapture);
+    } else if (ele.attachEvent) {
+        ele.attachEvent("on" + type, fn);
+    } else {
+        ele["on" + type] = fn;
+    }
+}
+
+
+// 封装cookie的设置、获取、删除
+var Cookie = {
+    // 设置cookie
+    //  * name cookie名
+    //  * val cookie值
+    //  * date 时间对象
+    //  * path 路径
+    setCookie: function (name, val, date, path) {
+        var str = name + "=" + val;
+        if (date) {
+            str += "; expires=" + date.toUTCString();
+        }
+        if (path) {
+            str += "; path=" + path;
+        }
+        document.cookie = str;
+    },
+    // 获取cookie
+    getCookie: function (name) {
+        var cookie = document.cookie; //"left=300; age=17"   
+        if (cookie == "") {
+            return "";
+        } else {
+            var cookieArr = cookie.split("; ");
+            // var res = "";
+            // cookieArr.forEach(function(item){
+            //     var arr = item.split("=");
+            //     if(arr[0] == name){
+            //         res =  arr[1];
+            //     }
+            // })
+            // return res;
+            for (var i = 0; i < cookieArr.length; i++) {
+                var arr = cookieArr[i].split("=");
+                if (arr[0] == name) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+    },
+    // 删除某条cookie
+    delCookie: function (name, path) {
+        var d = new Date();
+        d.setDate(d.getDate() - 1);
+        Cookie.setCookie(name, "", d, path);
+    }
+}
+
+
+// 缓冲动画(透明度)
+//1.开启定时器
+//(1)获取当前值
+//(2)获取当前速度(目标值-当前值).
+//     * 当速度大于0时，Math.ceil()
+//     * 当速度小于0时，Math.floor()
+//(3)改变当前值：当前值+速度
+//(3)将改变后的值赋值给元素的样式
+//(4)当改变后的值等于目标值，清除定时器
+//备注: 事件开启定时器之前，一定要记得先清除已存在的定时器。
+// function animation(ele,attr,target,time){
+//     target = attr == "opacity"? target*100:target;
+//     clearInterval(ele.timer);
+//     ele.timer = setInterval(function(){
+//         var current = window.getComputedStyle(ele)[attr];//200px   /[a-z]+/
+//         var unit = current.match(/[a-z]+$/);//提取单位
+//         unit = unit? unit[0] : "";
+//         current = parseFloat(current);//只获取数值
+//         current = attr == "opacity"? current*100 : current;
+//         var speed = (target-current)/10;
+//         if(speed > 0){
+//             speed = Math.ceil(speed);
+//         }else if(speed < 0){
+//             speed = Math.floor(speed);
+//         }
+//         current += speed;
+//         ele.style[attr] = attr == "opacity"? current/100 :current + unit;
+//         if(current == target){
+//             clearInterval(ele.timer);
+//         }
+//     }, time)
+// }
+
+// 缓冲动画（改进）
+// 1.定时器名字根据css属性进行命名,从而保证多个定时器赋值给的变量名不同，不会发生覆盖。
+// 2.在一个动画函数里面，可以定义多个css属性同时改变
+//  * 参数变成对象{attr:target}
+//  * for...in遍历对象，拿到每个attr及对应target值
+//      * 利用let，将attr、target的值保留在当前的块级作用域
+//      * 利用函数的形参，将attr、target的值存在局部作用域。
+// 3.需求：所有动画执行完毕后，进行一堆操作。
+// （1）在清除定时器后再执行这堆操作，会出现执行多次的问题
+//      * 统计出attr的个数，每次清除定时器就对个数进行--，直到为0，代表所有动画执行完毕。
+// (2) 封装动画函数结束后，别人要做什么，我不知道。所以只能帮你执行。你需要把你要做的东西封装成函数，传参给我
+//      * 别人不一定会传递回调函数，要判断。     
+
+function animation(ele, obj, time, fn) {
+    var count = 0;
+    for (var key in obj) {
+        count++;
+        var attr = key;
+        var target = obj[key];
+        show(attr, target);
+    }
+
+    function show(attr, target) {
+        target = attr == "opacity" ? target * 100 : target;
+        clearInterval(ele[attr + "Timer"]);
+        ele[attr + "Timer"] = setInterval(function () {
+            var current = window.getComputedStyle(ele)[attr]; //200px   /[a-z]+/
+            var unit = current.match(/[a-z]+$/); //提取单位
+            unit = unit ? unit[0] : "";
+            current = parseFloat(current); //只获取数值
+            current = attr == "opacity" ? current * 100 : parseInt(current);
+            var speed = (target - current) / 10;
+            if (speed > 0) {
+                speed = Math.ceil(speed);
+            } else if (speed < 0) {
+                speed = Math.floor(speed);
+            }
+            current += speed;
+            ele.style[attr] = attr == "opacity" ? current / 100 : current + unit;
+            if (current == target) {
+                clearInterval(ele[attr + "Timer"]);
+                count--;
+                if (count == 0 && fn && typeof (fn) == "function") {
+                    fn();
+                }
+            }
+        }, time)
+    }
+}
+// function animation(ele,obj,time){
+//     for(var key in obj){
+//         let attr = key;
+//         let target = obj[key];
+//         target = attr == "opacity"? target*100:target;
+//         clearInterval(ele[attr+"Timer"]);
+//         ele[attr+"Timer"] = setInterval(function(){
+//             var current = window.getComputedStyle(ele)[attr];//200px   /[a-z]+/
+//             var unit = current.match(/[a-z]+$/);//提取单位
+//             unit = unit? unit[0] : "";
+//             current = parseFloat(current);//只获取数值
+//             current = attr == "opacity"? current*100 : current;
+//             var speed = (target-current)/10;
+//             if(speed > 0){
+//                 speed = Math.ceil(speed);
+//             }else if(speed < 0){
+//                 speed = Math.floor(speed);
+//             }
+//             current += speed;
+//             ele.style[attr] = attr == "opacity"? current/100 :current + unit;
+//             if(current == target){
+//                 clearInterval(ele[attr+"Timer"]);
+//             }
+//         }, time)
+//     }
+// }
+
+//备注: 事件开启定时器之前，一定要记得先清除已存在的定时器。
+function linearAnimate(speed, ele, attr, target, time) {
+    clearInterval(ele.timer);
+    var speed = speed;
+    ele.timer = setInterval(function () {
+        var current = window.getComputedStyle(ele)[attr];
+        var unit = current.match(/[a-z]+$/); //提取单位
+        unit = unit ? unit[0] : "";
+        current = parseFloat(current); //只获取数值
+        current += speed;
+
+        ele.style[attr] = current + unit;
+        if (current >= target) {
+            current = target;
+            clearInterval(ele.timer);
+        }
+        // if(speed >0 && current >= target || speed<0 && current <= target){
+        //     current = target;
+        //     clearInterval(ele.timer);
+        // }
+        // -3  current100 target 10
+    }, time)
+}
+
+//账户信息请求
+function userAjax(data) {
+    return new Promise((resolve, reject) => {
+        $.get('/api/userList/find', data, function (res) {
+            if (res.code) {
+                resolve(res)
+            }
+        }, 'json')
+    })
+}
+
+//解密token值并返回信息
+
+function verifyToken(token) {
+    return new Promise((resolve, reject) => {
+        $.get('/api/tokenverify', {
+            token
+        }, function (res) {
+            resolve(res)
+        }, 'json')
+    })
+}
+
+
+
+//退出按钮
+function quit() {
+    let $quit = $(".quit");
+    $quit.click(function () {
+        //判断localstroage是否存在token,存在就删除local，不存在就删除session
+        localStorage['token'] ? localStorage.removeItem('token') : sessionStorage.removeItem(
+            'token');
+        location.href = `../login.html`;
+    })
+}
+
+//进入页面显示
+function userShow() {
+
+    // console.log(AA)
+    user1 = $(".user-1")
+    user2 = $(".user-2")
+    //进入页面获取token值
+    var token = localStorage['token'] || sessionStorage['token'] || '';
+    //判断有无token值
+    if (token) {
+        (async () => {
+            let res = await verifyToken(token);
+            verifyUser(res)
+
+        })()
+    } else {
+        location.href = `../login.html`
+    }
+
+}
+// 
+let {
+    host,
+    port
+} = {
+    host: "47.107.113.128",
+    port: "1811"
+}
+//解密成功或失败
+function verifyUser(res) {
+    if (res.status == 200) {
+        //判断用户权限,显示相应的选项及路径
+        if (res.ress[0].jurisdiction == 'admin') {
+            user1.show()
+            user1.eq(0).attr('href', `http://${host}:${port}/html/userList.html`)
+            user1.eq(1).attr('href', `http://${host}:${port}/html/addUser.html`)
+        } else {
+            user2.show()
+            user2.attr('href', `http://${host}:${port}/html/userMessage.html`)
+        }
+        //渲染用户信息
+        let imge = res.ress[0].photoUrl;
+        let nickname = res.ress[0].nickname;
+        $('._username').text(nickname);
+        $('._imge').attr("src", imge);
+        quit();
+    } else if (res.status == 100) {
+        location.href = `http://${host}:${port}/login.html`
+    }
+}

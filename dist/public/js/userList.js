@@ -1,1 +1,144 @@
-"use strict";function _asyncToGenerator(t){return function(){var r=t.apply(this,arguments);return new Promise(function(s,c){return function n(t,e){try{var a=r[t](e),i=a.value}catch(t){return void c(t)}if(!a.done)return Promise.resolve(i).then(function(t){n("next",t)},function(t){n("throw",t)});s(i)}("next")})}}jQuery(function(c){var n=this;layui.use("element",function(){layui.element});var r=c("tbody"),o=localStorage.token||sessionStorage.token||"";function l(e){var a=[];c.each(e,function(t,n){var e=c(n).closest("tr").find(".td3").html();a.push(e)});var t={usernames:a.join()};c.post("/api/userList/delAll",t,function(t){if(t.code){e.closest("tr").remove();var n=c("tbody tr .td2");c.each(n,function(t,n){c(n).html(t+1)})}},"json")}function d(){var t=c(".allBtn "),n=c("tbody .td1 i"),e=c(".addUserBtn"),a=c(".allDelBtn"),i=c(".delUser"),s=c(".changeMsg");n.click(function(){c(this).toggleClass("layui-icon-ok check"),n.filter(".check").length==n.length?t.addClass("layui-icon-ok"):t.removeClass("layui-icon-ok")}),t.click(function(){c(this).toggleClass("layui-icon-ok"),t.hasClass("layui-icon-ok")?n.addClass("layui-icon-ok check"):n.removeClass("layui-icon-ok check")}),e.click(function(){location.href="/html/addUser.html"}),a.click(function(){l(n.filter(".check"))}),i.click(function(){l(c(this))}),s.click(function(){var t=c(this).closest("tr").find(".td2").attr("data-id");location.href="addUser.html?id="+t})}o?_asyncToGenerator(regeneratorRuntime.mark(function t(){var e,a,i,s;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return e=c(".userHead"),a=c(".uname"),t.next=4,verifyToken(o);case 4:if(i=t.sent,e.attr("src",i.ress[0].photoUrl),a.html(i.ress[0].nickname),"admin"==i.ress[0].jurisdiction)return t.next=10,userAjax({jurisdiction:"common"});t.next=15;break;case 10:s=t.sent,n=s.data,c.each(n,function(t,n){var e=time(1*n.reqTime),a=e.year+"-"+e.month+"-"+e.day,i='\n            <tr>\n                <td class="td1"><i class="layui-icon"></i></td>\n                <td class="td2" data-id="'+n._id+'">'+(t+1)+'</td>\n                <td class="td3">'+n.username+'</td>\n                <td class="td4">'+n.nickname+'</td>\n                <td class="td5">'+n.gander+'</td>\n                <td class="td6">'+n.city+'</td>\n                <td class="td7">'+n.job+'</td>\n                <td class="td8">'+n.birthday+'</td>\n                <td class="td9">'+n.tel+'</td>\n                <td class="td10">'+a+'</td>\n                <td class="td11">\n                    <div class="layui-btn-group">\n                        <button class="layui-btn layui-btn-sm changeMsg">\n                            <i class="layui-icon"></i>\n                        </button>\n                    </div>\n                    <div class="layui-btn-group">\n                        <button class="layui-btn layui-btn-primary layui-btn-sm delUser">\n                            <i class="layui-icon">&#xe640;</i>\n                        </button>\n                    </div>\n                </td>\n            </tr>\n            ';r.append(i)}),d(),t.next=17;break;case 15:alert("您的用户权限不足"),location.href="../login.html";case 17:quit();case 18:case"end":return t.stop()}var n},t,n)}))():location.href="../login.html"});
+jQuery(function ($) {
+    // layui  JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+
+    let $tbody = $("tbody");
+    //--------------进入页面渲染-----------------
+    //进入页面获取token值
+    var token = localStorage['token'] || sessionStorage['token'] || '';
+    if(token){
+        (async () => {
+            //获取账户信息渲染头像+用户名
+            // let username = Cookie.getCookie('username');
+            let $userHead = $(".userHead");
+            let $uname = $(".uname");
+            let adminMsg = await verifyToken(token)
+            $userHead.attr('src', adminMsg.ress[0].photoUrl);
+            $uname.html(adminMsg.ress[0].nickname)
+            if (adminMsg.ress[0].jurisdiction=='admin') {
+                //获取普通用户信息+渲染
+                let userMsg = await userAjax({
+                    "jurisdiction": 'common'
+                })
+                userShow(userMsg.data);
+                //渲染完成后，给按钮绑定事件
+                ckeckBtn()
+            }else{
+                alert('您的用户权限不足');
+                location.href = '../login.html';
+            }
+            quit()
+        })()
+    }else{
+        location.href = '../login.html';
+    }
+    //----------------------------------方法封装------------------------------------
+    //渲染用户列表
+    function userShow(res) {
+        $.each(res, function (idx, item) {
+            let date = time(item.reqTime * 1)
+            let times = `${date.year}-${date.month}-${date.day}`;
+            let html = `
+            <tr>
+                <td class="td1"><i class="layui-icon"></i></td>
+                <td class="td2" data-id="${item._id}">${idx+1}</td>
+                <td class="td3">${item.username}</td>
+                <td class="td4">${item.nickname}</td>
+                <td class="td5">${item.gander}</td>
+                <td class="td6">${item.city}</td>
+                <td class="td7">${item.job}</td>
+                <td class="td8">${item.birthday}</td>
+                <td class="td9">${item.tel}</td>
+                <td class="td10">${times}</td>
+                <td class="td11">
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-sm changeMsg">
+                            <i class="layui-icon"></i>
+                        </button>
+                    </div>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-primary layui-btn-sm delUser">
+                            <i class="layui-icon">&#xe640;</i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            `
+            $tbody.append(html)
+        })
+    }
+
+    //删除账号请求
+    function delUser($checked) {
+        /**
+         * @删除单个or多个账户请求
+         * 1.获取全部勾选的账户
+         * 2.遍历元素，获取对应的账户名
+         * 3.把用户名推入空数组
+         * 4.把数组转字符串
+         * 5.把字符串作为参数发起请求
+         * 6.请求成功后删除该行元素
+         * 7.删除后要对编号重新排序
+         *   7.1获取所有tbody里的.td2元素
+         *   7.2遍历.td2元素的值为索引+1
+         */
+        var nameArr = [];
+        $.each($checked, function (idx, item) {
+            var uname = $(item).closest('tr').find('.td3').html()
+            nameArr.push(uname)
+        })
+        var data = {
+            "usernames": nameArr.join()
+        }
+        $.post('/api/userList/delAll', data, function (res) {
+            if (res.code) {
+                $checked.closest('tr').remove();
+                let $td2 = $("tbody tr .td2");
+                $.each($td2, function (idx, item) {
+                    $(item).html(idx + 1)
+                })
+            }
+        }, 'json')
+    }
+
+    //封装选择按钮
+    function ckeckBtn() {
+        var $allBtn = $('.allBtn ');
+        var $check = $('tbody .td1 i');
+        var $addUserBtn = $('.addUserBtn');
+        var $allDelBtn = $('.allDelBtn');
+        var $delUser = $('.delUser');
+        var $changeMsg = $(".changeMsg");
+        //单选按钮
+        $check.click(function () {
+            $(this).toggleClass('layui-icon-ok check');
+            var checkLen = $check.filter('.check').length;
+            checkLen == $check.length ? $allBtn.addClass('layui-icon-ok') : $allBtn.removeClass('layui-icon-ok');
+        })
+        //全选按钮
+        $allBtn.click(function () {
+            $(this).toggleClass('layui-icon-ok');
+            $allBtn.hasClass('layui-icon-ok') ? $check.addClass('layui-icon-ok check') : $check.removeClass('layui-icon-ok check');
+        })
+        //添加按钮
+        $addUserBtn.click(function () {
+            location.href = '/html/addUser.html'
+        })
+        //多选删除按钮
+        $allDelBtn.click(function () {
+            var $checked = $check.filter('.check')
+            delUser($checked)
+        })
+        //单选删除按钮
+        $delUser.click(function () {
+            delUser($(this))
+        })
+        //修改用户信息按钮
+        $changeMsg.click(function () {
+            var id = $(this).closest('tr').find('.td2').attr("data-id");
+            location.href = `addUser.html?id=${id}`
+        })
+    }
+})

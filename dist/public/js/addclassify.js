@@ -1,1 +1,54 @@
-"use strict";document.addEventListener("DOMContentLoaded",function(){var t=location.search.slice(1);if(t){var a=t.split("=");$.ajax({type:"get",url:"/api/classifyList/one",data:a[0]+"="+a[1],success:function(t){$(".shopInput").val(t.data.classify).attr("data-id",t.data._id),$("textarea").val(t.data.classify),$(".yes_btn").on("click",function(){$.ajax({type:"get",url:"/api/classifyList/update",data:"_id="+$(".shopInput").attr("data-id")+"&classify="+$(".shopInput").val(),success:function(t){1==t.code?(alert("更新成功"),location.href="../html/classify.html"):alert("更新失败")}})})}})}else $(".yes_btn").on("click",function(){$.ajax({type:"get",url:"/api/classifyList/insert",data:"classify="+$(".shopInput").val(),success:function(t){1==t.code?(alert("添加成功"),location.href="../html/classify.html"):alert("添加失败")}})})});
+document.addEventListener("DOMContentLoaded", () => {
+    //点击上下架
+    let href = location.search.slice(1);
+    if (href) {
+        let arr = href.split("=");
+        // console.log(arr)
+        $.ajax({
+            type: "get",
+            url: "/api/classifyList/one",
+            data: `${arr[0]}=${arr[1]}`,
+            success: function(data) {
+                $(".shopInput").val(data.data.classify).attr("data-id", data.data._id)
+                $("textarea").val(data.data.classify)
+                    // $(".classifyInput").val(data.data.classify)
+                    // $(".stateInput").attr("lay-text", data.data.state)
+                    // console.log(data.data.title)
+                $(".yes_btn").on("click", () => {
+                    //console.log($(".shangjia").html())
+                    $.ajax({
+                        type: "get",
+                        url: "/api/classifyList/update",
+                        data: `_id=${$(".shopInput").attr("data-id")}&classify=${$(".shopInput").val()}`,
+                        success: function(data) {
+                            if (data.code == 1) {
+                                alert("更新成功")
+                                location.href = `../html/classify.html`
+                            } else {
+                                alert("更新失败")
+                            }
+                        }
+                    })
+                })
+            }
+        })
+    } else {
+        $(".yes_btn").on("click", () => {
+            //console.log($(".shangjia").html())
+            $.ajax({
+                type: "get",
+                url: "/api/classifyList/insert",
+                data: `classify=${$(".shopInput").val()}`,
+                success: function(data) {
+                    // console.log(data)
+                    if (data.code == 1) {
+                        alert("添加成功")
+                        location.href = `../html/classify.html`
+                    } else {
+                        alert("添加失败")
+                    }
+                }
+            })
+        })
+    }
+})

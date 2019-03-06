@@ -7,11 +7,11 @@ var pump = require('pump');
 var htmlmin = require('gulp-htmlmin');
 
 gulp.task('minify', () => {
-	return gulp.src('./src/public/html/*.html')
+	return gulp.src('./src/public/login.html')
 		.pipe(htmlmin({
 			collapseWhitespace: true
 		}))
-		.pipe(gulp.dest('./dist/public/html'));
+		.pipe(gulp.dest('./dist/public/'));
 });
 
 //压缩css

@@ -1,1 +1,178 @@
-"use strict";function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(i,o){return function n(e,t){try{var r=s[e](t),a=r.value}catch(e){return void o(e)}if(!r.done)return Promise.resolve(a).then(function(e){n("next",e)},function(e){n("throw",e)});i(a)}("next")})}}jQuery(function(i){var t=this;layui.use("element",function(){layui.element}),layui.use("laydate",function(){layui.laydate.render({elem:"#test1"})});var r=i("#img"),a=i("#goods");a.on("change",function(){var e=this.files[0];if(window.FileReader){var n=new FileReader;n.onloadend=function(e){r.attr("src",e.target.result)},e&&n.readAsDataURL(e)}});var o=i(".nickname"),n=i(".uname"),s=i(".confirmPw"),u=i(".userpw"),c=i(".tel"),l=i(".gander"),f=i(".shengri"),v=i(".zhiye"),d=i(".city"),m=i(".youxiang"),y=i(".beizhu"),p=i(".btn"),h=i(".userHead"),w=localStorage.token||sessionStorage.token||"";function g(e){h.attr("src",""+e.photoUrl),r.attr("src",""+e.photoUrl),n.html(e.nickname),o.val(e.nickname),u.val(e.upw),s.val(e.upw),f.val(e.birthday),v.val(e.job),d.val(e.city),m.val(e.email),y.val(e.markdown),c.val(e.tel),l.find("select option:contains("+e.gander+")").prop("selected","selected"),layui.use("form",function(){layui.form})}function k(a){return new Promise(function(n,e){var t={_id:_id,nickname:o.val(),upw:u.val(),birthday:f.val(),job:v.val(),city:d.val(),email:m.val(),markdown:y.val(),tel:c.val(),gander:l.find(".layui-anim dd").filter(".layui-this").html()},r=Object.assign({},t,a);i.post("/api/userList/update",r,function(e){n(e)},"json")})}w?_asyncToGenerator(regeneratorRuntime.mark(function e(){var n;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,verifyToken(w);case 2:n=e.sent,_id=n.ress[0]._id,g(n.ress[0]),quit(),p.click(_asyncToGenerator(regeneratorRuntime.mark(function e(){var n;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(a[0].value)return e.next=4,new Promise(function(n,e){var t=new FormData;t.set("user",a[0].files[0]),i.ajax({url:"/api/userList/upload",type:"post",data:t,contentType:!1,processData:!1,success:function(e){n(e)},error:function(e){}}),a.val=null});e.next=13;break;case 4:return n=e.sent,e.next=7,k({photoUrl:"../"+n.file.filename});case 7:return e.next=9,verifyToken(w);case 9:g(e.sent.ress[0]),e.next=19;break;case 13:return e.next=15,k();case 15:return e.next=17,verifyToken(w);case 17:g(e.sent.ress[0]);case 19:case"end":return e.stop()}},e,this)})));case 7:case"end":return e.stop()}},e,t)}))():location.href="login.html"});
+jQuery(function ($) {
+    //layui   JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test1' //指定元素
+        });
+    });
+
+    var $img = $('#img');
+
+    let $goods = $('#goods');
+    //上传文件按钮使用onchagne事件
+    $goods.on('change', function () {
+        //获取文件信息
+        var file = this.files[0];
+        //判断是否读取了文件
+        if (window.FileReader) {
+            var fr = new FileReader();
+            //获取预览图片元素
+            //文件加载完成后显示预览图片
+            fr.onloadend = function (e) {
+                $img.attr('src', e.target.result);
+            };
+            if (file) {
+                fr.readAsDataURL(file);
+            }
+        }
+    })
+
+    //获取用户名
+    let $nickname = $(".nickname");
+    let $uname = $(".uname");
+    let $confirmPw = $(".confirmPw");
+    let $userpw = $(".userpw");
+    let $tel = $(".tel");
+    let $gander = $(".gander");
+    let $shengri = $(".shengri");
+    let $zhiye = $(".zhiye");
+    let $city = $(".city");
+    let $youxiang = $(".youxiang");
+    let $beizhu = $(".beizhu");
+    let $btn = $(".btn");
+    let $userHead = $(".userHead");
+    /** -----------------------------首次进入页面渲染信息-------------------------*/
+
+    //进入页面获取token值
+    var token = localStorage['token'] || sessionStorage['token'] || '';
+    //判断有无token值
+    if (token) {
+        (async () => {
+            var res = await verifyToken(token);
+            _id = res.ress[0]._id;
+            UserShow(res.ress[0]);
+            quit()
+            /**
+             * @确认按钮事件
+             * 1.根据file有无值，判断是否有修改头像
+             * 2.有修改头像，
+             *   2.1上传图片、
+             *   2.2更新用户信息
+             *   2.3重新渲染信息
+             * 3.没有修改头像
+             *   3.1更新用户信息
+             *   3.2重新渲染
+             */
+            $btn.click(async function () {
+                let _goods = $goods[0].value
+                if (_goods) {
+                    let res = await uploadUser();
+                    await updateMsg({
+                        photoUrl: `../${res.file.filename}`
+                    })
+                    let aaa = await verifyToken(token);
+                    UserShow(aaa.ress[0]);
+                } else {
+                    await updateMsg()
+                    let aaa = await  verifyToken(token);
+                    UserShow(aaa.ress[0]);
+                }
+            })
+        })()
+    } else {
+        location.href = `login.html`
+    }
+
+
+    /**-----------------------方法封装---------------------------------- */
+
+    /**
+     * @渲染数据
+     * 1.获取用户信息
+     * 2.根据信息渲染
+     */
+    function UserShow(res) {
+        $userHead.attr('src', `${res.photoUrl}`);
+        $img.attr('src', `${res.photoUrl}`);
+        $uname.html(res.nickname);
+        $nickname.val(res.nickname);
+        $userpw.val(res.upw);
+        $confirmPw.val(res.upw);
+        $shengri.val(res.birthday);
+        $zhiye.val(res.job);
+        $city.val(res.city);
+        $youxiang.val(res.email);
+        $beizhu.val(res.markdown);
+        $tel.val(res.tel);
+        $gander.find(`select option:contains(${res.gander})`).prop('selected', 'selected')
+        //JavaScript代码区域
+        layui.use('form', function () {
+            var form = layui.form;
+            //各种基于事件的操作，下面会有进一步介绍
+        });
+    }
+    /**
+     * @update请求
+     * 1.防止回调地狱用promise
+     * 2.获取对应信息的值
+     * 3.因为不一定修改头像，头像的url作为参数，用object.assign合并对象
+     * 4.把合并后的值作为参数请求update
+     */
+    function updateMsg(obj) {
+        return new Promise((resolve, reject) => {
+            var defaults = {
+                _id,
+                nickname: $nickname.val(),
+                upw: $userpw.val(),
+                birthday: $shengri.val(),
+                job: $zhiye.val(),
+                city: $city.val(),
+                email: $youxiang.val(),
+                markdown: $beizhu.val(),
+                tel: $tel.val(),
+                gander: $gander.find(`.layui-anim dd`).filter('.layui-this').html()
+            }
+            var data = Object.assign({}, defaults, obj);
+            //update请求
+            $.post('/api/userList/update', data, function (res) {
+
+                resolve(res)
+
+
+            }, 'json')
+        })
+    }
+
+    /**
+     * @upload事件
+     * 1.防止回调地狱用promise
+     * 2.用FormData方法，传输文件流 
+     * 3.单文件上传用set()方法
+     * 4.把data值作为参数请求upload
+     */
+    function uploadUser() {
+        return new Promise((resolve, reject) => {
+            var data = new FormData();
+            data.set('user', $goods[0].files[0])
+            $.ajax({
+                url: "/api/userList/upload",
+                type: "post",
+                data,
+                contentType: false, //使用multer配合ajax时无需配置multipart/form-data，multer将自动配置，手动配置将报错，boundary not found
+                processData: false,
+                success: function (res) {
+                    resolve(res)
+                },
+                error: function (err) {
+                }
+            });
+            $goods.val = null;
+        })
+    }
+})

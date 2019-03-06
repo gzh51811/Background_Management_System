@@ -1,6 +1,6 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     //page=1&qty=10&sort=_id&desc=1
-
+    userShow()
 
     //点击排序
     $("thead").on("click", "img", e => {
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
             Cookie.setCookie("sort", $(e.target).parent().attr("data-type"))
             Cookie.setCookie("desc", 1)
             init()
-                // console.log("已执行上")
+            // console.log("已执行上")
         }
         if ($(e.target).hasClass("jiang")) {
             removePriceActive()
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
             Cookie.setCookie("sort", $(e.target).parent().attr("data-type"))
             Cookie.setCookie("desc", "-1")
             init()
-                // console.log("已执行下")
+            // console.log("已执行下")
         }
     })
 
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
         for (var a = 0; a < $(".img_sort").length; a++) {
             // console.log(a)
             $(".img_sort").eq(a).prop("src", "../img/jiantou.png")
-                // console.log($(".img_sort").eq(a))
+            // console.log($(".img_sort").eq(a))
         }
         // console.log($(".img_sort").length)
     }
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //点击单选
-    $(".layui-body").on("click", function(e) {
+    $(".layui-body").on("click", function (e) {
         var e = event || window.event;
         if ($(e.target).hasClass("one")) {
 
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     //点击全选
-    $(".layui-body").on("click", $(".all"), function(e) {
+    $(".layui-body").on("click", $(".all"), function (e) {
         var e = event || window.event;
         if ($(e.target).hasClass("all")) {
 
@@ -112,13 +112,13 @@ document.addEventListener("DOMContentLoaded", function() {
     //封装点击全选时改变所有单选的状态
     function ifcheck(boolean) {
         var oneArr = [...document.querySelectorAll(".one")]
-            // console.log()
+        // console.log()
         for (var a = 0; a < oneArr.length; a++) {
             // $(oneArr[a].parentElement).addClass("layui-form-checked")
             if (boolean) {
                 $(oneArr[a].parentElement).addClass("layui-form-checked")
-                    //console.log(oneArr[a].paremtElement) //.addClass("layui-form-checked")
-                    //console.log(111)
+                //console.log(oneArr[a].paremtElement) //.addClass("layui-form-checked")
+                //console.log(111)
             } else {
                 $(oneArr[a].parentElement).removeClass("layui-form-checked")
             }
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //头部提功能
-    $(".top").on("click", function(e) {
+    $(".top").on("click", function (e) {
         var e = event || window.event;
 
         // 点击添加
@@ -240,13 +240,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // //页面初始化
     function init() {
         var str = `sort=${Cookie.getCookie("sort")}&desc=${Cookie.getCookie("desc")}`
-            // console.log(str)
+        // console.log(str)
         $.ajax({
             type: "get",
             //url: `/api/list/page=${page}&qty=${qty}&sort=${sort}&desc=${desc}`,
             url: `/api/classifyList`,
             data: str,
-            success: function(data) {
+            success: function (data) {
                 // console.log(Math.ceil(data.allLength / data.currLength))
                 // console.log($(".page"))
                 $("#bit").val(Cookie.getCookie("qty"))

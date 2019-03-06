@@ -1,3 +1,6 @@
+// let {host,port} = require('../../api/db/config.json');
+
+
 //事件封装  传毫秒数就返回 设置的时间，不传 则返回现在的时间
 function time(time) {
     function buling(num) {
@@ -316,43 +319,52 @@ function quit() {
 
 //进入页面显示
 function userShow() {
+    console.log(host, port)
+
+    // console.log(AA)
     user1 = $(".user-1")
     user2 = $(".user-2")
-     //进入页面获取token值
-     var token = localStorage['token'] || sessionStorage['token'] || '';
-     //判断有无token值
-     if (token) {
-         (async () => {
-             let res = await verifyToken(token);
-             verifyUser(res)
+    //进入页面获取token值
+    var token = localStorage['token'] || sessionStorage['token'] || '';
+    //判断有无token值
+    if (token) {
+        (async () => {
+            let res = await verifyToken(token);
+            verifyUser(res)
 
-         })()
-     } else {
-         location.href = `login.html`
-     }
+        })()
+    } else {
+        location.href = `../login.html`
+    }
 
- }
+}
 
-
- //解密成功或失败
- function verifyUser(res) {
-     if (res.status == 200) {
-         //判断用户权限,显示相应的选项及路径
-         if (res.ress[0].jurisdiction == 'admin') {
-             user1.show()
-             user1.eq(0).attr('href', 'http://localhost:1811/html/userList.html')
-             user1.eq(1).attr('href', 'http://localhost:1811/html/addUser.html')
-         } else {
-             user2.show()
-             user2.attr('href', 'http://localhost:1811/html/userMessage.html')
-         }
-         //渲染用户信息
-         let imge = res.ress[0].photoUrl;
-         let nickname = res.ress[0].nickname;
-         $('._username').text(nickname);
-         $('._imge').attr("src", imge);
-         quit();
-     } else if (res.status == 100) {
-         location.href = 'http://localhost:1811/login.html'
-     }
- }
+let {
+    host,
+    port
+} = {
+    host: "47.107.113.128",
+    port: "1811"
+}
+//解密成功或失败
+function verifyUser(res) {
+    if (res.status == 200) {
+        //判断用户权限,显示相应的选项及路径
+        if (res.ress[0].jurisdiction == 'admin') {
+            user1.show()
+            user1.eq(0).attr('href', `http://${host}:${port}/html/userList.html`)
+            user1.eq(1).attr('href', `http://${host}:${port}/html/addUser.html`)
+        } else {
+            user2.show()
+            user2.attr('href', `http://${host}:${port}/html/userMessage.html`)
+        }
+        //渲染用户信息
+        let imge = res.ress[0].photoUrl;
+        let nickname = res.ress[0].nickname;
+        $('._username').text(nickname);
+        $('._imge').attr("src", imge);
+        quit();
+    } else if (res.status == 100) {
+        location.href = `http://${host}:${port}/login.html`
+    }
+}

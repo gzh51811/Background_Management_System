@@ -1,0 +1,1 @@
+"use strict";var express=require("express"),app=express(),Router=require("./api/routers");app.use(express.static("./public")),app.use(express.static("./uploads")),app.use("/api",Router),app.use("/api",Router),app.listen(1811,function(){console.log("server is running on http://localhost:1811")});

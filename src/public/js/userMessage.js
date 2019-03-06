@@ -74,7 +74,7 @@ jQuery(function ($) {
                 if (_goods) {
                     let res = await uploadUser();
                     await updateMsg({
-                        photoUrl: `http://localhost:1811/${res.file.filename}`
+                        photoUrl: `../${res.file.filename}`
                     })
                     let aaa = await verifyToken(token);
                     UserShow(aaa.ress[0]);

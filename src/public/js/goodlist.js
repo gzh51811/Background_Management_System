@@ -1,6 +1,6 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() { 
     //page=1&qty=10&sort=_id&desc=1
-
+    userShow()
     if (Cookie.getCookie("page")) {
 
     } else {

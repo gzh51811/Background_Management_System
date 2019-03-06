@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    userShow()
     //点击上下架
     $(".shangjia").on("click", function() {
         //console.log($(this))

@@ -22,20 +22,15 @@
                 <span class="layui-breadcrumb ">
                     <a href="../index.html">首页</a>
                     <a href="">用户管理</a>
-                    <!-- <a href="">亚太地区</a> -->
                     <a><cite>添加用户</cite></a>
                 </span>
             </ul>
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="../images/touxiang.jpg" class="layui-nav-img userHead">
+                        <img src="../img/touxiang.jpg" class="layui-nav-img userHead">
                         <span class="uname"></span>
                     </a>
-                    <!-- <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
-        </dl> -->
                 </li>
                 <li class="layui-nav-item"><a href="javascript:;" class="quit">退了</a></li>
             </ul>
@@ -48,10 +43,9 @@
                     <li class="layui-nav-item ">
                         <a class="" href="javascript:;">商品管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">商品列表</a></dd>
-                            <dd><a href="javascript:;">商品分类</a></dd>
-                            <dd><a href="javascript:;">添加商品</a></dd>
-                            <!-- <dd><a href="">超链接</a></dd> -->
+                            <dd><a href="goodlist.html">商品列表</a></dd>
+                            <dd><a href="addclassify.html">商品分类</a></dd>
+                            <dd><a href="addgoods.html">添加商品</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
@@ -59,19 +53,14 @@
                         <dl class="layui-nav-child">
                             <dd><a href="userList.html">用户列表</a></dd>
                             <dd class="layui-this"><a href="addUser.html">添加用户</a></dd>
-                            <!-- <dd><a href="">超链接</a></dd> -->
                         </dl>
                     </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;">订单管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="list.html">订单列表</a></dd>
-                            <!-- <dd><a href="javascript:;">添加用户</a></dd> -->
-                            <!-- <dd><a href="">超链接</a></dd> -->
                         </dl>
                     </li>
-                    <!-- <li class="layui-nav-item"><a href="">云市场</a></li>
-        <li class="layui-nav-item"><a href="">发布商品</a></li> -->
                 </ul>
             </div>
         </div>
@@ -110,7 +99,7 @@
                     <input type="text" name="title" required lay-verify="required" placeholder="请输电话号码" autocomplete="off"
                         class="layui-input tel fl">
                 </div>
-                
+
             </div>
             <!-- 手机号码 -->
             <!-- 性别开始 -->
@@ -118,9 +107,9 @@
                 <div class="layui-form fl ">
                     <label class="layui-form-label">性别</label>
                     <div class="layui-input-block gander">
-                        <select name="interest"  lay-filter="aihao">
+                        <select name="interest" lay-filter="aihao">
                             <option value="0">请选择</option>
-                            <option value="男" >男</option>
+                            <option value="男">男</option>
                             <option value="女">女</option>
                         </select>
                     </div>
@@ -179,13 +168,6 @@
                 </div>
             </div>
             <!-- 提交按钮结束 -->
-
-
-
-            <!-- <div class="layui-footer">
-    底部固定区域
-    © layui.com - 底部固定区域
-  </div> -->
         </div>
 
 </body>

@@ -38,6 +38,7 @@
 
         /*选项卡内容里面li的样式*/
     </style>
+    <script src=""></script>
 </head>
 
 <body class="layui-layout-body">
@@ -46,34 +47,20 @@
             <div class="layui-logo">商家后台管理系统</div>
             <!-- 头部区域（可配合layui已有的水平导航） -->
             <ul class="layui-nav layui-layout-left mianbao">
-                <!-- <li class="layui-nav-item"><a href="">控制台</a></li>
-      <li class="layui-nav-item"><a href="">商品管理</a></li>
-      <li class="layui-nav-item"><a href="">用户</a></li>
-      <li class="layui-nav-item">
-        <a href="javascript:;">其它系统</a>
-        <dl class="layui-nav-child">
-          <dd><a href="">邮件管理</a></dd>
-          <dd><a href="">消息管理</a></dd>
-          <dd><a href="">授权管理</a></dd>
-        </dl>
-      </li> -->
+
                 <span class="layui-breadcrumb ">
                     <!-- <a href="">首页</a> -->
                     <!-- <a href="">国际新闻</a>
         <a href="">亚太地区</a> -->
-                    <a href="index1.html"><cite>首页</cite></a>
+                    <a><cite>首页</cite></a>
                 </span>
             </ul>
             <ul class="layui-nav layui-layout-right">
                 tml <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="" class="layui-nav-img  _imge" />
+                        <img src="./img/touxiang.jpg" class="layui-nav-img  _imge" />
                         <span class="_username"></span>
                     </a>
-                    <!-- <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
-        </dl> -->
                 </li>
                 <li class="layui-nav-item"><a href="javascript:;" class="quit">退了</a></li>
             </ul>
@@ -89,7 +76,6 @@
                             <dd><a href="javascript:;">商品列表</a></dd>
                             <dd><a href="javascript:;">商品分类</a></dd>
                             <dd><a href="javascript:;">添加商品</a></dd>
-                            <!-- <dd><a href="">超链接</a></dd> -->
                         </dl>
                     </li>
                     <li class="layui-nav-item">
@@ -103,13 +89,9 @@
                     <li class="layui-nav-item">
                         <a href="javascript:;">订单管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="list.html">订单列表</a></dd>
-                            <!-- <dd><a href="javascript:;">添加用户</a></dd> -->
-                            <!-- <dd><a href="">超链接</a></dd> -->
+                            <dd><a href="./html/list.html">订单列表</a></dd>
                         </dl>
                     </li>
-                    <!-- <li class="layui-nav-item"><a href="">云市场</a></li>
-        <li class="layui-nav-item"><a href="">发布商品</a></li> -->
                 </ul>
             </div>
         </div>
@@ -231,51 +213,16 @@
     © layui.com - 底部固定区域
   </div> -->
         </div>
-        <script src="../lib/layui-v2.4.5/layui/layui.js"></script>
-        <script src="../js/common.js"></script>
-        <script src="../js/jquery-1.10.1.min.js"></script>
+        <script src="./lib/layui-v2.4.5/layui/layui.js"></script>
+        <script src="./js/common.js"></script>
+        <script src="./js/jquery-1.10.1.min.js"></script>
         <script>
             //JavaScript代码区域
             layui.use('element', function () {
                 var element = layui.element;
             });
-            let name = document.cookie.split('=')[1] //截取cookie里面的用户名
-            console.log(name)
-            $.ajax({
-                type: 'get',
-                url: '../api/login',
-                data: {
-                    username: name
-                },
-                async: true,
-                success: function (data) {
-                    let root = data.data[0].jurisdiction;
-                    let imge = data.data[0].photoUrl;
-                    let nickname = data.data[0].nickname
-                    console.log(imge);
-                    let user1 = $(".user-1")
-                    let user2 = $(".user-2")
-                    $('._username').text(nickname);
-                    $('._imge').attr("src", imge);
-
-                    if (root == 'admin') {
-                        user1.show()
-                        // console.log(111)
-                    } else {
-                        user2.show()
-                        // console.log(222)
-                    }
-                    quit()
-                }
-            })
-
-            function quit() {
-                let $quit = $(".quit");
-                $quit.click(function () {
-                    Cookie.delCookie('username', '/');
-                    location.href = `./login.html`
-                })
-            }
+            userShow()
+           
         </script>
 </body>
 

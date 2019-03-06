@@ -135,7 +135,6 @@ Router.post('/del', jsonParser, urlencodedParser, async (req, res) => {
 //多选删除    传用户username 用数组保存，删除用户
 Router.post('/delAll', jsonParser, urlencodedParser, async (req, res) => {
     let usernames = req.body.usernames.split(',');
-    console.log(usernames)
     let data = await db.delete('userList', {
         username: {
             $in: usernames
@@ -174,7 +173,6 @@ var storage = multer.diskStorage({
 
     // 自定义文件名
     filename: function (req, file, cb) {
-        console.log('file',file);
         let ext = path.extname(file.originalname)
         cb(null, file.fieldname + '-' + Date.now() + ext)
     }
@@ -184,7 +182,6 @@ var upload = multer({
 });
 
 Router.post('/upload', upload.single('user'), function (req, res, next) {
-    console.log(req.file)
     res.json({
         status: "success",
         file: req.file

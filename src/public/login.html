@@ -20,8 +20,12 @@
             max-width: 360px;
             margin: 0 auto 100px;
             padding: 45px;
-            text-align: center;
+            /* text-align: center; */
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+
+        #freeLogin {
+            width: 30px;
         }
 
         .form input {
@@ -194,78 +198,67 @@
 <body>
     <div id="wrapper" class="login-page">
         <div id="login_form" class="form">
-            <form class="register-form">
-                <input type="text" placeholder="用户名" id="r_user_name" />
-                <input type="password" placeholder="密码" id="r_password" />
-                <input type="text" placeholder="电子邮件" id="r_emial" />
-                <button id="create">创建账户</button>
-                <p class="message">已经有了一个账户? <a href="#">立刻登录</a></p>
-            </form>
-            <form class="login-form">
-                <input type="text" placeholder="用户名" id="user_name" />
-                <input type="password" placeholder="密码" id="password" />
-                <button id="login">登　录</button>
-                <p class="message">还没有账户? <a href="#">立刻创建</a></p>
-            </form>
+            <!-- <form class="login-form"> -->
+            <input type="text" placeholder="用户名" id="user_name" />
+            <input type="password" placeholder="密码" id="password" />
+            <label><input type="checkbox" id="freeLogin"> 七天免登陆</label>
+            <button id="login">登　录</button>
+            <p class="message">还没有账户? <a href="#">立刻创建</a></p>
+            <!-- </form> -->
         </div>
     </div>
     <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
     <!-- <script src="js/jquery-1.10.1.min.js"></script> -->
     <script type="text/javascript">
-        function check_login() //点击登录事件
-        {
-            var name = $("#user_name").val(); //获取输入框里面的值
-            var pass = $("#password").val();
-            if (name && pass) //非空判断
-            { //如果非空，则发送请求
-                console.log(name)
-                $.ajax({
-                    type: 'get',
-                    url: '../api/login',
-                    data: {username:name,upw:pass},
-                    async: true,
-                    success: function (data) {
-                        if (data.data.length != 0) {
-                            let name = data.data[0].username;
-                            let pas = data.data[0].upw;
-                            // console.log(data)
+        $("#login").click(async function () {
 
-                            //创建cookie
-                            var now = new Date(); //日 now.getDate()
-                            now.setDate(now.getDate() + 7) //7天失效
-                            document.cookie = "username=" + name + ';expires=' + now.toUTCString() +';path='+'/';
-                            // document.cookie = 'password=' + pas + ';expires=' + now.toUTCString()
-
-
-
-                            location.href = `index1.html`
-                        } else {
-                            alert('密码或用户名错误，请重新输入')
-                        }
-                        // console.log( data.data)
-                    }
-                })
-            } else //为空则界面晃动
-            {
-                $("#login_form").removeClass('shake_effect');
-                setTimeout(function () {
-                    $("#login_form").addClass('shake_effect')
-                }, 1);
+            let data = await check_login(); //委托登录事件
+            var $freeLogin = $("#freeLogin")
+            console.log(data)
+            if (data.code == 200) {
+                $freeLogin.prop('checked') ? localStorage['token'] = data.token :
+                    sessionStorage['token'] = data.token;
+                location.href = `../index.html`
+            } else {
+                alert('密码或用户名错误，请重新输入')
             }
-        }
-        $(function () {
-
-            $("#login").click(function () {
-                check_login(); //委托登录事件
-                return false;
-            })
-            $('.message a').click(function () {
-                $('form').animate({
-                    height: 'toggle',
-                    opacity: 'toggle'
-                }, 'slow');
-            });
+            return false;
         })
+        $('.message a').click(function () {
+            $('form').animate({
+                height: 'toggle',
+                opacity: 'toggle'
+            }, 'slow');
+        });
+        //点击登录事件
+        function check_login() {
+            return new Promise((resolve, reject) => {
+                var name = $("#user_name").val(); //获取输入框里面的值
+                var pass = $("#password").val();
+                if (name && pass) //非空判断
+                { //如果非空，则发送请求
+                    console.log(name)
+                    $.ajax({
+                        type: 'get',
+                        url: '../api/login',
+                        data: {
+                            username: name,
+                            upw: pass
+                        },
+                        async: true,
+                        success: function (data) {
+                            resolve(data)
+                        }
+                    })
+                } else //为空则界面晃动
+                {
+                    $("#login_form").removeClass('shake_effect');
+                    setTimeout(function () {
+                        $("#login_form").addClass('shake_effect')
+                    }, 1);
+                }
+            })
+        }
     </script>
 
 

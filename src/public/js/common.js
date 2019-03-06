@@ -260,12 +260,10 @@ function linearAnimate(speed, ele, attr, target, time) {
     var speed = speed;
     ele.timer = setInterval(function () {
         var current = window.getComputedStyle(ele)[attr];
-        console.log(current);
         var unit = current.match(/[a-z]+$/); //提取单位
         unit = unit ? unit[0] : "";
         current = parseFloat(current); //只获取数值
         current += speed;
-        console.log(current);
 
         ele.style[attr] = current + unit;
         if (current >= target) {
@@ -291,13 +289,70 @@ function userAjax(data) {
     })
 }
 
-//退出按钮按功能封装
-function quit(){
-    let $quit = $(".quit");
-    $quit.click(function(){
-        Cookie.delCookie('username','/');
-        location.href = `../login.html`
+//解密token值并返回信息
+
+function verifyToken(token) {
+    return new Promise((resolve, reject) => {
+        $.get('/api/tokenverify', {
+            token
+        }, function (res) {
+            resolve(res)
+        }, 'json')
     })
 }
 
 
+
+//退出按钮
+function quit() {
+    let $quit = $(".quit");
+    $quit.click(function () {
+        //判断localstroage是否存在token,存在就删除local，不存在就删除session
+        localStorage['token'] ? localStorage.removeItem('token') : sessionStorage.removeItem(
+            'token');
+        location.href = `../login.html`;
+    })
+}
+
+//进入页面显示
+function userShow() {
+    user1 = $(".user-1")
+    user2 = $(".user-2")
+     //进入页面获取token值
+     var token = localStorage['token'] || sessionStorage['token'] || '';
+     //判断有无token值
+     if (token) {
+         (async () => {
+             let res = await verifyToken(token);
+             verifyUser(res)
+
+         })()
+     } else {
+         location.href = `login.html`
+     }
+
+ }
+
+
+ //解密成功或失败
+ function verifyUser(res) {
+     if (res.status == 200) {
+         //判断用户权限,显示相应的选项及路径
+         if (res.ress[0].jurisdiction == 'admin') {
+             user1.show()
+             user1.eq(0).attr('href', 'http://localhost:1811/html/userList.html')
+             user1.eq(1).attr('href', 'http://localhost:1811/html/addUser.html')
+         } else {
+             user2.show()
+             user2.attr('href', 'http://localhost:1811/html/userMessage.html')
+         }
+         //渲染用户信息
+         let imge = res.ress[0].photoUrl;
+         let nickname = res.ress[0].nickname;
+         $('._username').text(nickname);
+         $('._imge').attr("src", imge);
+         quit();
+     } else if (res.status == 100) {
+         location.href = 'http://localhost:1811/login.html'
+     }
+ }

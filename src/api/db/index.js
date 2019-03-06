@@ -19,7 +19,6 @@ async function connect(){
    let client = await MongoClient.connect(database_url)
      // 连接数据库，无则自动创建
      let db = client.db(database_name);
-    //  console.log(db,client)
     return {db,client}
 }
 
@@ -27,8 +26,6 @@ async function connect(){
 // 增,colName:集合名字，data：数据库查询条件,如果用many，则data为数组
 exports.insert = async (colName,data)=>{
     let {db,client} = await connect();
-    // console.log('client',client)
-    // console.log('db',db)
     //使用某个集合
     let collection = db.collection(colName);
     // 文档操作
@@ -71,7 +68,6 @@ exports.find = async (colName,query)=>{
     let collection = db.collection(colName);
     let res = await collection.find(query).toArray();
     client.close();
-    // console.log(res)
     // 返回查询结果
     return res;
 }

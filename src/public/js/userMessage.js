@@ -10,21 +10,18 @@ jQuery(function ($) {
         laydate.render({
             elem: '#test1' //指定元素
         });
-    }); 
+    });
 
     var $img = $('#img');
 
     let $goods = $('#goods');
-    console.log($goods)
     //上传文件按钮使用onchagne事件
     $goods.on('change', function () {
-        console.log(this.files, this.value)
         //获取文件信息
         var file = this.files[0];
         //判断是否读取了文件
         if (window.FileReader) {
             var fr = new FileReader();
-            console.log(fr);
             //获取预览图片元素
             //文件加载完成后显示预览图片
             fr.onloadend = function (e) {
@@ -37,8 +34,6 @@ jQuery(function ($) {
     })
 
     //获取用户名
-    // var username = Cookie.getCookie('username');
-    var username = 'ann';
     let $nickname = $(".nickname");
     let $uname = $(".uname");
     let $confirmPw = $(".confirmPw");
@@ -53,50 +48,50 @@ jQuery(function ($) {
     let $btn = $(".btn");
     let $userHead = $(".userHead");
     /** -----------------------------首次进入页面渲染信息-------------------------*/
-    (async () => {
-        var res = await userAjax({
-            username
-        });
-        _id = res.data[0]._id;
-        console.log(res.data[0])
-        UserShow(res.data[0]);
-        /**
-         * @确认按钮事件
-         * 1.根据file有无值，判断是否有修改头像
-         * 2.有修改头像，
-         *   2.1上传图片、
-         *   2.2更新用户信息
-         *   2.3重新渲染信息
-         * 3.没有修改头像
-         *   3.1更新用户信息
-         *   3.2重新渲染
-         */
-        $btn.click(function () {
-            let _goods = $goods[0].value
-            if (_goods) {
-                (async () => {
+
+    //进入页面获取token值
+    var token = localStorage['token'] || sessionStorage['token'] || '';
+    //判断有无token值
+    if (token) {
+        (async () => {
+            var res = await verifyToken(token);
+            _id = res.ress[0]._id;
+            UserShow(res.ress[0]);
+            quit()
+            /**
+             * @确认按钮事件
+             * 1.根据file有无值，判断是否有修改头像
+             * 2.有修改头像，
+             *   2.1上传图片、
+             *   2.2更新用户信息
+             *   2.3重新渲染信息
+             * 3.没有修改头像
+             *   3.1更新用户信息
+             *   3.2重新渲染
+             */
+            $btn.click(async function () {
+                let _goods = $goods[0].value
+                if (_goods) {
                     let res = await uploadUser();
                     await updateMsg({
                         photoUrl: `http://localhost:1811/${res.file.filename}`
                     })
-                    let aaa = await userAjax({
-                        username
-                    })
-                    UserShow(aaa.data[0]);
-                })()
-            } else {
-                (async () => {
+                    let aaa = await verifyToken(token);
+                    UserShow(aaa.ress[0]);
+                } else {
                     await updateMsg()
-                    let aaa = await userAjax({
-                        username
-                    })
-                    UserShow(aaa.data[0]);
-                })()
-            }
-        })
-    })()
+                    let aaa = await  verifyToken(token);
+                    UserShow(aaa.ress[0]);
+                }
+            })
+        })()
+    } else {
+        location.href = `login.html`
+    }
+
+
     /**-----------------------方法封装---------------------------------- */
-    
+
     /**
      * @渲染数据
      * 1.获取用户信息
@@ -143,7 +138,6 @@ jQuery(function ($) {
                 tel: $tel.val(),
                 gander: $gander.find(`.layui-anim dd`).filter('.layui-this').html()
             }
-            console.log(defaults)
             var data = Object.assign({}, defaults, obj);
             //update请求
             $.post('/api/userList/update', data, function (res) {
@@ -166,7 +160,6 @@ jQuery(function ($) {
         return new Promise((resolve, reject) => {
             var data = new FormData();
             data.set('user', $goods[0].files[0])
-            console.log(data.get('user'))
             $.ajax({
                 url: "/api/userList/upload",
                 type: "post",
@@ -174,11 +167,9 @@ jQuery(function ($) {
                 contentType: false, //使用multer配合ajax时无需配置multipart/form-data，multer将自动配置，手动配置将报错，boundary not found
                 processData: false,
                 success: function (res) {
-                    console.log(res)
                     resolve(res)
                 },
                 error: function (err) {
-                    console.log(err);
                 }
             });
             $goods.val = null;

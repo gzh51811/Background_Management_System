@@ -49,15 +49,75 @@
 
 ### 查看演示
 #### 临时账号
-管理员账号:admin   密码：123456
-
-普通用户账号:aaa   密码：123123
+管理员账号:admin   密码：123456     
+普通用户账号:ann   密码：123123
 #### 演示地址
-
+[后台管理系统](http://zza233.top:1811/login.html)
 ### 目录
+```txt
+/根目录
+│  README.md                项目说明文档
+│  .babelrc                 转换文件
+│  .gitignore               忽略文件目录
+│  gulpfile.js              自动化构建任务
+│  package-lock.json        模块版本锁定文件
+│  package.json             Node.js模块描述文件
+│  
+├─dist                      项目上线文件夹
+│  │  server.js             服务器配置文件
+│  │  
+│  ├─api                    api文件
+│  │  ├─db                  配置文件夹
+│  │  │      
+│  │  ├─routers             路由文件夹
+│  │  │         
+│  │  └─utils               工具文件夹
+│  │          
+│  ├─public                 静态资源文件夹
+│  │  ├─css                 css文件夹
+│  │  │     
+│  │  ├─html                HTML文件夹
+│  │  │  
+│  │  ├─iconfont            矢量图标文件夹
+│  │  │     
+│  │  ├─img                 图片文件夹  
+│  │  │  
+│  │  ├─js                  js文件夹
+│  │  │  
+│  │  └─lib                 插件文件夹
+│  │                      
+│  └─uploads                服务器图片文件夹
+│          
+└─src                       项目开发文件夹
+    │  server.js            服务器配置文件
+    │  
+    ├─api                   api文件     
+    │  ├─db                 配置文件夹
+    │  │      
+    │  ├─routers            路由文件夹
+    │  │      
+    │  └─utils              工具文件夹
+    │          
+    ├─public                静态资源文件夹
+    │  │  
+    │  ├─css                css文件夹
+    │  │      
+    │  ├─html               HTML文件夹
+    │  │      
+    │  ├─iconfont           矢量图标文件夹
+    │  │
+    │  ├─img                图片文件夹
+    │  │      
+    │  ├─js                 js文件夹
+    │  │
+    │  ├─lib                插件文件夹
+    │  │                   
+    │  └─sass               sass文件夹
+    │          
+    └─uploads               服务器图片文件夹
+```
 
 
 
 
 
-### 

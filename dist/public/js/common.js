@@ -342,7 +342,7 @@ let {
     host,
     port
 } = {
-    host: "47.107.113.128",
+    host: "zza233.top",
     port: "1811"
 }
 //解密成功或失败
